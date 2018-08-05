@@ -1,17 +1,40 @@
 #ifndef Z80_CPU_H
 #define Z80_CPU_H
 
-#include "z80_registers.h"
 #include "stddef.h"
+#include "stdint.h"
 
 #define MAX_ADDRESS 65536
 
 typedef enum {RUNNING, STOPPED} Z80_CPUState;
 
 typedef struct Z80_CPU {
-    Z80_Registers Registers;
-    Z80_CPUState State;
+    // Main registers
+    uint8_t A, B, C, D, E, F, H, L;
+
+    // Alternate registers
+    uint8_t Ap, Bp, Cp, Dp, Ep, Fp, Hp, Lp;
+
+    // Index registers
+    uint16_t IX;
+    uint16_t IY;
+
+    // Stack pointer
+    uint16_t SP;
+
+    // Interrupt vector register
+    uint8_t I;
+
+    // DRAM refresh counter
+    uint8_t R;
+
+    // Program counter
+    uint16_t PC;
+
     uint8_t Memory[MAX_ADDRESS];
+
+    // Running / Stopped
+    Z80_CPUState State;
 } Z80_CPU;
 
 /**
@@ -40,6 +63,9 @@ void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offse
  */
 void Z80_CPU_Cycle(Z80_CPU *cpu);
 
+/**
+ * @brief Debug output of the CPU registers
+ */
 void Z80_CPU_PrintRegisters(Z80_CPU *cpu);
 
 #endif
