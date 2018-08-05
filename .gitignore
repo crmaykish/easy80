@@ -1,2 +1,5 @@
 # Build directoy
 build/
+
+# Dev environment
+.vscode/
