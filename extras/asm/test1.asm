@@ -1,0 +1,7 @@
+LD A,4
+INC A
+INC A
+LD B,10
+ADD B
+LD (&100),A
+RET

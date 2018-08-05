@@ -34,6 +34,12 @@ typedef struct Z80_Registers {
  */
 void Z80_Registers_Init(Z80_Registers *r);
 
+uint16_t combine(uint8_t x, uint8_t y);
+uint8_t split_1(uint16_t r);
+uint8_t split_2(uint16_t r);
+
+// Probably won't actually need these functions...
+
 // Access A and F as one 16-bit register
 uint16_t AF(Z80_Registers *r);
 void sAF(Z80_Registers *r, uint16_t af);
