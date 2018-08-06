@@ -27,11 +27,6 @@ void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc) {
     cpu->PC += inc;
 }
 
-void ld_word_split(Z80_CPU *cpu, uint8_t *dest_ms, uint8_t *dest_ls, uint16_t src, uint8_t inc) {
-
-    cpu->PC += inc;
-}
-
 void Z80_CPU_Init(Z80_CPU *cpu) {
     // Set CPU to stopped
     cpu->State = STOPPED;
@@ -437,69 +432,55 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
         case 0x5F:  // LD E,A
             ld_byte(cpu, &cpu->E, cpu->A, 1);
             break;
-        case 0x60:  // 
-            printf("60 : Not Implemented!\n");
-            exit(1);
+        case 0x60:  // LD H,B
+            ld_byte(cpu, &cpu->H, cpu->B, 1);
             break;
-        case 0x61:  // 
-            printf("61 : Not Implemented!\n");
-            exit(1);
+        case 0x61:  // LD H,C
+            ld_byte(cpu, &cpu->H, cpu->C, 1);
             break;
-        case 0x62:  // 
-            printf("62 : Not Implemented!\n");
-            exit(1);
+        case 0x62:  // LD H,D
+            ld_byte(cpu, &cpu->H, cpu->D, 1);
             break;
-        case 0x63:  // 
-            printf("63 : Not Implemented!\n");
-            exit(1);
+        case 0x63:  // LD H,E
+            ld_byte(cpu, &cpu->H, cpu->E, 1);
             break;
-        case 0x64:  // 
-            printf("64 : Not Implemented!\n");
-            exit(1);
+        case 0x64:  // LD H,H
+            ld_byte(cpu, &cpu->H, cpu->H, 1);
             break;
-        case 0x65:  // 
-            printf("65 : Not Implemented!\n");
-            exit(1);
+        case 0x65:  // LD H,L
+            ld_byte(cpu, &cpu->H, cpu->L, 1);
             break;
         case 0x66:  // 
             printf("66 : Not Implemented!\n");
             exit(1);
             break;
-        case 0x67:  // 
-            printf("67 : Not Implemented!\n");
-            exit(1);
+        case 0x67:  // LD H,A
+            ld_byte(cpu, &cpu->H, cpu->A, 1);
             break;
-        case 0x68:  // 
-            printf("68 : Not Implemented!\n");
-            exit(1);
+        case 0x68:  // LD L,B
+            ld_byte(cpu, &cpu->L, cpu->B, 1);
             break;
-        case 0x69:  // 
-            printf("69 : Not Implemented!\n");
-            exit(1);
+        case 0x69:  // LD L,C
+            ld_byte(cpu, &cpu->L, cpu->C, 1);
             break;
-        case 0x6A:  // 
-            printf("6A : Not Implemented!\n");
-            exit(1);
+        case 0x6A:  // LD L,D
+            ld_byte(cpu, &cpu->L, cpu->D, 1);
             break;
-        case 0x6B:  // 
-            printf("6B : Not Implemented!\n");
-            exit(1);
+        case 0x6B:  // LD L,E
+            ld_byte(cpu, &cpu->L, cpu->E, 1);
             break;
-        case 0x6C:  // 
-            printf("6C : Not Implemented!\n");
-            exit(1);
+        case 0x6C:  // LD L,H
+            ld_byte(cpu, &cpu->L, cpu->H, 1);
             break;
-        case 0x6D:  // 
-            printf("6D : Not Implemented!\n");
-            exit(1);
+        case 0x6D:  // LD L,L
+            ld_byte(cpu, &cpu->L, cpu->L, 1);
             break;
         case 0x6E:  // 
             printf("6E : Not Implemented!\n");
             exit(1);
             break;
-        case 0x6F:  // 
-            printf("6F : Not Implemented!\n");
-            exit(1);
+        case 0x6F:  // LD L,A
+            ld_byte(cpu, &cpu->L, cpu->A, 1);
             break;
         case 0x70:  // 
             printf("70 : Not Implemented!\n");
@@ -533,37 +514,30 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("77 : Not Implemented!\n");
             exit(1);
             break;
-        case 0x78:  // 
-            printf("78 : Not Implemented!\n");
-            exit(1);
+        case 0x78:  // LD A,B
+            ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
-        case 0x79:  // 
-            printf("79 : Not Implemented!\n");
-            exit(1);
+        case 0x79:  // LD A,C
+            ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
-        case 0x7A:  // 
-            printf("7A : Not Implemented!\n");
-            exit(1);
+        case 0x7A:  // LD A,D
+            ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
-        case 0x7B:  // 
-            printf("7B : Not Implemented!\n");
-            exit(1);
+        case 0x7B:  // LD A,E
+            ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
-        case 0x7C:  // 
-            printf("7C : Not Implemented!\n");
-            exit(1);
+        case 0x7C:  // LD A,H
+            ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
-        case 0x7D:  // 
-            printf("7D : Not Implemented!\n");
-            exit(1);
+        case 0x7D:  // LD A,L
+            ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
         case 0x7E:  // 
             printf("7E : Not Implemented!\n");
             exit(1);
             break;
-        case 0x7F:  // 
-            printf("7F : Not Implemented!\n");
-            exit(1);
+        case 0x7F:  // LD A,A
+            ld_byte(cpu, &cpu->A, cpu->A, 1);
             break;
         case 0x80:  // ADD A,B
             printf("80 : Flags not set!\n");
