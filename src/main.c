@@ -2,16 +2,7 @@
 #include <string.h>
 #include "z80_cpu.h"
 
-/*
-LD A,4
-INC A
-INC A
-LD B,10
-ADD B
-LD (&100),A
-RET
-*/
-uint8_t rom[] = {0x3E, 0x04, 0x3C, 0x3C, 0x06, 0x0A, 0x80, 0x32, 0x00, 0x01, 0xC9};
+uint8_t rom1[] = {0x3E, 0xA9, 0x06, 0xBF, 0x48, 0x57, 0x76};
 
 int main(int argc, char const *argv[])
 {
@@ -21,9 +12,11 @@ int main(int argc, char const *argv[])
 
     Z80_CPU_Init(&cpu);
 
-    Z80_CPU_SetMemory(&cpu, rom, sizeof(rom), 0);
+    Z80_CPU_SetMemory(&cpu, rom1, sizeof(rom1), 0);
 
-    while(cpu.PC < 0xF) {
+    cpu.State = RUNNING;
+
+    while(cpu.State == RUNNING) {
         Z80_CPU_Cycle(&cpu);
         Z80_CPU_PrintRegisters(&cpu);
     }
