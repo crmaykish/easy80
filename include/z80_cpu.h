@@ -6,6 +6,13 @@
 
 #define MAX_ADDRESS 65536
 
+#define FLAG_C      (0)         // Carry
+#define FLAG_N      (1)    // Add/Subtract
+#define FLAG_PV     (2)    // Parity/Overflow
+#define FLAG_H      (4)    // Half Carry
+#define FLAG_Z      (6)    // Zero
+#define FLAG_S      (7)    // Sign
+
 typedef enum {RUNNING, STOPPED} Z80_CPUState;
 
 typedef struct Z80_CPU {

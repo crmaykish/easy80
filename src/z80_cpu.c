@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 uint16_t combine(uint8_t x, uint8_t y) {
     return (x << 8) | y;
@@ -13,6 +14,20 @@ uint8_t split_1(uint16_t r) {
 
 uint8_t split_2(uint16_t r) {
     return r & 0x00FF;
+}
+
+// Flag operations
+
+bool flag_get(Z80_CPU *cpu, uint8_t flag) {
+    return (cpu->F & (1 << flag)) == 1;
+}
+
+void flag_set(Z80_CPU *cpu, uint8_t flag) {
+    cpu->F |= (1 << flag);
+}
+
+void flag_clr(Z80_CPU *cpu, uint8_t flag) {
+    cpu->F |= ~(1 << flag);
 }
 
 // Load operations
@@ -211,9 +226,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("20 : Not Implemented!\n");
             exit(1);
             break;
-        case 0x21:  // 
-            printf("21 : Not Implemented!\n");
-            exit(1);
+        case 0x21:  // LD HL,**
+            ld_byte(cpu, &cpu->H, op2, 0);
+            ld_byte(cpu, &cpu->L, op1, 3);
             break;
         case 0x22:  // 
             printf("22 : Not Implemented!\n");
@@ -227,9 +242,10 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("24 : Not Implemented!\n");
             exit(1);
             break;
-        case 0x25:  // 
-            printf("25 : Not Implemented!\n");
-            exit(1);
+        case 0x25:  // DEC H
+            printf("25 : Flags not set!\n");
+            cpu->H--;
+            cpu->PC++;
             break;
         case 0x26:  // 
             printf("26 : Not Implemented!\n");
@@ -532,9 +548,8 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
         case 0x7D:  // LD A,L
             ld_byte(cpu, &cpu->A, cpu->B, 1);
             break;
-        case 0x7E:  // 
-            printf("7E : Not Implemented!\n");
-            exit(1);
+        case 0x7E:  // LD A,(HL)
+            ld_byte(cpu, &cpu->A, cpu->Memory[combine(cpu->H, cpu->L)], 1);
             break;
         case 0x7F:  // LD A,A
             ld_byte(cpu, &cpu->A, cpu->A, 1);
@@ -809,7 +824,7 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             exit(1);
             break;
         case 0xC3:  // JP **
-            cpu->PC = op1;
+            cpu->PC = combine(op2, op1);
             break;
         case 0xC4:  // 
             printf("C4 : Not Implemented!\n");
@@ -999,9 +1014,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("F2 : Not Implemented!\n");
             exit(1);
             break;
-        case 0xF3:  // 
-            printf("F3 : Not Implemented!\n");
-            exit(1);
+        case 0xF3:  // DI
+            printf("F3 : Interrupts not implemented!\n");
+            cpu->PC++;
             break;
         case 0xF4:  // 
             printf("F4 : Not Implemented!\n");
