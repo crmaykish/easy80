@@ -7,7 +7,6 @@
 #include "bitmath.h"
 
 // LD operations
-
 void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src, uint8_t inc) {
     *dest = src;
     cpu->PC += inc;
@@ -19,10 +18,9 @@ void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc) {
 }
 
 // ADD operations
-
-void add(Z80_CPU *cpu, uint8_t src) {
+void add_r(Z80_CPU *cpu, uint8_t val) {
     // Set CARRY flag high if 9th bit in sum is high
-    flag_set(&cpu->F, FLAG_C, ((cpu->A + src) > 0xFF));
+    flag_set(&cpu->F, FLAG_C, ((cpu->A + val) > 0xFF));
 
     // Always clear ADD/SUB flag
     flag_set(&cpu->F, FLAG_N, false);
@@ -30,7 +28,7 @@ void add(Z80_CPU *cpu, uint8_t src) {
     // TODO: Overflow flag
 
     // Set HALF-CARRY bit if A and src bits 3 are both high
-    flag_set(&cpu->F, FLAG_H, (get_bit(cpu->A, 3) && get_bit(src, 3)));
+    flag_set(&cpu->F, FLAG_H, (get_bit(cpu->A, 3) && get_bit(val, 3)));
 
     // Set ZERO flag if result is 0
     flag_set(&cpu->F, FLAG_Z, (cpu->A == 0));
@@ -38,20 +36,30 @@ void add(Z80_CPU *cpu, uint8_t src) {
     // TODO: Sign flag
 
     // Add source value to A
-    cpu->A += src;
+    cpu->A += val;
     
     // All ADD,r operations are a single opcode
     cpu->PC++;
 }
 
-void sub(Z80_CPU *cpu, uint8_t src) {
-
+// SUB operations
+void sub(Z80_CPU *cpu, uint8_t val) {
     // TODO: Set flags
 
     // Subtract source from A
-    cpu->A -= src;
+    cpu->A -= val;
 
     // All SUB,r operations are a single opcode
+    cpu->PC++;
+}
+
+// AND operations
+void and(Z80_CPU *cpu, uint8_t val) {
+    // TODO: Set flags
+
+    cpu->A &= val;
+
+    // All AND,r operations are a single opcode
     cpu->PC++;
 }
 
@@ -569,37 +577,28 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             ld_byte(cpu, &cpu->A, cpu->A, 1);
             break;
         case 0x80:  // ADD A,B
-            printf("80 : Flags not set!\n");
-            cpu->A += cpu->B;
-            cpu->PC++;
+            add_r(cpu, cpu->B);
             break;
-        case 0x81:  // 
-            printf("81 : Not Implemented!\n");
-            exit(1);
+        case 0x81:  // ADD A,C
+            add_r(cpu, cpu->C);
             break;
-        case 0x82:  // 
-            printf("82 : Not Implemented!\n");
-            exit(1);
+        case 0x82:  // ADD A,D
+            add_r(cpu, cpu->D);
             break;
-        case 0x83:  // 
-            printf("83 : Not Implemented!\n");
-            exit(1);
+        case 0x83:  // ADD A,E
+            add_r(cpu, cpu->E);
             break;
-        case 0x84:  // 
-            printf("84 : Not Implemented!\n");
-            exit(1);
+        case 0x84:  // ADD A,H
+            add_r(cpu, cpu->H);
             break;
-        case 0x85:  // 
-            printf("85 : Not Implemented!\n");
-            exit(1);
+        case 0x85:  // ADD A,L
+            add_r(cpu, cpu->L);
             break;
-        case 0x86:  // 
-            printf("86 : Not Implemented!\n");
-            exit(1);
+        case 0x86:  // ADD A,(HL)
+            add_r(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
             break;
-        case 0x87:  // 
-            printf("87 : Not Implemented!\n");
-            exit(1);
+        case 0x87:  // ADD A,A
+            add_r(cpu, cpu->A);
             break;
         case 0x88:  // 
             printf("88 : Not Implemented!\n");
@@ -633,37 +632,29 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("8F : Not Implemented!\n");
             exit(1);
             break;
-        case 0x90:  // 
-            printf("90 : Not Implemented!\n");
-            exit(1);
+        case 0x90:  // SUB B
+            sub(cpu, cpu->B);
             break;
-        case 0x91:  // 
-            printf("91 : Not Implemented!\n");
-            exit(1);
+        case 0x91:  // SUB C
+            sub(cpu, cpu->C);
             break;
-        case 0x92:  // 
-            printf("92 : Not Implemented!\n");
-            exit(1);
+        case 0x92:  // SUB D
+            sub(cpu, cpu->D);
             break;
-        case 0x93:  // 
-            printf("93 : Not Implemented!\n");
-            exit(1);
+        case 0x93:  // SUB E
+            sub(cpu, cpu->E);
             break;
-        case 0x94:  // 
-            printf("94 : Not Implemented!\n");
-            exit(1);
+        case 0x94:  // SUB H
+            sub(cpu, cpu->H);
             break;
-        case 0x95:  // 
-            printf("95 : Not Implemented!\n");
-            exit(1);
+        case 0x95:  // SUB L
+            sub(cpu, cpu->L);
             break;
-        case 0x96:  // 
-            printf("96 : Not Implemented!\n");
-            exit(1);
+        case 0x96:  // SUB (HL)
+            sub(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
             break;
-        case 0x97:  // 
-            printf("97 : Not Implemented!\n");
-            exit(1);
+        case 0x97:  // SUB A
+            sub(cpu, cpu->A);
             break;
         case 0x98:  // 
             printf("98 : Not Implemented!\n");
@@ -848,9 +839,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("C5 : Not Implemented!\n");
             exit(1);
             break;
-        case 0xC6:  // 
-            printf("C6 : Not Implemented!\n");
-            exit(1);
+        case 0xC6:  // ADD A,*
+            add_r(cpu, op1);
+            cpu->PC++;
             break;
         case 0xC7:  // 
             printf("C7 : Not Implemented!\n");
