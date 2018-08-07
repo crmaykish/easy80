@@ -20,27 +20,38 @@ void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc) {
 
 // ADD operations
 
-void add(Z80_CPU *cpu, uint8_t *dest, uint8_t src) {
+void add(Z80_CPU *cpu, uint8_t src) {
     // Set CARRY flag high if 9th bit in sum is high
-    flag_set(&cpu->F, FLAG_C, ((*dest + src) > 0xFF));
+    flag_set(&cpu->F, FLAG_C, ((cpu->A + src) > 0xFF));
 
     // Always clear ADD/SUB flag
     flag_set(&cpu->F, FLAG_N, false);
 
     // TODO: Overflow flag
 
-    // Set HALF-CARRY bit if dest and src bits 3 are both high
-    flag_set(&cpu->F, FLAG_H, (get_bit(*dest, 3) && get_bit(src, 3)));
+    // Set HALF-CARRY bit if A and src bits 3 are both high
+    flag_set(&cpu->F, FLAG_H, (get_bit(cpu->A, 3) && get_bit(src, 3)));
 
     // Set ZERO flag if result is 0
-        flag_set(&cpu->F, FLAG_Z, (*dest == 0));
+    flag_set(&cpu->F, FLAG_Z, (cpu->A == 0));
 
     // TODO: Sign flag
 
-    // Add source value to dest
-    *dest += src;
+    // Add source value to A
+    cpu->A += src;
     
-    // All ADD operations are  a single opcode
+    // All ADD,r operations are a single opcode
+    cpu->PC++;
+}
+
+void sub(Z80_CPU *cpu, uint8_t src) {
+
+    // TODO: Set flags
+
+    // Subtract source from A
+    cpu->A -= src;
+
+    // All SUB,r operations are a single opcode
     cpu->PC++;
 }
 
