@@ -3,32 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-
-uint16_t combine(uint8_t x, uint8_t y) {
-    return (x << 8) | y;
-}
-
-uint8_t split_1(uint16_t r) {
-    return (r & 0xFF00) >> 8;
-}
-
-uint8_t split_2(uint16_t r) {
-    return r & 0x00FF;
-}
-
-// Flag operations
-
-bool flag_get(Z80_CPU *cpu, uint8_t flag) {
-    return (cpu->F & (1 << flag)) == 1;
-}
-
-void flag_set(Z80_CPU *cpu, uint8_t flag) {
-    cpu->F |= (1 << flag);
-}
-
-void flag_clr(Z80_CPU *cpu, uint8_t flag) {
-    cpu->F |= ~(1 << flag);
-}
+#include "z80_flags.h"
+#include "bitmath.h"
 
 // Load operations
 
@@ -74,6 +50,7 @@ void Z80_CPU_Init(Z80_CPU *cpu) {
     cpu->R = 0;
 
     cpu->PC = 0;
+
 }
 
 void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offset) {

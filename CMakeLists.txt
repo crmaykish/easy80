@@ -6,5 +6,7 @@ include_directories(include)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(easy80
+        src/bitmath.c
+        src/z80_flags.c
         src/z80_cpu.c
         src/main.c)
