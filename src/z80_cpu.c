@@ -1,12 +1,12 @@
-#include "z80_cpu.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include "z80_cpu.h"
 #include "z80_flags.h"
 #include "bitmath.h"
 
-// Load operations
+// LD operations
 
 void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src, uint8_t inc) {
     *dest = src;
@@ -16,6 +16,32 @@ void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src, uint8_t inc) {
 void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc) {
     *dest = src;
     cpu->PC += inc;
+}
+
+// ADD operations
+
+void add(Z80_CPU *cpu, uint8_t *dest, uint8_t src) {
+    // Set CARRY flag high if 9th bit in sum is high
+    flag_set(&cpu->F, FLAG_C, ((*dest + src) > 0xFF));
+
+    // Always clear ADD/SUB flag
+    flag_set(&cpu->F, FLAG_N, false);
+
+    // TODO: Overflow flag
+
+    // Set HALF-CARRY bit if dest and src bits 3 are both high
+    flag_set(&cpu->F, FLAG_H, (get_bit(*dest, 3) && get_bit(src, 3)));
+
+    // Set ZERO flag if result is 0
+        flag_set(&cpu->F, FLAG_Z, (*dest == 0));
+
+    // TODO: Sign flag
+
+    // Add source value to dest
+    *dest += src;
+    
+    // All ADD operations are  a single opcode
+    cpu->PC++;
 }
 
 void Z80_CPU_Init(Z80_CPU *cpu) {
@@ -1047,13 +1073,21 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
     }
 }
 
+void print_binary(uint8_t n) {
+    for (int i = 0; i < 8; i++) {
+        printf("%d", get_bit(n, i));
+    }
+    printf("\n");
+}
+
 void Z80_CPU_PrintRegisters(Z80_CPU *cpu) {
     printf(
-        "PC: %X | AF: %X | BC: %X | DE: %X | HL: %X\n",
+        "PC: %X | AF: %X | BC: %X | DE: %X | HL: %X | F: ",
         cpu->PC,
         combine(cpu->A, cpu->F),
         combine(cpu->B, cpu->C),
         combine(cpu->D, cpu->E),
         combine(cpu->H, cpu->L)
     );
+    print_binary(cpu->F);
 }

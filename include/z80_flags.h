@@ -4,19 +4,32 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef enum {
-    FLAG_C = 0,
-    FLAG_N = 1,
-    FLAG_PV = 2,
-    FLAG_H = 4,
-    FLAG_Z = 6,
-    FLAG_S = 7
-} Z80_Flags;
+#define FLAG_C      0     // Carry
+#define FLAG_N      1     // Add/Subtract
+#define FLAG_PV     2     // Parity/Overflow
+#define FLAG_H      4     // Half Carry
+#define FLAG_Z      6     // Zero
+#define FLAG_S      7     // Sign
 
-bool flag_get(uint8_t *flags, Z80_Flags f);
+/**
+ * @brief Returns the given flag bit from the target byte
+ * 
+ * e.g. To get the H flag from the register F, use flag_get(F, FLAG_H);
+ * 
+ * @param target Register from which to get the flag
+ * @param flag The flag bit to return
+ * @return true if the flag bit is high
+ * @return false if the flag bit is low
+ */
+bool flag_get(uint8_t *target, uint8_t flag);
 
-void flag_set(uint8_t *flags, Z80_Flags f);
-
-void flag_clr(uint8_t *flags, Z80_Flags f);
+/**
+ * @brief Set the given flag bit to the given value in the target byte
+ * 
+ * @param target Register in which to set the flag
+ * @param flag The flag bit to set
+ * @param val Set the flag high or low
+ */
+void flag_set(uint8_t *target, uint8_t flag, bool val);
 
 #endif

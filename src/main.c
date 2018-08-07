@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "z80_cpu.h"
+#include "bitmath.h"
 
 int main(int argc, char const *argv[])
 {
