@@ -25,3 +25,11 @@ add_executable(test_z80_flags
         src/bitmath.c
         libs/Unity/src/unity.c
 )
+
+add_executable(test_z80_cpu
+        test/test_z80_cpu.c
+        src/z80_cpu.c
+        src/z80_flags.c
+        src/bitmath.c
+        libs/Unity/src/unity.c
+)
