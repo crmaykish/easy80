@@ -28,7 +28,7 @@ void add_r(Z80_CPU *cpu, uint8_t val) {
     // TODO: Overflow flag
 
     // Set HALF-CARRY bit if A and src bits 3 are both high
-    flag_set(&cpu->F, FLAG_H, (get_bit(cpu->A, 3) && get_bit(val, 3)));
+    flag_set(&cpu->F, FLAG_H, (bit_get(cpu->A, 3) && bit_get(val, 3)));
 
     // Set ZERO flag if result is 0
     flag_set(&cpu->F, FLAG_Z, (cpu->A == 0));
@@ -1077,7 +1077,7 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
 
 void print_binary(uint8_t n) {
     for (int i = 0; i < 8; i++) {
-        printf("%d", get_bit(n, i));
+        printf("%d", bit_get(n, i));
     }
     printf("\n");
 }

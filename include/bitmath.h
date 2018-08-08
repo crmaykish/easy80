@@ -4,9 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-bool get_bit(uint8_t target, uint8_t bit);
+bool bit_get(uint8_t target, uint8_t bit);
 
-void set_bit(uint8_t *target, uint8_t bit);
+void bit_set(uint8_t *target, uint8_t bit);
+
+void bit_clear(uint8_t *target, uint8_t bit);
 
 uint16_t combine(uint8_t x, uint8_t y);
 

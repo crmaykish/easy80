@@ -3,3 +3,6 @@ build/
 
 # Dev environment
 .vscode/
+
+# External libs
+libs/

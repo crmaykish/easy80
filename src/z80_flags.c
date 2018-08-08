@@ -2,9 +2,14 @@
 #include "bitmath.h"
 
 bool flag_get(uint8_t *reg, uint8_t flag) {
-    return get_bit(*reg, flag);
+    return bit_get(*reg, flag);
 }
 
 void flag_set(uint8_t *reg, uint8_t flag, bool val) {
-    set_bit(reg, flag);
+    if (val) {
+        bit_set(reg, flag);
+    }
+    else {
+        bit_clear(reg, flag);
+    }
 }
