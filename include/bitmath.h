@@ -1,3 +1,11 @@
+/**
+ * @brief Utility code relating to bit and byte manipulation
+ * 
+ * @file bitmath.h
+ * @author crmaykish
+ * @date 2018-08-06
+ */
+
 #ifndef BITMATH_H
 #define BITMATH_H
 

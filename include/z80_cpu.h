@@ -1,9 +1,16 @@
+/**
+ * @brief Z80 object and state machine manipulation
+ * 
+ * @file z80_cpu.h
+ * @author crmaykish
+ * @date 2018-08-04
+ */
+
 #ifndef Z80_CPU_H
 #define Z80_CPU_H
 
 #include <stddef.h>
 #include <stdint.h>
-#include "z80_flags.h"
 
 #define MAX_ADDRESS 65536
 

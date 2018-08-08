@@ -1,3 +1,11 @@
+/**
+ * @brief Control Z80 CPU flags
+ * 
+ * @file z80_flags.h
+ * @author crmaykish
+ * @date 2018-08-06
+ */
+
 #ifndef Z80_FLAGS_H
 #define Z80_FLAGS_H
 
