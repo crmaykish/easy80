@@ -15,7 +15,7 @@ Heavy development, incomplete
 
 Development plan:
 - [x] Model the internal state of the CPU (registers, memory access, etc.)
-- [ ] Implement some core opcodes to test the speed and accuracy of the model
+- [x] Implement some core opcodes to test the speed and accuracy of the model
 - [ ] Add some unit tests to verify CPU functionality
 - [ ] Implement remaining opcodes
 - [ ] Create a test program to load real machine code and debug the emulation
@@ -24,6 +24,10 @@ Development plan:
 This project has no compile-time or runtime dependencies. It is a standalone C module.
 
 ## Building and Testing
-This project uses CMake (minimum version v3.10.2). To build the code, you can run the included bash script: `build.sh`
+This project uses CMake (minimum version v3.10.2).
 
-`run.sh` will start the test app.
+To build the code:
+
+1. Install libraries: `./tools/libs.sh`
+2. Build everything: `./tools/build.sh`
+3. Run unit tests: `./tools/test.sh`
