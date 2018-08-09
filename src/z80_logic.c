@@ -22,15 +22,19 @@ void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc) {
 }
 
 // ADD operations
-void add(Z80_CPU *cpu, uint8_t val) {
+static void add_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
+    // TODO: Double check the use of the carry flag in the flag logic...
+    uint8_t carry_flag = (use_carry && (cpu->F, FLAG_C)) ? 1 : 0;
+    uint8_t c_val = val + carry_flag;
+
     // Set CARRY flag high if 9th bit in sum is high
-    flag_set(&cpu->F, FLAG_C, ((cpu->A + val) > 0xFF));
+    flag_set(&cpu->F, FLAG_C, ((cpu->A + c_val) > 0xFF));
 
     // Always clear ADD/SUB flag
     flag_set(&cpu->F, FLAG_N, false);
     
     // If signs are the same and result sign changes, overflow
-    if (bit_get(cpu->A, 7) == bit_get(val, 7) && bit_get(cpu->A + val, 7) != bit_get(cpu->A, 7)) {
+    if (bit_get(cpu->A, 7) == bit_get(c_val, 7) && bit_get(cpu->A + c_val, 7) != bit_get(cpu->A, 7)) {
         flag_set(&cpu->F, FLAG_PV, true);
     }
     // If signs of inputs are different, clear overflow
@@ -39,31 +43,43 @@ void add(Z80_CPU *cpu, uint8_t val) {
     }
 
     // Set HALF-CARRY bit if bit 3 of A and src are both high
-    flag_set(&cpu->F, FLAG_H, (bit_get(cpu->A, 3) && bit_get(val, 3)));
+    flag_set(&cpu->F, FLAG_H, (bit_get(cpu->A, 3) && bit_get(c_val, 3)));
 
     // Set ZERO flag if result is 0
-    flag_set(&cpu->F, FLAG_Z, (((cpu->A + val) & 0xFF) == 0));
+    flag_set(&cpu->F, FLAG_Z, (((cpu->A + c_val) & 0xFF) == 0));
 
     // Set sign flag if bit 7 of the result is 1, indicating a negative number
-    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A + val, 7));
+    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A + c_val, 7));
 
     // Add source value to A
-    cpu->A += val;
+    cpu->A += c_val;
     
     // All ADD,r operations are a single opcode
     cpu->PC++;
 }
 
+void add(Z80_CPU *cpu, uint8_t val) {
+    add_internal(cpu, val, false);
+}
+
+void adc(Z80_CPU *cpu, uint8_t val) {
+    add_internal(cpu, val, true);
+}
+
 // SUB operations
-void sub(Z80_CPU *cpu, uint8_t val) {
+static void sub_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
+    // TODO: Double check the use of the carry flag in the flag logic...
+    uint8_t carry_flag = (use_carry && (cpu->F, FLAG_C)) ? 1 : 0;
+    uint8_t c_val = val + carry_flag;
+
     // Set CARRY flag high if A < val
-    flag_set(&cpu->F, FLAG_C, (cpu->A < val));
+    flag_set(&cpu->F, FLAG_C, (cpu->A < c_val));
 
     // Always set ADD/SUB flag
     flag_set(&cpu->F, FLAG_N, true);
     
     // If signs are different and result signs changes, overflow
-    if (bit_get(cpu->A, 7) != bit_get(val, 7) && bit_get(cpu->A - val, 7) != bit_get(cpu->A, 7)) {
+    if (bit_get(cpu->A, 7) != bit_get(c_val, 7) && bit_get(cpu->A - c_val, 7) != bit_get(cpu->A, 7)) {
         flag_set(&cpu->F, FLAG_PV, true);
     }
     // If signs of inputs are the same, clear overflow
@@ -72,19 +88,27 @@ void sub(Z80_CPU *cpu, uint8_t val) {
     }
 
     // Set HALF-CARRY bit if lower nibble of A is less than lower nibble of val
-    flag_set(&cpu->F, FLAG_H, ((cpu->A & 0x0F) < (val & 0x0F)));
+    flag_set(&cpu->F, FLAG_H, ((cpu->A & 0x0F) < (c_val & 0x0F)));
 
     // Set ZERO flag if result is 0
-    flag_set(&cpu->F, FLAG_Z, (((cpu->A - val) & 0xFF) == 0));
+    flag_set(&cpu->F, FLAG_Z, (((cpu->A - c_val) & 0xFF) == 0));
 
     // Set sign flag if bit 7 of the result is 1, indicating a negative number
-    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A - val, 7));
+    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A - c_val, 7));
 
     // Subtract source from A
-    cpu->A -= val;
+    cpu->A -= c_val;
 
     // All SUB,r operations are a single opcode
     cpu->PC++;
+}
+
+void sub(Z80_CPU *cpu, uint8_t val) {
+    sub_internal(cpu, val, false);
+}
+
+void sbc(Z80_CPU *cpu, uint8_t val) {
+    sub_internal(cpu, val, true);
 }
 
 // AND operations

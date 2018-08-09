@@ -18,9 +18,11 @@ void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc);
 
 // ADD operations
 void add(Z80_CPU *cpu, uint8_t val);
+void adc(Z80_CPU *cpu, uint8_t val);
 
 // SUB operations
 void sub(Z80_CPU *cpu, uint8_t val);
+void sbc(Z80_CPU *cpu, uint8_t val);
 
 // AND operations
 void and(Z80_CPU *cpu, uint8_t val);
