@@ -123,7 +123,19 @@ void test_z80_logic_sub() {
 }
 
 void test_z80_logic_and() {
-    
+    // TODO
+}
+
+void test_z80_logic_or() {
+    // TODO
+}
+
+void test_z80_logic_xor() {
+    // TODO
+}
+
+void test_z80_logic_cp() {
+    // TODO
 }
 
 int main(int argc, char const *argv[])
@@ -135,6 +147,10 @@ int main(int argc, char const *argv[])
     RUN_TEST(test_z80_logic_ld_word);
     RUN_TEST(test_z80_logic_add);
     RUN_TEST(test_z80_logic_sub);
+    RUN_TEST(test_z80_logic_and);
+    RUN_TEST(test_z80_logic_or);
+    RUN_TEST(test_z80_logic_xor);
+    RUN_TEST(test_z80_logic_cp);
 
     return UNITY_END();
 }

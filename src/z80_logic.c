@@ -2,6 +2,14 @@
 #include "z80_flags.h"
 #include "bitmath.h"
 
+// https://stackoverflow.com/questions/21617970/how-to-check-if-value-has-even-parity-of-bits-or-odd
+bool even_parity(uint8_t n) {
+    n ^= n >> 4;
+    n ^= n >> 2;
+    n ^= n >> 1;
+    return ((~n) & 1) == 1;
+}
+
 // LD operations
 void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src, uint8_t inc) {
     *dest = src;
@@ -81,7 +89,18 @@ void sub(Z80_CPU *cpu, uint8_t val) {
 
 // AND operations
 void and(Z80_CPU *cpu, uint8_t val) {
-    // TODO: Set flags
+    flag_set(&cpu->F, FLAG_C, false);
+    flag_set(&cpu->F, FLAG_C, false);
+    flag_set(&cpu->F, FLAG_H, true);
+
+    // Overflow parity flag is set HIGH if even parity and LOW if odd
+    flag_set(&cpu->F, FLAG_PV, even_parity(cpu->A & val));
+
+    // Set ZERO flag if result is 0
+    flag_set(&cpu->F, FLAG_Z, ((cpu->A & val) == 0));
+
+    // Set sign flag if bit 7 of the result is 1, indicating a negative number
+    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A + val, 7));
 
     cpu->A &= val;
 

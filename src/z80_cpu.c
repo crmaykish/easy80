@@ -632,37 +632,29 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("9F : Not Implemented!\n");
             exit(1);
             break;
-        case 0xA0:  // 
-            printf("A0 : Not Implemented!\n");
-            exit(1);
+        case 0xA0:  // AND B
+            and(cpu, cpu->B);
             break;
-        case 0xA1:  // 
-            printf("A1 : Not Implemented!\n");
-            exit(1);
+        case 0xA1:  // AND C
+            and(cpu, cpu->C);
             break;
-        case 0xA2:  // 
-            printf("A2 : Not Implemented!\n");
-            exit(1);
+        case 0xA2:  // AND D
+            and(cpu, cpu->D);
             break;
-        case 0xA3:  // 
-            printf("A3 : Not Implemented!\n");
-            exit(1);
+        case 0xA3:  // AND E
+            and(cpu, cpu->E);
             break;
-        case 0xA4:  // 
-            printf("A4 : Not Implemented!\n");
-            exit(1);
+        case 0xA4:  // AND H
+            and(cpu, cpu->H);
             break;
-        case 0xA5:  // 
-            printf("A5 : Not Implemented!\n");
-            exit(1);
+        case 0xA5:  // AND L
+            and(cpu, cpu->L);
             break;
-        case 0xA6:  // 
-            printf("A6 : Not Implemented!\n");
-            exit(1);
+        case 0xA6:  // AND (HL)
+            and(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
             break;
-        case 0xA7:  // 
-            printf("A7 : Not Implemented!\n");
-            exit(1);
+        case 0xA7:  // AND A
+            and(cpu, cpu->A);
             break;
         case 0xA8:  // 
             printf("A8 : Not Implemented!\n");
@@ -911,9 +903,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("E5 : Not Implemented!\n");
             exit(1);
             break;
-        case 0xE6:  // 
-            printf("E6 : Not Implemented!\n");
-            exit(1);
+        case 0xE6:  // AND *
+            and(cpu, op1);
+            cpu->PC++;
             break;
         case 0xE7:  // 
             printf("E7 : Not Implemented!\n");
