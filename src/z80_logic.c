@@ -20,16 +20,24 @@ void add_r(Z80_CPU *cpu, uint8_t val) {
 
     // Always clear ADD/SUB flag
     flag_set(&cpu->F, FLAG_N, false);
+    
+    // If signs are the same and result sign changes, overflow
+    if (bit_get(cpu->A, 7) == bit_get(val, 7) && bit_get(cpu->A + val, 7) != bit_get(cpu->A, 7)) {
+        flag_set(&cpu->F, FLAG_PV, true);
+    }
+    // If signs of inputs are different, clear overflow
+    else {
+        flag_set(&cpu->F, FLAG_PV, false);
+    }
 
-    // TODO: Overflow flag
-
-    // Set HALF-CARRY bit if A and src bits 3 are both high
+    // Set HALF-CARRY bit if bit 3 of A and src are both high
     flag_set(&cpu->F, FLAG_H, (bit_get(cpu->A, 3) && bit_get(val, 3)));
 
     // Set ZERO flag if result is 0
-    flag_set(&cpu->F, FLAG_Z, (cpu->A == 0));
+    flag_set(&cpu->F, FLAG_Z, (((cpu->A + val) & 0xFF) == 0));
 
-    // TODO: Sign flag
+    // Set sign flag if bit 7 of the result is 1, indicating a negative number
+    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A + val, 7));
 
     // Add source value to A
     cpu->A += val;
