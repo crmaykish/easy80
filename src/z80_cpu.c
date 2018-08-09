@@ -656,37 +656,29 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
         case 0xA7:  // AND A
             and(cpu, cpu->A);
             break;
-        case 0xA8:  // 
-            printf("A8 : Not Implemented!\n");
-            exit(1);
+        case 0xA8:  // XOR B
+            xor(cpu, cpu->B);
             break;
-        case 0xA9:  // 
-            printf("A9 : Not Implemented!\n");
-            exit(1);
+        case 0xA9:  // XOR C
+            xor(cpu, cpu->C);
             break;
-        case 0xAA:  // 
-            printf("AA : Not Implemented!\n");
-            exit(1);
+        case 0xAA:  // XOR D
+            xor(cpu, cpu->D);
             break;
-        case 0xAB:  // 
-            printf("AB : Not Implemented!\n");
-            exit(1);
+        case 0xAB:  // XOR E
+            xor(cpu, cpu->E);
             break;
-        case 0xAC:  // 
-            printf("AC : Not Implemented!\n");
-            exit(1);
+        case 0xAC:  // XOR H
+            xor(cpu, cpu->H);
             break;
-        case 0xAD:  // 
-            printf("AD : Not Implemented!\n");
-            exit(1);
+        case 0xAD:  // XOR L
+            xor(cpu, cpu->L);
             break;
-        case 0xAE:  // 
-            printf("AE : Not Implemented!\n");
-            exit(1);
+        case 0xAE:  // XOR (HL)
+            xor(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
             break;
-        case 0xAF:  // 
-            printf("AF : Not Implemented!\n");
-            exit(1);
+        case 0xAF:  // XOR A
+            xor(cpu, cpu->A);
             break;
         case 0xB0:  // OR B
             or(cpu, cpu->B);
@@ -927,9 +919,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("ED : Not Implemented!\n");
             exit(1);
             break;
-        case 0xEE:  // 
-            printf("EE : Not Implemented!\n");
-            exit(1);
+        case 0xEE:  // XOR *
+            xor(cpu, op1);
+            cpu->PC++;
             break;
         case 0xEF:  // 
             printf("EF : Not Implemented!\n");

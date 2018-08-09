@@ -28,4 +28,7 @@ void and(Z80_CPU *cpu, uint8_t val);
 // OR operations
 void or(Z80_CPU *cpu, uint8_t val);
 
+// XOR operations
+void xor(Z80_CPU *cpu, uint8_t val);
+
 #endif
