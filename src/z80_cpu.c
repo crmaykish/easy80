@@ -521,28 +521,28 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             ld_byte(cpu, &cpu->A, cpu->A, 1);
             break;
         case 0x80:  // ADD A,B
-            add_r(cpu, cpu->B);
+            add(cpu, cpu->B);
             break;
         case 0x81:  // ADD A,C
-            add_r(cpu, cpu->C);
+            add(cpu, cpu->C);
             break;
         case 0x82:  // ADD A,D
-            add_r(cpu, cpu->D);
+            add(cpu, cpu->D);
             break;
         case 0x83:  // ADD A,E
-            add_r(cpu, cpu->E);
+            add(cpu, cpu->E);
             break;
         case 0x84:  // ADD A,H
-            add_r(cpu, cpu->H);
+            add(cpu, cpu->H);
             break;
         case 0x85:  // ADD A,L
-            add_r(cpu, cpu->L);
+            add(cpu, cpu->L);
             break;
         case 0x86:  // ADD A,(HL)
-            add_r(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
+            add(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
             break;
         case 0x87:  // ADD A,A
-            add_r(cpu, cpu->A);
+            add(cpu, cpu->A);
             break;
         case 0x88:  // 
             printf("88 : Not Implemented!\n");
@@ -784,7 +784,7 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             exit(1);
             break;
         case 0xC6:  // ADD A,*
-            add_r(cpu, op1);
+            add(cpu, op1);
             cpu->PC++;
             break;
         case 0xC7:  // 
@@ -847,9 +847,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("D5 : Not Implemented!\n");
             exit(1);
             break;
-        case 0xD6:  // 
-            printf("D6 : Not Implemented!\n");
-            exit(1);
+        case 0xD6:  // SUB *
+            sub(cpu, op1);
+            cpu->PC++;
             break;
         case 0xD7:  // 
             printf("D7 : Not Implemented!\n");
