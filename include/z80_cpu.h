@@ -45,6 +45,16 @@ typedef struct Z80_CPU {
     Z80_CPUState State;
 } Z80_CPU;
 
+typedef enum operands { OP_NONE = 1, OP_BYTE = 2, OP_WORD = 3} Z80_Operands;
+
+typedef struct Z80_Instruction {
+    char *Name;
+    uint8_t OpCode;
+    Z80_Operands Operands;
+    uint8_t Cycles;
+    void (*Handler)(Z80_CPU*);
+} Z80_Instruction;
+
 /**
  * @brief Zero out the state of the CPU
  * 
