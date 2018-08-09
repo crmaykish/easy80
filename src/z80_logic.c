@@ -100,9 +100,30 @@ void and(Z80_CPU *cpu, uint8_t val) {
     flag_set(&cpu->F, FLAG_Z, ((cpu->A & val) == 0));
 
     // Set sign flag if bit 7 of the result is 1, indicating a negative number
-    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A + val, 7));
+    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A & val, 7));
 
     cpu->A &= val;
+
+    // All AND,r operations are a single opcode
+    cpu->PC++;
+}
+
+// OR operations
+void or(Z80_CPU *cpu, uint8_t val) {
+    flag_set(&cpu->F, FLAG_C, false);
+    flag_set(&cpu->F, FLAG_C, false);
+    flag_set(&cpu->F, FLAG_H, false);
+
+    // Overflow parity flag is set HIGH if even parity and LOW if odd
+    flag_set(&cpu->F, FLAG_PV, even_parity(cpu->A | val));
+
+    // Set ZERO flag if result is 0
+    flag_set(&cpu->F, FLAG_Z, ((cpu->A | val) == 0));
+
+    // Set sign flag if bit 7 of the result is 1, indicating a negative number
+    flag_set(&cpu->F, FLAG_S, bit_get(cpu->A | val, 7));
+
+    cpu->A |= val;
 
     // All AND,r operations are a single opcode
     cpu->PC++;

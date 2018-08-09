@@ -25,4 +25,7 @@ void sub(Z80_CPU *cpu, uint8_t val);
 // AND operations
 void and(Z80_CPU *cpu, uint8_t val);
 
+// OR operations
+void or(Z80_CPU *cpu, uint8_t val);
+
 #endif

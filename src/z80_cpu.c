@@ -688,37 +688,29 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("AF : Not Implemented!\n");
             exit(1);
             break;
-        case 0xB0:  // 
-            printf("B0 : Not Implemented!\n");
-            exit(1);
+        case 0xB0:  // OR B
+            or(cpu, cpu->B);
             break;
-        case 0xB1:  // 
-            printf("B1 : Not Implemented!\n");
-            exit(1);
+        case 0xB1:  // OR C
+            or(cpu, cpu->C);
             break;
-        case 0xB2:  // 
-            printf("B2 : Not Implemented!\n");
-            exit(1);
+        case 0xB2:  // OR D
+            or(cpu, cpu->D);
             break;
-        case 0xB3:  // 
-            printf("B3 : Not Implemented!\n");
-            exit(1);
+        case 0xB3:  // OR E
+            or(cpu, cpu->E);
             break;
-        case 0xB4:  // 
-            printf("B4 : Not Implemented!\n");
-            exit(1);
+        case 0xB4:  // OR H
+            or(cpu, cpu->H);
             break;
-        case 0xB5:  // 
-            printf("B5 : Not Implemented!\n");
-            exit(1);
+        case 0xB5:  // OR L
+            or(cpu, cpu->L);
             break;
-        case 0xB6:  // 
-            printf("B6 : Not Implemented!\n");
-            exit(1);
+        case 0xB6:  // OR (HL)
+            or(cpu, cpu->Memory[combine(cpu->H, cpu->L)]);
             break;
-        case 0xB7:  // 
-            printf("B7 : Not Implemented!\n");
-            exit(1);
+        case 0xB7:  // OR A
+            or(cpu, cpu->A);
             break;
         case 0xB8:  // 
             printf("B8 : Not Implemented!\n");
@@ -967,9 +959,9 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
             printf("F5 : Not Implemented!\n");
             exit(1);
             break;
-        case 0xF6:  // 
-            printf("F6 : Not Implemented!\n");
-            exit(1);
+        case 0xF6:  // OR *
+            or(cpu, op1);
+            cpu->PC++;
             break;
         case 0xF7:  // 
             printf("F7 : Not Implemented!\n");
