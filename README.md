@@ -19,6 +19,7 @@ Development plan:
 - [ ] Add some unit tests to verify CPU functionality
 - [ ] Implement remaining opcodes
 - [ ] Create a test program to load real machine code and debug the emulation
+- [ ] Implement CPU cycle and clock control
 
 ## Dependencies
 This project has no compile-time or runtime dependencies. It is a standalone C module.
