@@ -15,8 +15,9 @@ void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src) {
     *dest = src;
 }
 
-void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src) {
-    *dest = src;
+void ld_word(Z80_CPU *cpu, uint8_t *dest_X, uint8_t *dest_Y, uint8_t src_X, uint8_t src_Y) {
+    *dest_X = src_X;
+    *dest_Y = src_Y;
 }
 
 // ADD operations
@@ -154,4 +155,20 @@ void xor(Z80_CPU *cpu, uint8_t val) {
     flag_set(&cpu->F, FLAG_S, bit_get(cpu->A ^ val, 7));
 
     cpu->A ^= val;
+}
+
+void dec(Z80_CPU *cpu, uint8_t *target) {
+    flag_set(&cpu->F, FLAG_N, true);
+    flag_set(&cpu->F, FLAG_PV, false);  // TODO: PV is set if m was 80h before operation; otherwise, reset
+    
+    // Set HALF-CARRY bit if lower nibble of result is less than lower nibble of starting value
+    flag_set(&cpu->F, FLAG_H, ((*target & 0x0F) < ((*target - 1) & 0x0F)));     // TODO: check this logic
+
+    // Set ZERO flag if result is 0
+    flag_set(&cpu->F, FLAG_Z, ((*target - 1) == 0));
+
+    // Set sign flag if bit 7 of the result is 1, indicating a negative number
+    flag_set(&cpu->F, FLAG_S, bit_get(*target - 1, 7));
+
+    (*target)--;
 }

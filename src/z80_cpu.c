@@ -20,6 +20,9 @@ void Z80_CPU_Init(Z80_CPU *cpu) {
 
     // CPU is not yet running
     cpu->State = STOPPED;
+
+    // Interrupts are disabled
+    cpu->Interrupts = false;
 }
 
 void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offset) {

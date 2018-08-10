@@ -11,6 +11,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #define MAX_RAM_ADDRESS 65536
 
@@ -21,6 +22,7 @@ typedef struct Z80_CPU {
     uint16_t IX, IY, SP, PC;                                                /*!< 16-bit registers */
     uint8_t Memory[MAX_RAM_ADDRESS];                                        /*!< Combined ROM and RAM for the CPU */
     Z80_CPUState State;                                                     /*!< State of the CPU: running, halted, etc. */
+    bool Interrupts;                                                        /*!< Interrupts enabled */
 } Z80_CPU;
 
 /**

@@ -1,9 +1,10 @@
 #include "z80_instructions.h"
 #include "z80_logic.h"
+#include "bitmath.h"
 
 // Main instruction opcode mapping
 const Z80_Instruction MainInstructions[256] = {
-    // 0x00
+    // 0x00 NAME            SIZE        CYCLES  HANDLER
     { 0x00, "NOP",          OP_NONE,    4,      &NOP },
     { 0x01, "LD BC,**",     OP_WORD,    10,     &LD_BC_nn },
     { 0x02, "LD (BC),A",    OP_NONE,    7,      &LD_BCm_A },
@@ -20,7 +21,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x0D, "DEC C",        OP_NONE,    4,      &DEC_C },
     { 0x0E, "LD C,*",       OP_BYTE,    7,      &LD_C_n },
     { 0x0F, "RRCA",         OP_NONE,    4,      &RRCA },
-    // 0x10
+    // 0x10 NAME            SIZE        CYCLES  HANDLER
     { 0x10, "DJNZ *",       OP_BYTE,    13,     &DJNZ_n },     // TODO: 13 or 8 clock cycles
     { 0x11, "LD DE,**",     OP_WORD,    10,     &LD_DE_nn },
     { 0x12, "LD (DE),A",    OP_NONE,    7,      &LD_DEm_A },
@@ -37,7 +38,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x1D, "DEC E",        OP_NONE,    4,      &DEC_E },
     { 0x1E, "LD E,*",       OP_BYTE,    7,      &LD_E_n },
     { 0x1F, "RRA",          OP_NONE,    4,      &RRA },
-    // 0x20
+    // 0x20 NAME            SIZE        CYCLES  HANDLER
     { 0x20, "JR NZ,*",      OP_BYTE,    12,      &JR_NZ_n },    // TODO: 12 or 7 clock cycles
     { 0x21, "LD HL,**",     OP_WORD,    10,      &LD_HL_nn },
     { 0x22, "LD (**),HL",   OP_WORD,    16,      &LD_nnm_HL },
@@ -54,7 +55,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x2D, "DEC L",        OP_NONE,    4,      &DEC_L },
     { 0x2E, "LD L,*",       OP_BYTE,    7,      &LD_L_n },
     { 0x2F, "CPL",          OP_NONE,    4,      &CPL },
-    // 0x30
+    // 0x30 NAME            SIZE        CYCLES  HANDLER
     { 0x30, "JR NC,*",      OP_BYTE,    2,      &JR_NC_n },
     { 0x31, "LD SP,**",     OP_WORD,    3,      &LD_SP_nn },
     { 0x32, "LD (**),A",    OP_WORD,    3,      &LD_nnm_A },
@@ -71,7 +72,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x3D, "DEC A",        OP_NONE,    1,      &DEC_A },
     { 0x3E, "LD A,*",       OP_BYTE,    2,      &LD_A_n },
     { 0x3F, "CCF",          OP_NONE,    1,      &CCF },
-    // 0x40
+    // 0x40 NAME            SIZE        CYCLES  HANDLER
     { 0x40, "LD B,B",       OP_NONE,    4,      &LD_B_B },
     { 0x41, "LD B,C",       OP_NONE,    4,      &LD_B_C },
     { 0x42, "LD B,D",       OP_NONE,    4,      &LD_B_D },
@@ -88,7 +89,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x4D, "LD C,L",       OP_NONE,    4,      &LD_C_L },
     { 0x4E, "LD C,(HL)",    OP_NONE,    7,      &LD_C_HLm },
     { 0x4F, "LD C,A",       OP_NONE,    4,      &LD_C_A },
-    // 0x50
+    // 0x50 NAME            SIZE        CYCLES  HANDLER
     { 0x50, "LD D,B",       OP_NONE,    4,      &LD_D_B },
     { 0x51, "LD D,C",       OP_NONE,    4,      &LD_D_C },
     { 0x52, "LD D,D",       OP_NONE,    4,      &LD_D_D },
@@ -105,7 +106,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x5D, "LD E,L",       OP_NONE,    4,      &LD_E_L },
     { 0x5E, "LD E,(HL)",    OP_NONE,    7,      &LD_E_HLm },
     { 0x5F, "LD E,A",       OP_NONE,    4,      &LD_E_A },
-    // 0x60
+    // 0x60 NAME            SIZE        CYCLES  HANDLER
     { 0x60, "LD H,B",       OP_NONE,    4,      &LD_H_B },
     { 0x61, "LD H,C",       OP_NONE,    4,      &LD_H_C },
     { 0x62, "LD H,D",       OP_NONE,    4,      &LD_H_D },
@@ -122,7 +123,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x6D, "LD L,L",       OP_NONE,    4,      &LD_L_L },
     { 0x6E, "LD L,(HL)",    OP_NONE,    7,      &LD_L_HLm },
     { 0x6F, "LD L,A",       OP_NONE,    4,      &LD_L_A },
-    // 0x70
+    // 0x70 NAME            SIZE        CYCLES  HANDLER
     { 0x70, "LD (HL),B",    OP_NONE,    7,      &LD_HLm_B },
     { 0x71, "LD (HL),C",    OP_NONE,    7,      &LD_HLm_C },
     { 0x72, "LD (HL),D",    OP_NONE,    7,      &LD_HLm_D },
@@ -139,7 +140,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x7D, "LD A,L",       OP_NONE,    4,      &LD_A_L },
     { 0x7E, "LD A,(HL)",    OP_NONE,    7,      &LD_A_HLm },
     { 0x7F, "LD A,A",       OP_NONE,    4,      &LD_A_A },
-    // 0x80
+    // 0x80 NAME            SIZE        CYCLES  HANDLER
     { 0x80, "ADD A,B",      OP_NONE,    4,      &ADD_A_B },
     { 0x81, "ADD A,C",      OP_NONE,    4,      &ADD_A_C },
     { 0x82, "ADD A,D",      OP_NONE,    4,      &ADD_A_D },
@@ -156,7 +157,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x8D, "ADC A,L",      OP_NONE,    4,      &ADC_A_L },
     { 0x8E, "ADC A,(HL)",   OP_NONE,    7,      &ADC_A_HLm },
     { 0x8F, "ADC A,A",      OP_NONE,    4,      &ADC_A_A },
-    // 0x90
+    // 0x90 NAME            SIZE        CYCLES  HANDLER
     { 0x90, "SUB B",        OP_NONE,    4,      &SUB_B },
     { 0x91, "SUB C",        OP_NONE,    4,      &SUB_C },
     { 0x92, "SUB D",        OP_NONE,    4,      &SUB_D },
@@ -173,7 +174,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x9D, "SBC A,L",      OP_NONE,    4,      &SBC_A_L },
     { 0x9E, "SBC A,(HL)",   OP_NONE,    7,      &SBC_A_HLm },
     { 0x9F, "SBC A,A",      OP_NONE,    4,      &SBC_A_A },
-    // 0xA0
+    // 0xA0 NAME            SIZE        CYCLES  HANDLER
     { 0xA0, "AND B",        OP_NONE,    4,      &AND_B },
     { 0xA1, "AND C",        OP_NONE,    4,      &AND_C },
     { 0xA2, "AND D",        OP_NONE,    4,      &AND_D },
@@ -190,7 +191,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0xAD, "XOR L",        OP_NONE,    4,      &XOR_L },
     { 0xAE, "XOR (HL)",     OP_NONE,    7,      &XOR_HLm },
     { 0xAF, "XOR A",        OP_NONE,    4,      &XOR_A },
-    // 0xB0
+    // 0xB0 NAME            SIZE        CYCLES  HANDLER
     { 0xB0, "OR B",         OP_NONE,    4,      &OR_B },
     { 0xB1, "OR C",         OP_NONE,    4,      &OR_C },
     { 0xB2, "OR D",         OP_NONE,    4,      &OR_D },
@@ -207,24 +208,24 @@ const Z80_Instruction MainInstructions[256] = {
     { 0xBD, "CP L",         OP_NONE,    4,      &CP_L },
     { 0xBE, "CP (HL)",      OP_NONE,    7,      &CP_HLm },
     { 0xBF, "CP A",         OP_NONE,    4,      &CP_A },
-    // 0xC0
+    // 0xC0 NAME            SIZE        CYCLES  HANDLER
     { 0xC0, "RET NZ",       OP_NONE,    11,     &RET_NZ },    //: TODO 11 or 5 clock cycles
     { 0xC1, "POP BC",       OP_NONE,    10,     &POP_BC },
-    { 0xC2, "JP NZ,**",     OP_WORD,    10,     &JP_NZ_nn },
-    { 0xC3, "JP **",        OP_WORD,    10,     &JP_nn },
+    { 0xC2, "JP NZ,**",     OP_JUMP,    10,     &JP_NZ_nn },
+    { 0xC3, "JP **",        OP_JUMP,    10,     &JP_nn },
     { 0xC4, "CALL NZ,**",   OP_WORD,    17,     &CALL_NZ_nn },    //: TODO 17 or 10 clock cycles
     { 0xC5, "PUSH BC",      OP_NONE,    11,     &PUSH_BC },
     { 0xC6, "ADD A,*",      OP_BYTE,    7,      &ADD_A_n },
     { 0xC7, "RST 00h",      OP_NONE,    11,     &RST_00h },
     { 0xC8, "RET Z",        OP_NONE,    11,     &RET_Z },    //: TODO 11 or 5 clock cycles
     { 0xC9, "RET",          OP_NONE,    10,     &RET },
-    { 0xCA, "JP Z,**",      OP_WORD,    10,     &JP_Z_nn },
+    { 0xCA, "JP Z,**",      OP_JUMP,    10,     &JP_Z_nn },
     { 0xCB, "BITS",         OP_EXTD,    0,      &BITS },
     { 0xCC, "CALL Z,**",    OP_WORD,    17,     &CALL_Z_nn },    //: TODO 17 or 10 clock cycles
     { 0xCD, "CALL **",      OP_WORD,    17,     &CALL_nn },
     { 0xCE, "ADC A,*",      OP_BYTE,    7,      &ADC_A_n },
     { 0xCF, "RST 08h",      OP_NONE,    11,     &RST_08h },
-    // 0xD0
+    // 0xD0 NAME            SIZE        CYCLES  HANDLER
     { 0xD0, "RET NC",       OP_NONE,    11,     &RET_NC },     // 11/5
     { 0xD1, "POP DE",       OP_NONE,    10,     &POP_DE },
     { 0xD2, "JP NC,**",     OP_WORD,    10,     &JP_NC_nn },
@@ -241,7 +242,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0xDD, "IX",           OP_EXTD,    0,      &IX },
     { 0xDE, "SBC A,*",      OP_WORD,    7,      &SBC_A_n },
     { 0xDF, "RST 18h",      OP_NONE,    11,     &RST_18h },
-    // 0xE0
+    // 0xE0 NAME            SIZE        CYCLES  HANDLER
     { 0xE0, "RET PO",       OP_NONE,    11,     &RET_PO },     // 11/5
     { 0xE1, "POP HL",       OP_NONE,    10,     &POP_HL },
     { 0xE2, "JP PO,**",     OP_WORD,    10,     &JP_PO_nn },
@@ -258,7 +259,7 @@ const Z80_Instruction MainInstructions[256] = {
     { 0xED, "EXTD",         OP_EXTD,    0,      &EXTD },
     { 0xEE, "XOR *",        OP_WORD,    7,      &XOR_n },
     { 0xEF, "RST 28h",      OP_NONE,    11,     &RST_28h },
-    // 0xF0
+    // 0xF0 NAME            SIZE        CYCLES  HANDLER
     { 0xF0, "RET P",        OP_NONE,    11,     &RET_P },     // 11/5
     { 0xF1, "POP AF",       OP_NONE,    10,     &POP_AF },
     { 0xF2, "JP P,**",      OP_WORD,    10,     &JP_P_nn },
@@ -278,7 +279,7 @@ const Z80_Instruction MainInstructions[256] = {
 };
 
 Z80_Instruction Z80_FetchInstruction(Z80_CPU *z) {
-    return MainInstructions[z->Memory[z->PC]];
+    return MainInstructions[op(z, 0)];
 }
 
 // 0x00
@@ -319,11 +320,11 @@ void RRA(Z80_CPU *z) {  }
 
 // 0x20
 void JR_NZ_n(Z80_CPU *z) {  }
-void LD_HL_nn(Z80_CPU *z) {  }
+void LD_HL_nn(Z80_CPU *z) { ld_word(z, &z->H, &z->L, op(z, 2), op(z, 1)); }
 void LD_nnm_HL(Z80_CPU *z) {  }
 void INC_HL(Z80_CPU *z) {  }
 void INC_H(Z80_CPU *z) {  }
-void DEC_H(Z80_CPU *z) {  }
+void DEC_H(Z80_CPU *z) { dec(z, &z->H); }
 void LD_H_nn(Z80_CPU *z) {  }
 void DAA(Z80_CPU *z) {  }
 void JR_Z_n(Z80_CPU *z) {  }
@@ -501,7 +502,7 @@ void CP_A(Z80_CPU *z) {  }
 void RET_NZ(Z80_CPU *z) {  }
 void POP_BC(Z80_CPU *z) {  }
 void JP_NZ_nn(Z80_CPU *z) {  }
-void JP_nn(Z80_CPU *z) {  }
+void JP_nn(Z80_CPU *z) { z->PC = combine(op(z, 2), op(z, 1)); }     // TODO: the operands may be backwards, test this
 void CALL_NZ_nn(Z80_CPU *z) {  }
 void PUSH_BC(Z80_CPU *z) {  }
 void ADD_A_n(Z80_CPU *z) { add(z, op(z, 1)); }
@@ -555,7 +556,7 @@ void RST_28h(Z80_CPU *z) {  }
 void RET_P(Z80_CPU *z) {  }
 void POP_AF(Z80_CPU *z) {  }
 void JP_P_nn(Z80_CPU *z) {  }
-void DI(Z80_CPU *z) {  }
+void DI(Z80_CPU *z) { z->Interrupts = false; }
 void CALL_P_nn(Z80_CPU *z) {  }
 void PUSH_AF(Z80_CPU *z) {  }
 void OR_n(Z80_CPU *z) { or(z, op(z, 1)); }
@@ -563,7 +564,7 @@ void RST_30h(Z80_CPU *z) {  }
 void RET_M(Z80_CPU *z) {  }
 void LD_SP_HL(Z80_CPU *z) {  }
 void JP_M_nn(Z80_CPU *z) {  }
-void EI(Z80_CPU *z) {  }
+void EI(Z80_CPU *z) { z->Interrupts = true; }
 void CALL_M_nn(Z80_CPU *z) {  }
 void IY(Z80_CPU *z) {  }
 void CP_n(Z80_CPU *z) {  }

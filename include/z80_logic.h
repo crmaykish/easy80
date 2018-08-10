@@ -14,7 +14,7 @@
 
 // LD operations
 void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src);
-void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src);
+void ld_word(Z80_CPU *cpu, uint8_t *dest_X, uint8_t *dest_Y, uint8_t src_X, uint8_t src_Y);
 
 // ADD operations
 void add(Z80_CPU *cpu, uint8_t val);
@@ -32,5 +32,8 @@ void or(Z80_CPU *cpu, uint8_t val);
 
 // XOR operations
 void xor(Z80_CPU *cpu, uint8_t val);
+
+// DEC operations
+void dec(Z80_CPU *cpu, uint8_t *target);
 
 #endif
