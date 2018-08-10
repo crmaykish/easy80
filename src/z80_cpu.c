@@ -6,18 +6,6 @@
 #include "z80_instructions.h"
 #include "bitmath.h"
 
-uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y) {
-    return z->Memory[combine(X, Y)];
-}
-
-uint8_t mem_HL(Z80_CPU *z) {
-    return mem_nn(z, z->H, z->L);
-}
-
-uint8_t op(Z80_CPU *z, uint8_t offset) {
-    return z->Memory[z->PC + offset];
-}
-
 void Z80_CPU_Init(Z80_CPU *cpu) {
     // Zero all registers
     cpu->A = cpu->B = cpu->C = cpu->D = cpu->E = cpu->F = 0;
@@ -42,7 +30,7 @@ void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offse
 void Z80_CPU_Cycle(Z80_CPU *cpu) {
     Z80_Instruction op = Z80_FetchInstruction(cpu);
     
-    printf("%X : %s\n", op.OpCode, op.Name);
+    printf("Fetched: %X : %s\n", op.OpCode, op.Name);
 
     op.Handler(cpu);
 
@@ -51,21 +39,28 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
     }
 }
 
-void print_binary(uint8_t n) {
-    for (int i = 0; i < 8; i++) {
-        printf("%d", bit_get(n, i));
-    }
-    printf("\n");
-}
-
 void Z80_CPU_PrintRegisters(Z80_CPU *cpu) {
+    char flags[9];
+    binary_string(flags, cpu->F);
     printf(
-        "PC: %X | AF: %X | BC: %X | DE: %X | HL: %X | F: ",
+        "PC: %X | AF: %X | BC: %X | DE: %X | HL: %X | F: %s",
         cpu->PC,
         combine(cpu->A, cpu->F),
         combine(cpu->B, cpu->C),
         combine(cpu->D, cpu->E),
-        combine(cpu->H, cpu->L)
+        combine(cpu->H, cpu->L),
+        flags
     );
-    print_binary(cpu->F);
+}
+
+uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y) {
+    return z->Memory[combine(X, Y)];
+}
+
+uint8_t mem_HL(Z80_CPU *z) {
+    return mem_nn(z, z->H, z->L);
+}
+
+uint8_t op(Z80_CPU *z, uint8_t offset) {
+    return z->Memory[z->PC + offset];
 }

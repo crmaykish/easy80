@@ -23,3 +23,10 @@ uint8_t split_1(uint16_t r) {
 uint8_t split_2(uint16_t r) {
     return r & 0x00FF;
 }
+
+void binary_string(char *buffer, uint8_t n) {
+    for (int i = 0; i < 8; i++) {
+        buffer[i] = bit_get(n, i) ? '1' : '0';
+    }
+    buffer[8] = '\0';
+}

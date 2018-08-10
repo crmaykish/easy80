@@ -24,6 +24,10 @@ Development plan:
 ## Dependencies
 This project has no compile-time or runtime dependencies. It is a standalone C module.
 
+Note: to run unit tests, the Unity source code is required. See `./tools/libs.sh`
+
+Note: to build Doxygen documentation, doxygen, dot, and graphviz packages must be installed.
+
 ## Building and Testing
 This project uses CMake (minimum version v3.10.2).
 
@@ -32,3 +36,5 @@ To build the code:
 1. Install libraries: `./tools/libs.sh`
 2. Build everything: `./tools/build.sh`
 3. Run unit tests: `./tools/test.sh`
+4. Build documentation: `./tools/docs.sh` (docs available at `easy80/docs/html/index.html`)
+5. Clean: `./tools/clean.sh` (deletes build and docs directories)

@@ -24,4 +24,6 @@ uint8_t split_1(uint16_t r);
 
 uint8_t split_2(uint16_t r);
 
+void binary_string(char *buffer, uint8_t n);
+
 #endif

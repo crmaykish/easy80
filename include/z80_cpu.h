@@ -17,38 +17,11 @@
 typedef enum cpu_state { RUNNING, STOPPED } Z80_CPUState;
 
 typedef struct Z80_CPU {
-    uint8_t A, B, C, D, E, F, H, L, Ap, Bp, Cp, Dp, Ep, Fp, Hp, Lp, I, R;
-    uint16_t IX, IY, SP, PC;
-    uint8_t Memory[MAX_RAM_ADDRESS];
-    Z80_CPUState State;
+    uint8_t A, B, C, D, E, F, H, L, Ap, Bp, Cp, Dp, Ep, Fp, Hp, Lp, I, R;   /*!< 8-bit registers */
+    uint16_t IX, IY, SP, PC;                                                /*!< 16-bit registers */
+    uint8_t Memory[MAX_RAM_ADDRESS];                                        /*!< Combined ROM and RAM for the CPU */
+    Z80_CPUState State;                                                     /*!< State of the CPU: running, halted, etc. */
 } Z80_CPU;
-
-/**
- * @brief Return the value stored in memory address XY
- * 
- * @param z Z80 CPU object
- * @param X most signficant byte of memory address
- * @param Y least significant byte of memory address
- * @return uint8_t value stored in (XY)
- */
-uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y);
-
-/**
- * @brief Return the value at the memory address stored in HL
- * 
- * @param z Z80 CPU object
- * @return uint8_t value stored in (HL)
- */
-uint8_t mem_HL(Z80_CPU *z);
-
-/**
- * @brief Return the operands after the PC
- * 
- * @param z Z80 CPU object
- * @param offset Byte offset from the PC to return, 0 is the PC, 1 is the first, 2 is the second, etc.
- * @return uint8_t offset from the PC
- */
-uint8_t op(Z80_CPU *z, uint8_t offset);
 
 /**
  * @brief Zero out the state of the CPU
@@ -80,5 +53,32 @@ void Z80_CPU_Cycle(Z80_CPU *cpu);
  * @brief Debug output of the CPU registers
  */
 void Z80_CPU_PrintRegisters(Z80_CPU *cpu);
+
+/**
+ * @brief Return the value stored in memory address XY
+ * 
+ * @param z Z80 CPU object
+ * @param X most signficant byte of memory address
+ * @param Y least significant byte of memory address
+ * @return uint8_t value stored in (XY)
+ */
+uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y);
+
+/**
+ * @brief Return the value at the memory address stored in HL
+ * 
+ * @param z Z80 CPU object
+ * @return uint8_t value stored in (HL)
+ */
+uint8_t mem_HL(Z80_CPU *z);
+
+/**
+ * @brief Return the operands after the PC
+ * 
+ * @param z Z80 CPU object
+ * @param offset Byte offset from the PC to return, 0 is the PC, 1 is the first, 2 is the second, etc.
+ * @return uint8_t offset from the PC
+ */
+uint8_t op(Z80_CPU *z, uint8_t offset);
 
 #endif

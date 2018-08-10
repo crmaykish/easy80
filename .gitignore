@@ -1,8 +1,11 @@
+# Dev environment
+.vscode/
+
 # Build directoy
 build/
 
-# Dev environment
-.vscode/
+# Compiled docs
+docs/
 
 # External libs
 libs/
