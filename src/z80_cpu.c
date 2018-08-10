@@ -3,12 +3,15 @@
 #include <string.h>
 #include <stdbool.h>
 #include "z80_cpu.h"
-#include "z80_flags.h"
 #include "z80_instructions.h"
 #include "bitmath.h"
 
 uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y) {
     return z->Memory[combine(X, Y)];
+}
+
+uint8_t mem_HL(Z80_CPU *z) {
+    return mem_nn(z, z->H, z->L);
 }
 
 void Z80_CPU_Init(Z80_CPU *cpu) {

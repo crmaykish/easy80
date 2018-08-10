@@ -23,9 +23,23 @@ typedef struct Z80_CPU {
     Z80_CPUState State;
 } Z80_CPU;
 
+/**
+ * @brief Return the value stored in memory address XY
+ * 
+ * @param z Z80 CPU object
+ * @param X most signficant byte of memory address
+ * @param Y least significant byte of memory address
+ * @return uint8_t value stored in (XY)
+ */
 uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y);
 
-// TODO: an inverse function of mem_nn that stores a val into mem
+/**
+ * @brief Return the value at the memory address stored in HL
+ * 
+ * @param z Z80 CPU object
+ * @return uint8_t value stored in (HL)
+ */
+uint8_t mem_HL(Z80_CPU *z);
 
 /**
  * @brief Zero out the state of the CPU

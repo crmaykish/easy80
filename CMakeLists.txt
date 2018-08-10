@@ -31,6 +31,7 @@ add_executable(test_z80_flags
 add_executable(test_z80_cpu
         test/test_z80_cpu.c
         src/z80_cpu.c
+        src/z80_instructions.c
         src/z80_logic.c
         src/z80_flags.c
         src/bitmath.c
@@ -40,6 +41,7 @@ add_executable(test_z80_cpu
 add_executable(test_z80_logic
         test/test_z80_logic.c
         src/z80_cpu.c
+        src/z80_instructions.c
         src/z80_logic.c
         src/z80_flags.c
         src/bitmath.c
