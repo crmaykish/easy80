@@ -302,7 +302,7 @@ void RRCA(Z80_CPU *z) {  }
 
 // 0x10
 void DJNZ_n(Z80_CPU *z) {  }
-void LD_DE_nn(Z80_CPU *z) {  }
+void LD_DE_nn(Z80_CPU *z) { ld_word(z, &z->D, &z->E, op(z, 2), op(z, 1)); }
 void LD_DEm_A(Z80_CPU *z) {  }
 void INC_DE(Z80_CPU *z) {  }
 void INC_D(Z80_CPU *z) {  }
