@@ -55,21 +55,21 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x2E, "LD L,*",       OP_BYTE,    7,      &LD_L_n },
     { 0x2F, "CPL",          OP_NONE,    4,      &CPL },
     // 0x30
-    { 0x30, "JR NC,*",      OP_NONE,    2,      &JR_NC_n },
-    { 0x31, "LD SP,**",     OP_NONE,    3,      &LD_SP_nn },
-    { 0x32, "LD (**),A",    OP_NONE,    3,      &LD_nnm_A },
+    { 0x30, "JR NC,*",      OP_BYTE,    2,      &JR_NC_n },
+    { 0x31, "LD SP,**",     OP_WORD,    3,      &LD_SP_nn },
+    { 0x32, "LD (**),A",    OP_WORD,    3,      &LD_nnm_A },
     { 0x33, "INC SP",       OP_NONE,    1,      &INC_SP },
     { 0x34, "INC (HL)",     OP_NONE,    1,      &INC_HLm },
     { 0x35, "DEC (HL)",     OP_NONE,    1,      &DEC_HLm },
-    { 0x36, "LD (HL),*",    OP_NONE,    2,      &LD_HLm_n },
+    { 0x36, "LD (HL),*",    OP_BYTE,    2,      &LD_HLm_n },
     { 0x37, "SCF",          OP_NONE,    1,      &SCF },
-    { 0x38, "JR C,*",       OP_NONE,    2,      &JR_C_n },
+    { 0x38, "JR C,*",       OP_BYTE,    2,      &JR_C_n },
     { 0x39, "ADD HL,SP",    OP_NONE,    1,      &ADD_HL_SP },
-    { 0x3A, "LD A,(**)",    OP_NONE,    3,      &LD_A_nnm },
+    { 0x3A, "LD A,(**)",    OP_WORD,    3,      &LD_A_nnm },
     { 0x3B, "DEC SP",       OP_NONE,    1,      &DEC_SP },
     { 0x3C, "INC A",        OP_NONE,    1,      &INC_A },
     { 0x3D, "DEC A",        OP_NONE,    1,      &DEC_A },
-    { 0x3E, "LD A,*",       OP_NONE,    2,      &LD_A_n },
+    { 0x3E, "LD A,*",       OP_BYTE,    2,      &LD_A_n },
     { 0x3F, "CCF",          OP_NONE,    1,      &CCF },
     // 0x40
     { 0x40, "LD B,B",       OP_NONE,    4,      &LD_B_B },
@@ -288,7 +288,7 @@ void LD_BCm_A(Z80_CPU *z) {  }
 void INC_BC(Z80_CPU *z) {  }
 void INC_B(Z80_CPU *z) {  }
 void DEC_B(Z80_CPU *z) {  }
-void LD_B_n(Z80_CPU *z) {  }
+void LD_B_n(Z80_CPU *z) { ld_byte(z, &z->B, op(z, 1)); }
 void RLCA(Z80_CPU *z) {  }
 void EX_AF_AFp(Z80_CPU *z) {  }
 void ADD_HL_BC(Z80_CPU *z) {  }
@@ -350,7 +350,7 @@ void LD_A_nnm(Z80_CPU *z) {  }
 void DEC_SP(Z80_CPU *z) {  }
 void INC_A(Z80_CPU *z) {  }
 void DEC_A(Z80_CPU *z) {  }
-void LD_A_n(Z80_CPU *z) {  }
+void LD_A_n(Z80_CPU *z) { ld_byte(z, &z->A, op(z, 1)); }
 void CCF(Z80_CPU *z) {  }
 
 // 0x40

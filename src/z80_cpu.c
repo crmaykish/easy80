@@ -28,14 +28,20 @@ void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offse
 }
 
 void Z80_CPU_Cycle(Z80_CPU *cpu) {
-    Z80_Instruction op = Z80_FetchInstruction(cpu);
+    Z80_Instruction inst = Z80_FetchInstruction(cpu);
     
-    printf("Fetched: %X : %s\n", op.OpCode, op.Name);
+    printf("%02X : %s ", inst.OpCode, inst.Name);
 
-    op.Handler(cpu);
+    for(int i = 0; i < (12 - strlen(inst.Name)); i++) {
+        printf(" ");
+    }
 
-    if (op.Operands != OP_JUMP) {
-        cpu->PC += op.Operands;
+    printf("%02X, %02X ", op(cpu, 1), op(cpu, 2));
+
+    inst.Handler(cpu);
+
+    if (inst.Operands != OP_JUMP) {
+        cpu->PC += inst.Operands;
     }
 }
 
@@ -43,7 +49,7 @@ void Z80_CPU_PrintRegisters(Z80_CPU *cpu) {
     char flags[9];
     binary_string(flags, cpu->F);
     printf(
-        "PC: %02X | AF: %02X | BC: %02X | DE: %02X | HL: %02X | F: %s\n",
+        "  -->   PC: %04X | AF: %04X | BC: %04X | DE: %04X | HL: %04X | F: %s\n",
         cpu->PC,
         combine(cpu->A, cpu->F),
         combine(cpu->B, cpu->C),
