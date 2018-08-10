@@ -43,7 +43,7 @@ void Z80_CPU_PrintRegisters(Z80_CPU *cpu) {
     char flags[9];
     binary_string(flags, cpu->F);
     printf(
-        "PC: %X | AF: %X | BC: %X | DE: %X | HL: %X | F: %s",
+        "PC: %02X | AF: %02X | BC: %02X | DE: %02X | HL: %02X | F: %s\n",
         cpu->PC,
         combine(cpu->A, cpu->F),
         combine(cpu->B, cpu->C),
