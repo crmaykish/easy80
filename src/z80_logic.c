@@ -11,14 +11,12 @@ bool even_parity(uint8_t n) {
 }
 
 // LD operations
-void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src, uint8_t inc) {
+void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src) {
     *dest = src;
-    cpu->PC += inc;
 }
 
-void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src, uint8_t inc) {
+void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src) {
     *dest = src;
-    cpu->PC += inc;
 }
 
 // ADD operations
@@ -53,9 +51,6 @@ static void add_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
 
     // Add source value to A
     cpu->A += c_val;
-    
-    // All ADD,r operations are a single opcode
-    cpu->PC++;
 }
 
 void add(Z80_CPU *cpu, uint8_t val) {
@@ -98,9 +93,6 @@ static void sub_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
 
     // Subtract source from A
     cpu->A -= c_val;
-
-    // All SUB,r operations are a single opcode
-    cpu->PC++;
 }
 
 void sub(Z80_CPU *cpu, uint8_t val) {
@@ -127,9 +119,6 @@ void and(Z80_CPU *cpu, uint8_t val) {
     flag_set(&cpu->F, FLAG_S, bit_get(cpu->A & val, 7));
 
     cpu->A &= val;
-
-    // All AND,r operations are a single opcode
-    cpu->PC++;
 }
 
 // OR operations
@@ -148,9 +137,6 @@ void or(Z80_CPU *cpu, uint8_t val) {
     flag_set(&cpu->F, FLAG_S, bit_get(cpu->A | val, 7));
 
     cpu->A |= val;
-
-    // All AND,r operations are a single opcode
-    cpu->PC++;
 }
 
 void xor(Z80_CPU *cpu, uint8_t val) {
@@ -168,7 +154,4 @@ void xor(Z80_CPU *cpu, uint8_t val) {
     flag_set(&cpu->F, FLAG_S, bit_get(cpu->A ^ val, 7));
 
     cpu->A ^= val;
-
-    // All AND,r operations are a single opcode
-    cpu->PC++;
 }

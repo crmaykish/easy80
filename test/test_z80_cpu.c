@@ -11,8 +11,8 @@ void test_z80_cpu_init() {
     TEST_ASSERT_EQUAL(STOPPED, cpu.State);
     
     TEST_ASSERT_EQUAL(0, cpu.Memory[0]);
-    TEST_ASSERT_EQUAL(0, cpu.Memory[MAX_ADDRESS]);
-    TEST_ASSERT_EQUAL(0, cpu.Memory[MAX_ADDRESS / 2]);
+    TEST_ASSERT_EQUAL(0, cpu.Memory[MAX_RAM_ADDRESS]);
+    TEST_ASSERT_EQUAL(0, cpu.Memory[MAX_RAM_ADDRESS / 2]);
 }
 
 void test_z80_set_memory() {

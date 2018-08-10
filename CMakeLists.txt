@@ -10,6 +10,7 @@ add_executable(easy80
         src/bitmath.c
         src/z80_flags.c
         src/z80_logic.c
+        src/z80_instructions.c
         src/z80_cpu.c
         src/main.c
 )

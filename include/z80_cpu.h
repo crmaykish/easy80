@@ -12,48 +12,20 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define MAX_ADDRESS 65536
+#define MAX_RAM_ADDRESS 65536
 
-typedef enum {RUNNING, STOPPED} Z80_CPUState;
+typedef enum cpu_state { RUNNING, STOPPED } Z80_CPUState;
 
 typedef struct Z80_CPU {
-    // Main registers
-    uint8_t A, B, C, D, E, F, H, L;
-
-    // Alternate registers
-    uint8_t Ap, Bp, Cp, Dp, Ep, Fp, Hp, Lp;
-
-    // Index registers
-    uint16_t IX;
-    uint16_t IY;
-
-    // Stack pointer
-    uint16_t SP;
-
-    // Interrupt vector register
-    uint8_t I;
-
-    // DRAM refresh counter
-    uint8_t R;
-
-    // Program counter
-    uint16_t PC;
-
-    uint8_t Memory[MAX_ADDRESS];
-
-    // Running / Stopped
+    uint8_t A, B, C, D, E, F, H, L, Ap, Bp, Cp, Dp, Ep, Fp, Hp, Lp, I, R;
+    uint16_t IX, IY, SP, PC;
+    uint8_t Memory[MAX_RAM_ADDRESS];
     Z80_CPUState State;
 } Z80_CPU;
 
-typedef enum operands { OP_NONE = 1, OP_BYTE = 2, OP_WORD = 3} Z80_Operands;
+uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y);
 
-typedef struct Z80_Instruction {
-    char *Name;
-    uint8_t OpCode;
-    Z80_Operands Operands;
-    uint8_t Cycles;
-    void (*Handler)(Z80_CPU*);
-} Z80_Instruction;
+// TODO: an inverse function of mem_nn that stores a val into mem
 
 /**
  * @brief Zero out the state of the CPU
