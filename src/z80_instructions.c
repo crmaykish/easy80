@@ -89,124 +89,124 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x4E, "LD C,(HL)",    OP_NONE,    7,      &LD_C_HLm },
     { 0x4F, "LD C,A",       OP_NONE,    4,      &LD_C_A },
     // 0x50
-    { 0x50, "",          OP_NONE,    0,      &NOP },
-    { 0x51, "",          OP_NONE,    0,      &NOP },
-    { 0x52, "",          OP_NONE,    0,      &NOP },
-    { 0x53, "",          OP_NONE,    0,      &NOP },
-    { 0x54, "",          OP_NONE,    0,      &NOP },
-    { 0x55, "",          OP_NONE,    0,      &NOP },
-    { 0x56, "",          OP_NONE,    0,      &NOP },
-    { 0x57, "",          OP_NONE,    0,      &NOP },
-    { 0x58, "",          OP_NONE,    0,      &NOP },
-    { 0x59, "",          OP_NONE,    0,      &NOP },
-    { 0x5A, "",          OP_NONE,    0,      &NOP },
-    { 0x5B, "",          OP_NONE,    0,      &NOP },
-    { 0x5C, "",          OP_NONE,    0,      &NOP },
-    { 0x5D, "",          OP_NONE,    0,      &NOP },
-    { 0x5E, "",          OP_NONE,    0,      &NOP },
-    { 0x5F, "",          OP_NONE,    0,      &NOP },
+    { 0x50, "LD D,B",       OP_NONE,    4,      &LD_D_B },
+    { 0x51, "LD D,C",       OP_NONE,    4,      &LD_D_C },
+    { 0x52, "LD D,D",       OP_NONE,    4,      &LD_D_D },
+    { 0x53, "LD D,E",       OP_NONE,    4,      &LD_D_E },
+    { 0x54, "LD D,H",       OP_NONE,    4,      &LD_D_H },
+    { 0x55, "LD D,L",       OP_NONE,    4,      &LD_D_L },
+    { 0x56, "LD D,(HL)",    OP_NONE,    7,      &LD_D_HLm },
+    { 0x57, "LD D,A",       OP_NONE,    4,      &LD_D_A },
+    { 0x58, "LD E,B",       OP_NONE,    4,      &LD_E_B },
+    { 0x59, "LD E,C",       OP_NONE,    4,      &LD_E_C },
+    { 0x5A, "LD E,D",       OP_NONE,    4,      &LD_E_D },
+    { 0x5B, "LD E,E",       OP_NONE,    4,      &LD_E_E },
+    { 0x5C, "LD E,H",       OP_NONE,    4,      &LD_E_H },
+    { 0x5D, "LD E,L",       OP_NONE,    4,      &LD_E_L },
+    { 0x5E, "LD E,(HL)",    OP_NONE,    7,      &LD_E_HLm },
+    { 0x5F, "LD E,A",       OP_NONE,    4,      &LD_E_A },
     // 0x60
-    { 0x60, "",          OP_NONE,    0,      &NOP },
-    { 0x61, "",          OP_NONE,    0,      &NOP },
-    { 0x62, "",          OP_NONE,    0,      &NOP },
-    { 0x63, "",          OP_NONE,    0,      &NOP },
-    { 0x64, "",          OP_NONE,    0,      &NOP },
-    { 0x65, "",          OP_NONE,    0,      &NOP },
-    { 0x66, "",          OP_NONE,    0,      &NOP },
-    { 0x67, "",          OP_NONE,    0,      &NOP },
-    { 0x68, "",          OP_NONE,    0,      &NOP },
-    { 0x69, "",          OP_NONE,    0,      &NOP },
-    { 0x6A, "",          OP_NONE,    0,      &NOP },
-    { 0x6B, "",          OP_NONE,    0,      &NOP },
-    { 0x6C, "",          OP_NONE,    0,      &NOP },
-    { 0x6D, "",          OP_NONE,    0,      &NOP },
-    { 0x6E, "",          OP_NONE,    0,      &NOP },
-    { 0x6F, "",          OP_NONE,    0,      &NOP },
+    { 0x60, "LD H,B",       OP_NONE,    4,      &LD_H_B },
+    { 0x61, "LD H,C",       OP_NONE,    4,      &LD_H_C },
+    { 0x62, "LD H,D",       OP_NONE,    4,      &LD_H_D },
+    { 0x63, "LD H,E",       OP_NONE,    4,      &LD_H_E },
+    { 0x64, "LD H,H",       OP_NONE,    4,      &LD_H_H },
+    { 0x65, "LD H,L",       OP_NONE,    4,      &LD_H_L },
+    { 0x66, "LD H,(HL)",    OP_NONE,    7,      &LD_H_HLm },
+    { 0x67, "LD H,A",       OP_NONE,    4,      &LD_H_A },
+    { 0x68, "LD L,B",       OP_NONE,    4,      &LD_L_B },
+    { 0x69, "LD L,C",       OP_NONE,    4,      &LD_L_C },
+    { 0x6A, "LD L,D",       OP_NONE,    4,      &LD_L_D },
+    { 0x6B, "LD L,E",       OP_NONE,    4,      &LD_L_E },
+    { 0x6C, "LD L,H",       OP_NONE,    4,      &LD_L_H },
+    { 0x6D, "LD L,L",       OP_NONE,    4,      &LD_L_L },
+    { 0x6E, "LD L,(HL)",    OP_NONE,    7,      &LD_L_HLm },
+    { 0x6F, "LD L,A",       OP_NONE,    4,      &LD_L_A },
     // 0x70
-    { 0x70, "",          OP_NONE,    0,      &NOP },
-    { 0x71, "",          OP_NONE,    0,      &NOP },
-    { 0x72, "",          OP_NONE,    0,      &NOP },
-    { 0x73, "",          OP_NONE,    0,      &NOP },
-    { 0x74, "",          OP_NONE,    0,      &NOP },
-    { 0x75, "",          OP_NONE,    0,      &NOP },
-    { 0x76, "",          OP_NONE,    0,      &NOP },
-    { 0x77, "",          OP_NONE,    0,      &NOP },
-    { 0x78, "",          OP_NONE,    0,      &NOP },
-    { 0x79, "",          OP_NONE,    0,      &NOP },
-    { 0x7A, "",          OP_NONE,    0,      &NOP },
-    { 0x7B, "",          OP_NONE,    0,      &NOP },
-    { 0x7C, "",          OP_NONE,    0,      &NOP },
-    { 0x7D, "",          OP_NONE,    0,      &NOP },
-    { 0x7E, "",          OP_NONE,    0,      &NOP },
-    { 0x7F, "",          OP_NONE,    0,      &NOP },
+    { 0x70, "LD (HL),B",    OP_NONE,    7,      &LD_HLm_B },
+    { 0x71, "LD (HL),C",    OP_NONE,    7,      &LD_HLm_C },
+    { 0x72, "LD (HL),D",    OP_NONE,    7,      &LD_HLm_D },
+    { 0x73, "LD (HL),E",    OP_NONE,    7,      &LD_HLm_E },
+    { 0x74, "LD (HL),H",    OP_NONE,    7,      &LD_HLm_H },
+    { 0x75, "LD (HL),L",    OP_NONE,    7,      &LD_HLm_L },
+    { 0x76, "HALT",         OP_NONE,    4,      &HALT },
+    { 0x77, "LD (HL),A",    OP_NONE,    7,      &LD_HLm_A },
+    { 0x78, "LD A,B",       OP_NONE,    4,      &LD_A_B },
+    { 0x79, "LD A,C",       OP_NONE,    4,      &LD_A_C },
+    { 0x7A, "LD A,D",       OP_NONE,    4,      &LD_A_D },
+    { 0x7B, "LD A,E",       OP_NONE,    4,      &LD_A_E },
+    { 0x7C, "LD A,H",       OP_NONE,    4,      &LD_A_H },
+    { 0x7D, "LD A,L",       OP_NONE,    4,      &LD_A_L },
+    { 0x7E, "LD A,(HL)",    OP_NONE,    7,      &LD_A_HLm },
+    { 0x7F, "LD A,A",       OP_NONE,    4,      &LD_A_A },
     // 0x80
-    { 0x80, "",          OP_NONE,    0,      &NOP },
-    { 0x81, "",          OP_NONE,    0,      &NOP },
-    { 0x82, "",          OP_NONE,    0,      &NOP },
-    { 0x83, "",          OP_NONE,    0,      &NOP },
-    { 0x84, "",          OP_NONE,    0,      &NOP },
-    { 0x85, "",          OP_NONE,    0,      &NOP },
-    { 0x86, "",          OP_NONE,    0,      &NOP },
-    { 0x87, "",          OP_NONE,    0,      &NOP },
-    { 0x88, "",          OP_NONE,    0,      &NOP },
-    { 0x89, "",          OP_NONE,    0,      &NOP },
-    { 0x8A, "",          OP_NONE,    0,      &NOP },
-    { 0x8B, "",          OP_NONE,    0,      &NOP },
-    { 0x8C, "",          OP_NONE,    0,      &NOP },
-    { 0x8D, "",          OP_NONE,    0,      &NOP },
-    { 0x8E, "",          OP_NONE,    0,      &NOP },
-    { 0x8F, "",          OP_NONE,    0,      &NOP },
+    { 0x80, "ADD A,B",      OP_NONE,    4,      &ADD_A_B },
+    { 0x81, "ADD A,C",      OP_NONE,    4,      &ADD_A_C },
+    { 0x82, "ADD A,D",      OP_NONE,    4,      &ADD_A_D },
+    { 0x83, "ADD A,E",      OP_NONE,    4,      &ADD_A_E },
+    { 0x84, "ADD A,H",      OP_NONE,    4,      &ADD_A_H },
+    { 0x85, "ADD A,L",      OP_NONE,    4,      &ADD_A_L },
+    { 0x86, "ADD A,(HL)",   OP_NONE,    7,      &ADD_A_HLm },
+    { 0x87, "ADD A,A",      OP_NONE,    4,      &ADD_A_A },
+    { 0x88, "ADC A,B",      OP_NONE,    4,      &ADC_A_B },
+    { 0x89, "ADC A,C",      OP_NONE,    4,      &ADC_A_C },
+    { 0x8A, "ADC A,D",      OP_NONE,    4,      &ADC_A_D },
+    { 0x8B, "ADC A,E",      OP_NONE,    4,      &ADC_A_E },
+    { 0x8C, "ADC A,H",      OP_NONE,    4,      &ADC_A_H },
+    { 0x8D, "ADC A,L",      OP_NONE,    4,      &ADC_A_L },
+    { 0x8E, "ADC A,(HL)",   OP_NONE,    7,      &ADC_A_HLm },
+    { 0x8F, "ADC A,A",      OP_NONE,    4,      &ADC_A_A },
     // 0x90
-    { 0x90, "",          OP_NONE,    0,      &NOP },
-    { 0x91, "",          OP_NONE,    0,      &NOP },
-    { 0x92, "",          OP_NONE,    0,      &NOP },
-    { 0x93, "",          OP_NONE,    0,      &NOP },
-    { 0x94, "",          OP_NONE,    0,      &NOP },
-    { 0x95, "",          OP_NONE,    0,      &NOP },
-    { 0x96, "",          OP_NONE,    0,      &NOP },
-    { 0x97, "",          OP_NONE,    0,      &NOP },
-    { 0x98, "",          OP_NONE,    0,      &NOP },
-    { 0x99, "",          OP_NONE,    0,      &NOP },
-    { 0x9A, "",          OP_NONE,    0,      &NOP },
-    { 0x9B, "",          OP_NONE,    0,      &NOP },
-    { 0x9C, "",          OP_NONE,    0,      &NOP },
-    { 0x9D, "",          OP_NONE,    0,      &NOP },
-    { 0x9E, "",          OP_NONE,    0,      &NOP },
-    { 0x9F, "",          OP_NONE,    0,      &NOP },
+    { 0x90, "SUB B",        OP_NONE,    4,      &SUB_B },
+    { 0x91, "SUB C",        OP_NONE,    4,      &SUB_C },
+    { 0x92, "SUB D",        OP_NONE,    4,      &SUB_D },
+    { 0x93, "SUB E",        OP_NONE,    4,      &SUB_E },
+    { 0x94, "SUB H",        OP_NONE,    4,      &SUB_H },
+    { 0x95, "SUB L",        OP_NONE,    4,      &SUB_L },
+    { 0x96, "SUB (HL)",     OP_NONE,    7,      &SUB_HLm },
+    { 0x97, "SUB A",        OP_NONE,    4,      &SUB_A },
+    { 0x98, "SBC A,B",      OP_NONE,    4,      &SBC_A_B },
+    { 0x99, "SBC A,C",      OP_NONE,    4,      &SBC_A_C },
+    { 0x9A, "SBC A,D",      OP_NONE,    4,      &SBC_A_D },
+    { 0x9B, "SBC A,E",      OP_NONE,    4,      &SBC_A_E },
+    { 0x9C, "SBC A,H",      OP_NONE,    4,      &SBC_A_H },
+    { 0x9D, "SBC A,L",      OP_NONE,    4,      &SBC_A_L },
+    { 0x9E, "SBC A,(HL)",   OP_NONE,    7,      &SBC_A_HLm },
+    { 0x9F, "SBC A,A",      OP_NONE,    4,      &SBC_A_A },
     // 0xA0
-    { 0xA0, "",          OP_NONE,    0,      &NOP },
-    { 0xA1, "",          OP_NONE,    0,      &NOP },
-    { 0xA2, "",          OP_NONE,    0,      &NOP },
-    { 0xA3, "",          OP_NONE,    0,      &NOP },
-    { 0xA4, "",          OP_NONE,    0,      &NOP },
-    { 0xA5, "",          OP_NONE,    0,      &NOP },
-    { 0xA6, "",          OP_NONE,    0,      &NOP },
-    { 0xA7, "",          OP_NONE,    0,      &NOP },
-    { 0xA8, "",          OP_NONE,    0,      &NOP },
-    { 0xA9, "",          OP_NONE,    0,      &NOP },
-    { 0xAA, "",          OP_NONE,    0,      &NOP },
-    { 0xAB, "",          OP_NONE,    0,      &NOP },
-    { 0xAC, "",          OP_NONE,    0,      &NOP },
-    { 0xAD, "",          OP_NONE,    0,      &NOP },
-    { 0xAE, "",          OP_NONE,    0,      &NOP },
-    { 0xAF, "",          OP_NONE,    0,      &NOP },
+    { 0xA0, "AND B",        OP_NONE,    4,      &AND_B },
+    { 0xA1, "AND C",        OP_NONE,    4,      &AND_C },
+    { 0xA2, "AND D",        OP_NONE,    4,      &AND_D },
+    { 0xA3, "AND E",        OP_NONE,    4,      &AND_E },
+    { 0xA4, "AND H",        OP_NONE,    4,      &AND_H },
+    { 0xA5, "AND L",        OP_NONE,    4,      &AND_L },
+    { 0xA6, "AND (HL)",     OP_NONE,    7,      &AND_HLm },
+    { 0xA7, "AND A",        OP_NONE,    4,      &AND_A },
+    { 0xA8, "XOR B",        OP_NONE,    4,      &XOR_B },
+    { 0xA9, "XOR C",        OP_NONE,    4,      &XOR_C },
+    { 0xAA, "XOR D",        OP_NONE,    4,      &XOR_D },
+    { 0xAB, "XOR E",        OP_NONE,    4,      &XOR_E },
+    { 0xAC, "XOR H",        OP_NONE,    4,      &XOR_H },
+    { 0xAD, "XOR L",        OP_NONE,    4,      &XOR_L },
+    { 0xAE, "XOR (HL)",     OP_NONE,    7,      &XOR_HLm },
+    { 0xAF, "XOR A",        OP_NONE,    4,      &XOR_A },
     // 0xB0
-    { 0xB0, "",          OP_NONE,    0,      &NOP },
-    { 0xB1, "",          OP_NONE,    0,      &NOP },
-    { 0xB2, "",          OP_NONE,    0,      &NOP },
-    { 0xB3, "",          OP_NONE,    0,      &NOP },
-    { 0xB4, "",          OP_NONE,    0,      &NOP },
-    { 0xB5, "",          OP_NONE,    0,      &NOP },
-    { 0xB6, "",          OP_NONE,    0,      &NOP },
-    { 0xB7, "",          OP_NONE,    0,      &NOP },
-    { 0xB8, "",          OP_NONE,    0,      &NOP },
-    { 0xB9, "",          OP_NONE,    0,      &NOP },
-    { 0xBA, "",          OP_NONE,    0,      &NOP },
-    { 0xBB, "",          OP_NONE,    0,      &NOP },
-    { 0xBC, "",          OP_NONE,    0,      &NOP },
-    { 0xBD, "",          OP_NONE,    0,      &NOP },
-    { 0xBE, "",          OP_NONE,    0,      &NOP },
-    { 0xBF, "",          OP_NONE,    0,      &NOP },
+    { 0xB0, "OR B",         OP_NONE,    4,      &OR_B },
+    { 0xB1, "OR C",         OP_NONE,    4,      &OR_C },
+    { 0xB2, "OR D",         OP_NONE,    4,      &OR_D },
+    { 0xB3, "OR E",         OP_NONE,    4,      &OR_E },
+    { 0xB4, "OR H",         OP_NONE,    4,      &OR_H },
+    { 0xB5, "OR L",         OP_NONE,    4,      &OR_L },
+    { 0xB6, "OR (HL)",      OP_NONE,    7,      &OR_HLm },
+    { 0xB7, "OR A",         OP_NONE,    4,      &OR_A },
+    { 0xB8, "CP B",         OP_NONE,    4,      &CP_B },
+    { 0xB9, "CP C",         OP_NONE,    4,      &CP_C },
+    { 0xBA, "CP D",         OP_NONE,    4,      &CP_D },
+    { 0xBB, "CP E",         OP_NONE,    4,      &CP_E },
+    { 0xBC, "CP H",         OP_NONE,    4,      &CP_H },
+    { 0xBD, "CP L",         OP_NONE,    4,      &CP_L },
+    { 0xBE, "CP (HL)",      OP_NONE,    7,      &CP_HLm },
+    { 0xBF, "CP A",         OP_NONE,    4,      &CP_A },
     // 0xC0
     { 0xC0, "",          OP_NONE,    0,      &NOP },
     { 0xC1, "",          OP_NONE,    0,      &NOP },
@@ -426,68 +426,68 @@ void LD_A_HLm(Z80_CPU *z) { ld_byte(z, &z->A, mem_HL(z)); }
 void LD_A_A(Z80_CPU *z) { ld_byte(z, &z->A, z->A); }
 
 // 0x80
-void ADD_A_B(Z80_CPU *z) {  }
-void ADD_A_C(Z80_CPU *z) {  }
-void ADD_A_D(Z80_CPU *z) {  }
-void ADD_A_E(Z80_CPU *z) {  }
-void ADD_A_H(Z80_CPU *z) {  }
-void ADD_A_L(Z80_CPU *z) {  }
-void ADD_A_HLm(Z80_CPU *z) {  }
-void ADD_A_A(Z80_CPU *z) {  }
-void ADC_A_B(Z80_CPU *z) {  }
-void ADC_A_C(Z80_CPU *z) {  }
-void ADC_A_D(Z80_CPU *z) {  }
-void ADC_A_E(Z80_CPU *z) {  }
-void ADC_A_H(Z80_CPU *z) {  }
-void ADC_A_L(Z80_CPU *z) {  }
-void ADC_A_HLm(Z80_CPU *z) {  }
-void ADC_A_A(Z80_CPU *z) {  }
+void ADD_A_B(Z80_CPU *z) { add(z, z->B); }
+void ADD_A_C(Z80_CPU *z) { add(z, z->C); }
+void ADD_A_D(Z80_CPU *z) { add(z, z->D); }
+void ADD_A_E(Z80_CPU *z) { add(z, z->E); }
+void ADD_A_H(Z80_CPU *z) { add(z, z->H); }
+void ADD_A_L(Z80_CPU *z) { add(z, z->L); }
+void ADD_A_HLm(Z80_CPU *z) { add(z, mem_HL(z)); }
+void ADD_A_A(Z80_CPU *z) { add(z, z->A); }
+void ADC_A_B(Z80_CPU *z) { adc(z, z->B); }
+void ADC_A_C(Z80_CPU *z) { adc(z, z->C); }
+void ADC_A_D(Z80_CPU *z) { adc(z, z->D); }
+void ADC_A_E(Z80_CPU *z) { adc(z, z->E); }
+void ADC_A_H(Z80_CPU *z) { adc(z, z->H); }
+void ADC_A_L(Z80_CPU *z) { adc(z, z->L); }
+void ADC_A_HLm(Z80_CPU *z) { adc(z, mem_HL(z)); }
+void ADC_A_A(Z80_CPU *z) { adc(z, z->A); }
 
 // 0x90
-void SUB_B(Z80_CPU *z) {  }
-void SUB_C(Z80_CPU *z) {  }
-void SUB_D(Z80_CPU *z) {  }
-void SUB_E(Z80_CPU *z) {  }
-void SUB_H(Z80_CPU *z) {  }
-void SUB_L(Z80_CPU *z) {  }
-void SUB_HLm(Z80_CPU *z) {  }
-void SUB_A(Z80_CPU *z) {  }
-void SBC_A_B(Z80_CPU *z) {  }
-void SBC_A_C(Z80_CPU *z) {  }
-void SBC_A_D(Z80_CPU *z) {  }
-void SBC_A_E(Z80_CPU *z) {  }
-void SBC_A_H(Z80_CPU *z) {  }
-void SBC_A_L(Z80_CPU *z) {  }
-void SBC_A_HLm(Z80_CPU *z) {  }
-void SBC_A_A(Z80_CPU *z) {  }
+void SUB_B(Z80_CPU *z) { sub(z, z->B); }
+void SUB_C(Z80_CPU *z) { sub(z, z->C); }
+void SUB_D(Z80_CPU *z) { sub(z, z->D); }
+void SUB_E(Z80_CPU *z) { sub(z, z->E); }
+void SUB_H(Z80_CPU *z) { sub(z, z->H); }
+void SUB_L(Z80_CPU *z) { sub(z, z->L); }
+void SUB_HLm(Z80_CPU *z) { sub(z, mem_HL(z)); }
+void SUB_A(Z80_CPU *z) { sub(z, z->A); }
+void SBC_A_B(Z80_CPU *z) { sbc(z, z->B); }
+void SBC_A_C(Z80_CPU *z) { sbc(z, z->C); }
+void SBC_A_D(Z80_CPU *z) { sbc(z, z->D); }
+void SBC_A_E(Z80_CPU *z) { sbc(z, z->E); }
+void SBC_A_H(Z80_CPU *z) { sbc(z, z->H); }
+void SBC_A_L(Z80_CPU *z) { sbc(z, z->L); }
+void SBC_A_HLm(Z80_CPU *z) { sbc(z, mem_HL(z)); }
+void SBC_A_A(Z80_CPU *z) { sbc(z, z->A); }
 
 // 0xA0
-void AND_B(Z80_CPU *z) {  }
-void AND_C(Z80_CPU *z) {  }
-void AND_D(Z80_CPU *z) {  }
-void AND_E(Z80_CPU *z) {  }
-void AND_H(Z80_CPU *z) {  }
-void AND_L(Z80_CPU *z) {  }
-void AND_HLm(Z80_CPU *z) {  }
-void AND_A(Z80_CPU *z) {  }
-void XOR_B(Z80_CPU *z) {  }
-void XOR_C(Z80_CPU *z) {  }
-void XOR_D(Z80_CPU *z) {  }
-void XOR_E(Z80_CPU *z) {  }
-void XOR_H(Z80_CPU *z) {  }
-void XOR_L(Z80_CPU *z) {  }
-void XOR_HLm(Z80_CPU *z) {  }
-void XOR_A(Z80_CPU *z) {  }
+void AND_B(Z80_CPU *z) { and(z, z->B); }
+void AND_C(Z80_CPU *z) { and(z, z->C); }
+void AND_D(Z80_CPU *z) { and(z, z->D); }
+void AND_E(Z80_CPU *z) { and(z, z->E); }
+void AND_H(Z80_CPU *z) { and(z, z->H); }
+void AND_L(Z80_CPU *z) { and(z, z->L); }
+void AND_HLm(Z80_CPU *z) { and(z, mem_HL(z)); }
+void AND_A(Z80_CPU *z) { and(z, z->A); }
+void XOR_B(Z80_CPU *z) { xor(z, z->B); }
+void XOR_C(Z80_CPU *z) { xor(z, z->C); }
+void XOR_D(Z80_CPU *z) { xor(z, z->D); }
+void XOR_E(Z80_CPU *z) { xor(z, z->E); }
+void XOR_H(Z80_CPU *z) { xor(z, z->H); }
+void XOR_L(Z80_CPU *z) { xor(z, z->L); }
+void XOR_HLm(Z80_CPU *z) { xor(z, mem_HL(z)); }
+void XOR_A(Z80_CPU *z) { xor(z, z->A); }
 
 // 0xB0
-void OR_B(Z80_CPU *z) {  }
-void OR_C(Z80_CPU *z) {  }
-void OR_D(Z80_CPU *z) {  }
-void OR_E(Z80_CPU *z) {  }
-void OR_H(Z80_CPU *z) {  }
-void OR_L(Z80_CPU *z) {  }
-void OR_HLm(Z80_CPU *z) {  }
-void OR_A(Z80_CPU *z) {  }
+void OR_B(Z80_CPU *z) { or(z, z->B); }
+void OR_C(Z80_CPU *z) { or(z, z->C); }
+void OR_D(Z80_CPU *z) { or(z, z->D); }
+void OR_E(Z80_CPU *z) { or(z, z->E); }
+void OR_H(Z80_CPU *z) { or(z, z->H); }
+void OR_L(Z80_CPU *z) { or(z, z->L); }
+void OR_HLm(Z80_CPU *z) { or(z, mem_HL(z)); }
+void OR_A(Z80_CPU *z) { or(z, z->A); }
 void CP_B(Z80_CPU *z) {  }
 void CP_C(Z80_CPU *z) {  }
 void CP_D(Z80_CPU *z) {  }
@@ -504,7 +504,7 @@ void JP_NZ_nn(Z80_CPU *z) {  }
 void JP_nn(Z80_CPU *z) {  }
 void CALL_NZ_nn(Z80_CPU *z) {  }
 void PUSH_BC(Z80_CPU *z) {  }
-void ADD_A_n(Z80_CPU *z) {  }
+void ADD_A_n(Z80_CPU *z) { add(z, op(z, 1)); }
 void RST_00h(Z80_CPU *z) {  }
 void RET_Z(Z80_CPU *z) {  }
 void RET(Z80_CPU *z) {  }
@@ -512,7 +512,7 @@ void JP_Z_nn(Z80_CPU *z) {  }
 void BITS(Z80_CPU *z) {  }
 void CALL_Z_nn(Z80_CPU *z) {  }
 void CALL_nn(Z80_CPU *z) {  }
-void ADC_A_n(Z80_CPU *z) {  }
+void ADC_A_n(Z80_CPU *z) { adc(z, op(z, 1)); }
 void RST_08h(Z80_CPU *z) {  }
 
 // 0xD0
@@ -522,7 +522,7 @@ void JP_NC_nn(Z80_CPU *z) {  }
 void OUT_nm_a(Z80_CPU *z) {  }
 void CALL_NC_nn(Z80_CPU *z) {  }
 void PUSH_DE(Z80_CPU *z) {  }
-void SUB_n(Z80_CPU *z) {  }
+void SUB_n(Z80_CPU *z) { sub(z, op(z, 1)); }
 void RST_10h(Z80_CPU *z) {  }
 void RET_C(Z80_CPU *z) {  }
 void EXX(Z80_CPU *z) {  }
@@ -540,7 +540,7 @@ void JP_PO_nn(Z80_CPU *z) {  }
 void EX_SPm_HL(Z80_CPU *z) {  }
 void CALL_PO_nn(Z80_CPU *z) {  }
 void PUSH_HL(Z80_CPU *z) {  }
-void AND_n(Z80_CPU *z) {  }
+void AND_n(Z80_CPU *z) { and(z, op(z, 1)); }
 void RST_20h(Z80_CPU *z) {  }
 void RET_PE(Z80_CPU *z) {  }
 void JP_HLm(Z80_CPU *z) {  }
@@ -558,7 +558,7 @@ void JP_P_nn(Z80_CPU *z) {  }
 void DI(Z80_CPU *z) {  }
 void CALL_P_nn(Z80_CPU *z) {  }
 void PUSH_AF(Z80_CPU *z) {  }
-void OR_n(Z80_CPU *z) {  }
+void OR_n(Z80_CPU *z) { or(z, op(z, 1)); }
 void RST_30h(Z80_CPU *z) {  }
 void RET_M(Z80_CPU *z) {  }
 void LD_SP_HL(Z80_CPU *z) {  }

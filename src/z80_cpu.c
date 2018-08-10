@@ -14,6 +14,10 @@ uint8_t mem_HL(Z80_CPU *z) {
     return mem_nn(z, z->H, z->L);
 }
 
+uint8_t op(Z80_CPU *z, uint8_t offset) {
+    return z->Memory[z->PC + offset];
+}
+
 void Z80_CPU_Init(Z80_CPU *cpu) {
     // Zero all registers
     cpu->A = cpu->B = cpu->C = cpu->D = cpu->E = cpu->F = 0;

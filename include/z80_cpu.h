@@ -42,6 +42,15 @@ uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y);
 uint8_t mem_HL(Z80_CPU *z);
 
 /**
+ * @brief Return the operands after the PC
+ * 
+ * @param z Z80 CPU object
+ * @param offset Byte offset from the PC to return, 0 is the PC, 1 is the first, 2 is the second, etc.
+ * @return uint8_t offset from the PC
+ */
+uint8_t op(Z80_CPU *z, uint8_t offset);
+
+/**
  * @brief Zero out the state of the CPU
  * 
  * @param cpu Pointer to CPU object
