@@ -11,7 +11,7 @@
 
 #include "z80_cpu.h"
 
-typedef enum operands {OP_JUMP = 0, OP_NONE = 1, OP_BYTE = 2, OP_WORD = 3} Z80_Operands;
+typedef enum operands { OP_NONE = 1, OP_BYTE = 2, OP_WORD = 3, OP_EXTD, OP_JUMP,  } Z80_Operands;
 
 typedef struct Z80_Instruction {
     uint8_t OpCode;
