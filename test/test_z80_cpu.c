@@ -6,8 +6,8 @@ void test_z80_cpu_init() {
     Z80_CPU cpu;
     Z80_CPU_Init(&cpu);
 
+    TEST_ASSERT_EQUAL(0, *cpu.A);
     TEST_ASSERT_EQUAL(0, cpu.PC);
-    TEST_ASSERT_EQUAL(0, cpu.A);
     TEST_ASSERT_EQUAL(STOPPED, cpu.State);
     
     TEST_ASSERT_EQUAL(0, cpu.Memory[0]);
@@ -29,6 +29,19 @@ void test_z80_set_memory() {
     TEST_ASSERT_EQUAL(0xFF, cpu.Memory[0x102]);
 }
 
+void test_z80_registers() {
+    Z80_Register r;
+
+    r.w = 0xABCD;
+
+    TEST_ASSERT_EQUAL(0xAB, r.b.high);
+    TEST_ASSERT_EQUAL(0xCD, r.b.low);
+
+    r.b.low = 0x99;
+
+    TEST_ASSERT_EQUAL(0x99, r.b.low);
+}
+
 int main(int argc, char const *argv[])
 {
     UNITY_BEGIN();
@@ -36,6 +49,7 @@ int main(int argc, char const *argv[])
     // Run tests
     RUN_TEST(test_z80_cpu_init);
     RUN_TEST(test_z80_set_memory);
+    RUN_TEST(test_z80_registers);
 
     return UNITY_END();
 }

@@ -12,13 +12,13 @@
 // p : alternate register (e.g. AF' instead of AF)
 
 // 0x00
-void NOP(Z80_CPU *z) {}
+void NOP(Z80_CPU *z) { /* do nothing */ }
 void LD_BC_nn(Z80_CPU *z) {  }
 void LD_BCm_A(Z80_CPU *z) {  }
 void INC_BC(Z80_CPU *z) {  }
 void INC_B(Z80_CPU *z) {  }
 void DEC_B(Z80_CPU *z) {  }
-void LD_B_n(Z80_CPU *z) { ld_byte(z, &z->B, op(z, 1)); }
+void LD_B_n(Z80_CPU *z) { ld_byte(z, z->B, op(z, 1)); }
 void RLCA(Z80_CPU *z) {  }
 void EX_AF_AFp(Z80_CPU *z) {  }
 void ADD_HL_BC(Z80_CPU *z) {  }
@@ -31,7 +31,7 @@ void RRCA(Z80_CPU *z) {  }
 
 // 0x10
 void DJNZ_n(Z80_CPU *z) {  }
-void LD_DE_nn(Z80_CPU *z) { ld_word(z, &z->D, &z->E, op(z, 2), op(z, 1)); }
+void LD_DE_nn(Z80_CPU *z) { ld_word(z, &z->DE, combine(op(z, 2), op(z, 1))); }
 void LD_DEm_A(Z80_CPU *z) {  }
 void INC_DE(Z80_CPU *z) {  }
 void INC_D(Z80_CPU *z) {  }
@@ -49,11 +49,11 @@ void RRA(Z80_CPU *z) {  }
 
 // 0x20
 void JR_NZ_n(Z80_CPU *z) {  }
-void LD_HL_nn(Z80_CPU *z) { ld_word(z, &z->H, &z->L, op(z, 2), op(z, 1)); }
+void LD_HL_nn(Z80_CPU *z) { ld_word(z, &z->HL, combine(op(z, 2), op(z, 1))); }
 void LD_nnm_HL(Z80_CPU *z) {  }
 void INC_HL(Z80_CPU *z) {  }
 void INC_H(Z80_CPU *z) {  }
-void DEC_H(Z80_CPU *z) { dec(z, &z->H); }
+void DEC_H(Z80_CPU *z) { dec(z, z->H); }
 void LD_H_nn(Z80_CPU *z) {  }
 void DAA(Z80_CPU *z) {  }
 void JR_Z_n(Z80_CPU *z) {  }
@@ -80,62 +80,62 @@ void LD_A_nnm(Z80_CPU *z) {  }
 void DEC_SP(Z80_CPU *z) {  }
 void INC_A(Z80_CPU *z) {  }
 void DEC_A(Z80_CPU *z) {  }
-void LD_A_n(Z80_CPU *z) { ld_byte(z, &z->A, op(z, 1)); }
+void LD_A_n(Z80_CPU *z) { ld_byte(z, z->A, op(z, 1)); }
 void CCF(Z80_CPU *z) {  }
 
 // 0x40
-void LD_B_B(Z80_CPU *z) { ld_byte(z, &z->B, z->B); }
-void LD_B_C(Z80_CPU *z) { ld_byte(z, &z->B, z->C); }
-void LD_B_D(Z80_CPU *z) { ld_byte(z, &z->B, z->D); }
-void LD_B_E(Z80_CPU *z) { ld_byte(z, &z->B, z->E); }
-void LD_B_H(Z80_CPU *z) { ld_byte(z, &z->B, z->H); }
-void LD_B_L(Z80_CPU *z) { ld_byte(z, &z->B, z->L); }
-void LD_B_HLm(Z80_CPU *z) { ld_byte(z, &z->B, mem_HL(z)); }
-void LD_B_A(Z80_CPU *z) { ld_byte(z, &z->B, z->A); }
-void LD_C_B(Z80_CPU *z) { ld_byte(z, &z->C, z->B); }
-void LD_C_C(Z80_CPU *z) { ld_byte(z, &z->C, z->C); }
-void LD_C_D(Z80_CPU *z) { ld_byte(z, &z->C, z->D); }
-void LD_C_E(Z80_CPU *z) { ld_byte(z, &z->C, z->E); }
-void LD_C_H(Z80_CPU *z) { ld_byte(z, &z->C, z->H); }
-void LD_C_L(Z80_CPU *z) { ld_byte(z, &z->C, z->L); }
-void LD_C_HLm(Z80_CPU *z) { ld_byte(z, &z->C, mem_HL(z)); }
-void LD_C_A(Z80_CPU *z) { ld_byte(z, &z->C, z->A); }
+void LD_B_B(Z80_CPU *z) { ld_byte(z, z->B, *z->B); }
+void LD_B_C(Z80_CPU *z) { ld_byte(z, z->B, *z->C); }
+void LD_B_D(Z80_CPU *z) { ld_byte(z, z->B, *z->D); }
+void LD_B_E(Z80_CPU *z) { ld_byte(z, z->B, *z->E); }
+void LD_B_H(Z80_CPU *z) { ld_byte(z, z->B, *z->H); }
+void LD_B_L(Z80_CPU *z) { ld_byte(z, z->B, *z->L); }
+void LD_B_HLm(Z80_CPU *z) { ld_byte(z, z->B, mem_HL(z)); }
+void LD_B_A(Z80_CPU *z) { ld_byte(z, z->B, *z->A); }
+void LD_C_B(Z80_CPU *z) { ld_byte(z, z->C, *z->B); }
+void LD_C_C(Z80_CPU *z) { ld_byte(z, z->C, *z->C); }
+void LD_C_D(Z80_CPU *z) { ld_byte(z, z->C, *z->D); }
+void LD_C_E(Z80_CPU *z) { ld_byte(z, z->C, *z->E); }
+void LD_C_H(Z80_CPU *z) { ld_byte(z, z->C, *z->H); }
+void LD_C_L(Z80_CPU *z) { ld_byte(z, z->C, *z->L); }
+void LD_C_HLm(Z80_CPU *z) { ld_byte(z, z->C, mem_HL(z)); }
+void LD_C_A(Z80_CPU *z) { ld_byte(z, z->C, *z->A); }
 
 // 0x50
-void LD_D_B(Z80_CPU *z) { ld_byte(z, &z->D, z->B); }
-void LD_D_C(Z80_CPU *z) { ld_byte(z, &z->D, z->C); }
-void LD_D_D(Z80_CPU *z) { ld_byte(z, &z->D, z->D); }
-void LD_D_E(Z80_CPU *z) { ld_byte(z, &z->D, z->E); }
-void LD_D_H(Z80_CPU *z) { ld_byte(z, &z->D, z->H); }
-void LD_D_L(Z80_CPU *z) { ld_byte(z, &z->D, z->L); }
-void LD_D_HLm(Z80_CPU *z) { ld_byte(z, &z->D, mem_HL(z)); }
-void LD_D_A(Z80_CPU *z) { ld_byte(z, &z->D, z->A); }
-void LD_E_B(Z80_CPU *z) { ld_byte(z, &z->E, z->B); }
-void LD_E_C(Z80_CPU *z) { ld_byte(z, &z->E, z->C); }
-void LD_E_D(Z80_CPU *z) { ld_byte(z, &z->E, z->D); }
-void LD_E_E(Z80_CPU *z) { ld_byte(z, &z->E, z->E); }
-void LD_E_H(Z80_CPU *z) { ld_byte(z, &z->E, z->H); }
-void LD_E_L(Z80_CPU *z) { ld_byte(z, &z->E, z->L); }
-void LD_E_HLm(Z80_CPU *z) { ld_byte(z, &z->E, mem_HL(z)); }
-void LD_E_A(Z80_CPU *z) { ld_byte(z, &z->E, z->A); }
+void LD_D_B(Z80_CPU *z) { ld_byte(z, z->D, *z->B); }
+void LD_D_C(Z80_CPU *z) { ld_byte(z, z->D, *z->C); }
+void LD_D_D(Z80_CPU *z) { ld_byte(z, z->D, *z->D); }
+void LD_D_E(Z80_CPU *z) { ld_byte(z, z->D, *z->E); }
+void LD_D_H(Z80_CPU *z) { ld_byte(z, z->D, *z->H); }
+void LD_D_L(Z80_CPU *z) { ld_byte(z, z->D, *z->L); }
+void LD_D_HLm(Z80_CPU *z) { ld_byte(z, z->D, mem_HL(z)); }
+void LD_D_A(Z80_CPU *z) { ld_byte(z, z->D, *z->A); }
+void LD_E_B(Z80_CPU *z) { ld_byte(z, z->E, *z->B); }
+void LD_E_C(Z80_CPU *z) { ld_byte(z, z->E, *z->C); }
+void LD_E_D(Z80_CPU *z) { ld_byte(z, z->E, *z->D); }
+void LD_E_E(Z80_CPU *z) { ld_byte(z, z->E, *z->E); }
+void LD_E_H(Z80_CPU *z) { ld_byte(z, z->E, *z->H); }
+void LD_E_L(Z80_CPU *z) { ld_byte(z, z->E, *z->L); }
+void LD_E_HLm(Z80_CPU *z) { ld_byte(z, z->E, mem_HL(z)); }
+void LD_E_A(Z80_CPU *z) { ld_byte(z, z->E, *z->A); }
 
 // 0x60
-void LD_H_B(Z80_CPU *z) { ld_byte(z, &z->H, z->B); }
-void LD_H_C(Z80_CPU *z) { ld_byte(z, &z->H, z->C); }
-void LD_H_D(Z80_CPU *z) { ld_byte(z, &z->H, z->D); }
-void LD_H_E(Z80_CPU *z) { ld_byte(z, &z->H, z->E); }
-void LD_H_H(Z80_CPU *z) { ld_byte(z, &z->H, z->H); }
-void LD_H_L(Z80_CPU *z) { ld_byte(z, &z->H, z->L); }
-void LD_H_HLm(Z80_CPU *z) { ld_byte(z, &z->H, mem_HL(z)); }
-void LD_H_A(Z80_CPU *z) { ld_byte(z, &z->H, z->A); }
-void LD_L_B(Z80_CPU *z) { ld_byte(z, &z->L, z->B); }
-void LD_L_C(Z80_CPU *z) { ld_byte(z, &z->L, z->C); }
-void LD_L_D(Z80_CPU *z) { ld_byte(z, &z->L, z->D); }
-void LD_L_E(Z80_CPU *z) { ld_byte(z, &z->L, z->E); }
-void LD_L_H(Z80_CPU *z) { ld_byte(z, &z->L, z->H); }
-void LD_L_L(Z80_CPU *z) { ld_byte(z, &z->L, z->L); }
-void LD_L_HLm(Z80_CPU *z) { ld_byte(z, &z->L, mem_HL(z)); }
-void LD_L_A(Z80_CPU *z) { ld_byte(z, &z->L, z->A); }
+void LD_H_B(Z80_CPU *z) { ld_byte(z, z->H, *z->B); }
+void LD_H_C(Z80_CPU *z) { ld_byte(z, z->H, *z->C); }
+void LD_H_D(Z80_CPU *z) { ld_byte(z, z->H, *z->D); }
+void LD_H_E(Z80_CPU *z) { ld_byte(z, z->H, *z->E); }
+void LD_H_H(Z80_CPU *z) { ld_byte(z, z->H, *z->H); }
+void LD_H_L(Z80_CPU *z) { ld_byte(z, z->H, *z->L); }
+void LD_H_HLm(Z80_CPU *z) { ld_byte(z, z->H, mem_HL(z)); }
+void LD_H_A(Z80_CPU *z) { ld_byte(z, z->H, *z->A); }
+void LD_L_B(Z80_CPU *z) { ld_byte(z, z->L, *z->B); }
+void LD_L_C(Z80_CPU *z) { ld_byte(z, z->L, *z->C); }
+void LD_L_D(Z80_CPU *z) { ld_byte(z, z->L, *z->D); }
+void LD_L_E(Z80_CPU *z) { ld_byte(z, z->L, *z->E); }
+void LD_L_H(Z80_CPU *z) { ld_byte(z, z->L, *z->H); }
+void LD_L_L(Z80_CPU *z) { ld_byte(z, z->L, *z->L); }
+void LD_L_HLm(Z80_CPU *z) { ld_byte(z, z->L, mem_HL(z)); }
+void LD_L_A(Z80_CPU *z) { ld_byte(z, z->L, *z->A); }
 
 // 0x70
 void LD_HLm_B(Z80_CPU *z) {  }
@@ -146,78 +146,78 @@ void LD_HLm_H(Z80_CPU *z) {  }
 void LD_HLm_L(Z80_CPU *z) {  }
 void HALT(Z80_CPU *z) { z->State = STOPPED; }
 void LD_HLm_A(Z80_CPU *z) {  }
-void LD_A_B(Z80_CPU *z) { ld_byte(z, &z->A, z->B); }
-void LD_A_C(Z80_CPU *z) { ld_byte(z, &z->A, z->C); }
-void LD_A_D(Z80_CPU *z) { ld_byte(z, &z->A, z->D); }
-void LD_A_E(Z80_CPU *z) { ld_byte(z, &z->A, z->E); }
-void LD_A_H(Z80_CPU *z) { ld_byte(z, &z->A, z->H); }
-void LD_A_L(Z80_CPU *z) { ld_byte(z, &z->A, z->L); }
-void LD_A_HLm(Z80_CPU *z) { ld_byte(z, &z->A, mem_HL(z)); }
-void LD_A_A(Z80_CPU *z) { ld_byte(z, &z->A, z->A); }
+void LD_A_B(Z80_CPU *z) { ld_byte(z, z->A, *z->B); }
+void LD_A_C(Z80_CPU *z) { ld_byte(z, z->A, *z->C); }
+void LD_A_D(Z80_CPU *z) { ld_byte(z, z->A, *z->D); }
+void LD_A_E(Z80_CPU *z) { ld_byte(z, z->A, *z->E); }
+void LD_A_H(Z80_CPU *z) { ld_byte(z, z->A, *z->H); }
+void LD_A_L(Z80_CPU *z) { ld_byte(z, z->A, *z->L); }
+void LD_A_HLm(Z80_CPU *z) { ld_byte(z, z->A, mem_HL(z)); }
+void LD_A_A(Z80_CPU *z) { ld_byte(z, z->A, *z->A); }
 
 // 0x80
-void ADD_A_B(Z80_CPU *z) { add(z, z->B); }
-void ADD_A_C(Z80_CPU *z) { add(z, z->C); }
-void ADD_A_D(Z80_CPU *z) { add(z, z->D); }
-void ADD_A_E(Z80_CPU *z) { add(z, z->E); }
-void ADD_A_H(Z80_CPU *z) { add(z, z->H); }
-void ADD_A_L(Z80_CPU *z) { add(z, z->L); }
+void ADD_A_B(Z80_CPU *z) { add(z, *z->B); }
+void ADD_A_C(Z80_CPU *z) { add(z, *z->C); }
+void ADD_A_D(Z80_CPU *z) { add(z, *z->D); }
+void ADD_A_E(Z80_CPU *z) { add(z, *z->E); }
+void ADD_A_H(Z80_CPU *z) { add(z, *z->H); }
+void ADD_A_L(Z80_CPU *z) { add(z, *z->L); }
 void ADD_A_HLm(Z80_CPU *z) { add(z, mem_HL(z)); }
-void ADD_A_A(Z80_CPU *z) { add(z, z->A); }
-void ADC_A_B(Z80_CPU *z) { adc(z, z->B); }
-void ADC_A_C(Z80_CPU *z) { adc(z, z->C); }
-void ADC_A_D(Z80_CPU *z) { adc(z, z->D); }
-void ADC_A_E(Z80_CPU *z) { adc(z, z->E); }
-void ADC_A_H(Z80_CPU *z) { adc(z, z->H); }
-void ADC_A_L(Z80_CPU *z) { adc(z, z->L); }
+void ADD_A_A(Z80_CPU *z) { add(z, *z->A); }
+void ADC_A_B(Z80_CPU *z) { adc(z, *z->B); }
+void ADC_A_C(Z80_CPU *z) { adc(z, *z->C); }
+void ADC_A_D(Z80_CPU *z) { adc(z, *z->D); }
+void ADC_A_E(Z80_CPU *z) { adc(z, *z->E); }
+void ADC_A_H(Z80_CPU *z) { adc(z, *z->H); }
+void ADC_A_L(Z80_CPU *z) { adc(z, *z->L); }
 void ADC_A_HLm(Z80_CPU *z) { adc(z, mem_HL(z)); }
-void ADC_A_A(Z80_CPU *z) { adc(z, z->A); }
+void ADC_A_A(Z80_CPU *z) { adc(z, *z->A); }
 
 // 0x90
-void SUB_B(Z80_CPU *z) { sub(z, z->B); }
-void SUB_C(Z80_CPU *z) { sub(z, z->C); }
-void SUB_D(Z80_CPU *z) { sub(z, z->D); }
-void SUB_E(Z80_CPU *z) { sub(z, z->E); }
-void SUB_H(Z80_CPU *z) { sub(z, z->H); }
-void SUB_L(Z80_CPU *z) { sub(z, z->L); }
+void SUB_B(Z80_CPU *z) { sub(z, *z->B); }
+void SUB_C(Z80_CPU *z) { sub(z, *z->C); }
+void SUB_D(Z80_CPU *z) { sub(z, *z->D); }
+void SUB_E(Z80_CPU *z) { sub(z, *z->E); }
+void SUB_H(Z80_CPU *z) { sub(z, *z->H); }
+void SUB_L(Z80_CPU *z) { sub(z, *z->L); }
 void SUB_HLm(Z80_CPU *z) { sub(z, mem_HL(z)); }
-void SUB_A(Z80_CPU *z) { sub(z, z->A); }
-void SBC_A_B(Z80_CPU *z) { sbc(z, z->B); }
-void SBC_A_C(Z80_CPU *z) { sbc(z, z->C); }
-void SBC_A_D(Z80_CPU *z) { sbc(z, z->D); }
-void SBC_A_E(Z80_CPU *z) { sbc(z, z->E); }
-void SBC_A_H(Z80_CPU *z) { sbc(z, z->H); }
-void SBC_A_L(Z80_CPU *z) { sbc(z, z->L); }
+void SUB_A(Z80_CPU *z) { sub(z, *z->A); }
+void SBC_A_B(Z80_CPU *z) { sbc(z, *z->B); }
+void SBC_A_C(Z80_CPU *z) { sbc(z, *z->C); }
+void SBC_A_D(Z80_CPU *z) { sbc(z, *z->D); }
+void SBC_A_E(Z80_CPU *z) { sbc(z, *z->E); }
+void SBC_A_H(Z80_CPU *z) { sbc(z, *z->H); }
+void SBC_A_L(Z80_CPU *z) { sbc(z, *z->L); }
 void SBC_A_HLm(Z80_CPU *z) { sbc(z, mem_HL(z)); }
-void SBC_A_A(Z80_CPU *z) { sbc(z, z->A); }
+void SBC_A_A(Z80_CPU *z) { sbc(z, *z->A); }
 
 // 0xA0
-void AND_B(Z80_CPU *z) { and(z, z->B); }
-void AND_C(Z80_CPU *z) { and(z, z->C); }
-void AND_D(Z80_CPU *z) { and(z, z->D); }
-void AND_E(Z80_CPU *z) { and(z, z->E); }
-void AND_H(Z80_CPU *z) { and(z, z->H); }
-void AND_L(Z80_CPU *z) { and(z, z->L); }
+void AND_B(Z80_CPU *z) { and(z, *z->B); }
+void AND_C(Z80_CPU *z) { and(z, *z->C); }
+void AND_D(Z80_CPU *z) { and(z, *z->D); }
+void AND_E(Z80_CPU *z) { and(z, *z->E); }
+void AND_H(Z80_CPU *z) { and(z, *z->H); }
+void AND_L(Z80_CPU *z) { and(z, *z->L); }
 void AND_HLm(Z80_CPU *z) { and(z, mem_HL(z)); }
-void AND_A(Z80_CPU *z) { and(z, z->A); }
-void XOR_B(Z80_CPU *z) { xor(z, z->B); }
-void XOR_C(Z80_CPU *z) { xor(z, z->C); }
-void XOR_D(Z80_CPU *z) { xor(z, z->D); }
-void XOR_E(Z80_CPU *z) { xor(z, z->E); }
-void XOR_H(Z80_CPU *z) { xor(z, z->H); }
-void XOR_L(Z80_CPU *z) { xor(z, z->L); }
+void AND_A(Z80_CPU *z) { and(z, *z->A); }
+void XOR_B(Z80_CPU *z) { xor(z, *z->B); }
+void XOR_C(Z80_CPU *z) { xor(z, *z->C); }
+void XOR_D(Z80_CPU *z) { xor(z, *z->D); }
+void XOR_E(Z80_CPU *z) { xor(z, *z->E); }
+void XOR_H(Z80_CPU *z) { xor(z, *z->H); }
+void XOR_L(Z80_CPU *z) { xor(z, *z->L); }
 void XOR_HLm(Z80_CPU *z) { xor(z, mem_HL(z)); }
-void XOR_A(Z80_CPU *z) { xor(z, z->A); }
+void XOR_A(Z80_CPU *z) { xor(z, *z->A); }
 
 // 0xB0
-void OR_B(Z80_CPU *z) { or(z, z->B); }
-void OR_C(Z80_CPU *z) { or(z, z->C); }
-void OR_D(Z80_CPU *z) { or(z, z->D); }
-void OR_E(Z80_CPU *z) { or(z, z->E); }
-void OR_H(Z80_CPU *z) { or(z, z->H); }
-void OR_L(Z80_CPU *z) { or(z, z->L); }
+void OR_B(Z80_CPU *z) { or(z, *z->B); }
+void OR_C(Z80_CPU *z) { or(z, *z->C); }
+void OR_D(Z80_CPU *z) { or(z, *z->D); }
+void OR_E(Z80_CPU *z) { or(z, *z->E); }
+void OR_H(Z80_CPU *z) { or(z, *z->H); }
+void OR_L(Z80_CPU *z) { or(z, *z->L); }
 void OR_HLm(Z80_CPU *z) { or(z, mem_HL(z)); }
-void OR_A(Z80_CPU *z) { or(z, z->A); }
+void OR_A(Z80_CPU *z) { or(z, *z->A); }
 void CP_B(Z80_CPU *z) {  }
 void CP_C(Z80_CPU *z) {  }
 void CP_D(Z80_CPU *z) {  }
@@ -689,14 +689,23 @@ const Z80_Instruction ExtendedInstructions[96] = {
 
 Z80_Instruction Z80_FetchInstruction(Z80_CPU *z) {
     Z80_Instruction instruction;
+
     switch (op(z, 0)) {
-        case 0xED:
-            instruction = ExtendedInstructions[op(z, 1)];
+        case PREF_EXTD:
+            // Extended instruction set
+            instruction = op(z, 1) >= 0xA0 ? ExtendedInstructions[op(z, 1) - 0x60] : ExtendedInstructions[op(z, 1) - 0x40];
             break;
-        // TODO: cases for other instruction sets
+        case PREF_BIT:
+            break;
+        case PREF_IX:
+            break;
+        case PREF_IY:
+            break;
         default:
+            // Main instruction set
             instruction = MainInstructions[op(z, 0)];
             break;
     }
+    
     return instruction;
 }

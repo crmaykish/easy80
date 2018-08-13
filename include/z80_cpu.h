@@ -17,12 +17,43 @@
 
 typedef enum cpu_state { RUNNING, STOPPED } Z80_CPUState;
 
+typedef union reg {
+    uint16_t reg_word;
+    struct {
+        uint8_t low;
+        uint8_t high;
+    } reg_byte;
+} reg_internal;
+
+typedef struct Z80_Registers {
+    reg_internal AF_reg;
+    reg_internal BC_reg;
+    reg_internal DE_reg;
+    reg_internal HL_reg;
+    reg_internal AFp_reg;
+    reg_internal BCp_reg;
+    reg_internal DEp_reg;
+    reg_internal HLp_reg;
+} Z80_Registers;
+
 typedef struct Z80_CPU {
-    uint8_t A, B, C, D, E, F, H, L, Ap, Bp, Cp, Dp, Ep, Fp, Hp, Lp, I, R;   /*!< 8-bit registers */
-    uint16_t IX, IY, SP, PC;                                                /*!< 16-bit registers */
-    uint8_t Memory[MAX_RAM_ADDRESS];                                        /*!< Combined ROM and RAM for the CPU */
-    Z80_CPUState State;                                                     /*!< State of the CPU: running, halted, etc. */
-    bool Interrupts;                                                        /*!< Interrupts enabled */
+    Z80_Registers Registers;
+
+    uint16_t *AF;
+    uint16_t *BC;
+    uint16_t *DE;
+    uint16_t *HL;
+
+    uint8_t *A, *F;
+    uint8_t *B, *C;
+    uint8_t *D, *E;
+    uint8_t *H, *L;
+
+    uint8_t I, R;                       /*!< 8-bit registers */
+    uint16_t IX, IY, SP, PC;            /*!< 16-bit registers */
+    uint8_t Memory[MAX_RAM_ADDRESS];    /*!< Combined ROM and RAM for the CPU */
+    Z80_CPUState State;                 /*!< State of the CPU: running, halted, etc. */
+    bool Interrupts;                    /*!< Interrupts enabled */
 } Z80_CPU;
 
 /**

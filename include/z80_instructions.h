@@ -11,6 +11,11 @@
 
 #include "z80_cpu.h"
 
+#define PREF_EXTD   0xED
+#define PREF_BIT    0xCB
+#define PREF_IX     0xDD
+#define PREF_IY     0xFD
+
 typedef enum operands { OP_NONE = 1, OP_BYTE = 2, OP_WORD = 3, OP_EXTD, OP_JUMP,  } Z80_Operands;
 
 typedef struct Z80_Instruction {
