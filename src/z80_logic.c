@@ -156,7 +156,7 @@ void xor(Z80_CPU *cpu, uint8_t val) {
     *cpu->A ^= val;
 }
 
-void dec(Z80_CPU *cpu, uint8_t *target) {
+void dec_byte(Z80_CPU *cpu, uint8_t *target) {
     flag_set(cpu->F, FLAG_N, true);
     flag_set(cpu->F, FLAG_PV, false);  // TODO: PV is set if m was 80h before operation; otherwise, reset
     
@@ -169,5 +169,9 @@ void dec(Z80_CPU *cpu, uint8_t *target) {
     // Set sign flag if bit 7 of the result is 1, indicating a negative number
     flag_set(cpu->F, FLAG_S, bit_get(*target - 1, 7));
 
+    (*target)--;
+}
+
+void dec_word(Z80_CPU *cpu, uint16_t *target) {
     (*target)--;
 }

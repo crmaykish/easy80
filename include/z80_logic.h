@@ -34,6 +34,7 @@ void or(Z80_CPU *cpu, uint8_t val);
 void xor(Z80_CPU *cpu, uint8_t val);
 
 // DEC operations
-void dec(Z80_CPU *cpu, uint8_t *target);
+void dec_byte(Z80_CPU *cpu, uint8_t *target);
+void dec_word(Z80_CPU *cpu, uint16_t *target);
 
 #endif
