@@ -22,7 +22,7 @@ void LD_B_n(Z80_CPU *z) { ld_byte(z, z->B, op(z, 1)); }
 void RLCA(Z80_CPU *z) {  }
 void EX_AF_AFp(Z80_CPU *z) {  }
 void ADD_HL_BC(Z80_CPU *z) { add_word(z, z->HL, *z->BC); }
-void LD_A_BCm(Z80_CPU *z) {  }
+void LD_A_BCm(Z80_CPU *z) { ld_byte(z, z->A, mem_val(z, *z->BC)); }
 void DEC_BC(Z80_CPU *z) { dec_word(z, z->BC); }
 void INC_C(Z80_CPU *z) { inc_byte(z, z->C); }
 void DEC_C(Z80_CPU *z) { dec_byte(z, z->C); }
@@ -73,7 +73,7 @@ void INC_SP(Z80_CPU *z) { inc_word(z, &z->SP); }
 void INC_HLm(Z80_CPU *z) {  }
 void DEC_HLm(Z80_CPU *z) { dec_byte(z, &z->Memory[*z->HL]); }
 void LD_HLm_n(Z80_CPU *z) { mem_val_set(z, *z->HL, op(z, 1)); }
-void SCF(Z80_CPU *z) {  }
+void SCF(Z80_CPU *z) { flag_set(z->F, FLAG_C, true); flag_set(z->F, FLAG_N, false); flag_set(z->F, FLAG_H, false); }
 void JR_C_n(Z80_CPU *z) {  }
 void ADD_HL_SP(Z80_CPU *z) { add_word(z, z->HL, z->SP); }
 void LD_A_nnm(Z80_CPU *z) { ld_byte(z, z->A, mem_nn(z, op(z, 2), op(z, 1))); }
@@ -278,7 +278,7 @@ void JP_PE_nn(Z80_CPU *z) {  }
 void EX_DE_HL(Z80_CPU *z) {  }
 void CALL_PE_nn(Z80_CPU *z) {  }
 void EXTD(Z80_CPU *z) {  }
-void XOR_n(Z80_CPU *z) {  }
+void XOR_n(Z80_CPU *z) { xor(z, op(z, 1)); }
 void RST_28h(Z80_CPU *z) {  }
 
 // 0xF0
@@ -291,7 +291,7 @@ void PUSH_AF(Z80_CPU *z) {  }
 void OR_n(Z80_CPU *z) { or(z, op(z, 1)); }
 void RST_30h(Z80_CPU *z) {  }
 void RET_M(Z80_CPU *z) {  }
-void LD_SP_HL(Z80_CPU *z) { z->SP = *z->HL; }
+void LD_SP_HL(Z80_CPU *z) { ld_word(z, &z->SP, *z->HL); }
 void JP_M_nn(Z80_CPU *z) {  }
 void EI(Z80_CPU *z) { z->Interrupts = true; }
 void CALL_M_nn(Z80_CPU *z) {  }

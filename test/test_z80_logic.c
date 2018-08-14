@@ -22,7 +22,7 @@ void test_z80_logic_add() {
     
     // Test 0 + 1
     Z80_CPU_Init(&cpu);
-    add(&cpu, 0x01);
+    add_byte(&cpu, 0x01);
     TEST_ASSERT_EQUAL(0x01, *cpu.A);
     TEST_ASSERT_BIT_LOW(FLAG_C, *cpu.F);
     TEST_ASSERT_BIT_LOW(FLAG_N, *cpu.F);
@@ -34,7 +34,7 @@ void test_z80_logic_add() {
     // Test 0xFF + 0x01
     Z80_CPU_Init(&cpu);
     *cpu.A = 0xFF;
-    add(&cpu, 0x01);
+    add_byte(&cpu, 0x01);
     TEST_ASSERT_EQUAL(0x00, *cpu.A);
     TEST_ASSERT_BIT_HIGH(FLAG_C, *cpu.F);
     TEST_ASSERT_BIT_LOW(FLAG_N, *cpu.F);
@@ -46,7 +46,7 @@ void test_z80_logic_add() {
     // // Test 0b00001000 + 0b00001000
     Z80_CPU_Init(&cpu);
     *cpu.A = 0b00001000;
-    add(&cpu, 0b00001000);
+    add_byte(&cpu, 0b00001000);
     TEST_ASSERT_EQUAL(0b00010000, *cpu.A);
     TEST_ASSERT_BIT_LOW(FLAG_C, *cpu.F);
     TEST_ASSERT_BIT_LOW(FLAG_N, *cpu.F);
@@ -58,7 +58,7 @@ void test_z80_logic_add() {
     // // Test 120 + 105 = 225 (-95 if signed)
     Z80_CPU_Init(&cpu);
     *cpu.A = 120;
-    add(&cpu, 105);
+    add_byte(&cpu, 105);
     TEST_ASSERT_EQUAL(225, *cpu.A);
     TEST_ASSERT_BIT_LOW(FLAG_C, *cpu.F);
     TEST_ASSERT_BIT_LOW(FLAG_N, *cpu.F);
