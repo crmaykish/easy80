@@ -17,8 +17,10 @@ void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src);
 void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src);
 
 // ADD operations
-void add(Z80_CPU *cpu, uint8_t val);
-void adc(Z80_CPU *cpu, uint8_t val);
+void add_byte(Z80_CPU *cpu, uint8_t val);
+void add_word(Z80_CPU *cpu, uint16_t *target, uint16_t val);
+void adc_byte(Z80_CPU *cpu, uint8_t val);
+void adc_word(Z80_CPU *cpu, uint16_t *target, uint16_t val);
 
 // SUB operations
 void sub(Z80_CPU *cpu, uint8_t val);

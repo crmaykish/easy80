@@ -53,12 +53,26 @@ static void add_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
     *cpu->A += c_val;
 }
 
-void add(Z80_CPU *cpu, uint8_t val) {
+void add_byte(Z80_CPU *cpu, uint8_t val) {
     add_internal(cpu, val, false);
 }
 
-void adc(Z80_CPU *cpu, uint8_t val) {
+void adc_byte(Z80_CPU *cpu, uint8_t val) {
     add_internal(cpu, val, true);
+}
+
+void add_word(Z80_CPU *cpu, uint16_t *target, uint16_t val) {
+
+    // TODO: flags
+
+    (*target) += val;
+}
+
+void adc_word(Z80_CPU *cpu, uint16_t *target, uint16_t val) {
+    
+    // TODO: flags
+
+    (*target) += val;
 }
 
 // SUB operations
