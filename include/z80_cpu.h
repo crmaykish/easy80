@@ -12,45 +12,49 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "z80_registers.h"
 
 #define MAX_RAM_ADDRESS 65536
 
 typedef enum cpu_state { RUNNING, STOPPED } Z80_CPUState;
 
-typedef union reg {
-    uint16_t reg_word;
-    struct {
-        uint8_t low;
-        uint8_t high;
-    } reg_byte;
-} reg_internal;
-
-typedef struct Z80_Registers {
-    reg_internal AF_reg;
-    reg_internal BC_reg;
-    reg_internal DE_reg;
-    reg_internal HL_reg;
-    reg_internal AFp_reg;
-    reg_internal BCp_reg;
-    reg_internal DEp_reg;
-    reg_internal HLp_reg;
-} Z80_Registers;
-
 typedef struct Z80_CPU {
-    Z80_Registers Registers;
+    Z80_Registers *Registers;
 
+    // TODO: possible to make these pointers constant so they are never accidentally changed after creation
+
+    // Main registers
     uint16_t *AF;
     uint16_t *BC;
     uint16_t *DE;
     uint16_t *HL;
+    uint8_t *A;
+    uint8_t *F;
+    uint8_t *B;
+    uint8_t *C;
+    uint8_t *D;
+    uint8_t *E;
+    uint8_t *H;
+    uint8_t *L;
 
-    uint8_t *A, *F;
-    uint8_t *B, *C;
-    uint8_t *D, *E;
-    uint8_t *H, *L;
+    // Alternate registers
+    uint16_t *AFp;
+    uint16_t *BCp;
+    uint16_t *DEp;
+    uint16_t *HLp;
+    uint8_t *Ap;
+    uint8_t *Fp;
+    uint8_t *Bp;
+    uint8_t *Cp;
+    uint8_t *Dp;
+    uint8_t *Ep;
+    uint8_t *Hp;
+    uint8_t *Lp;
 
+    // TODO: Convert these pseudo-registers to Z80_Registers for a unified interface
     uint8_t I, R;                       /*!< 8-bit registers */
     uint16_t IX, IY, SP, PC;            /*!< 16-bit registers */
+    
     uint8_t Memory[MAX_RAM_ADDRESS];    /*!< Combined ROM and RAM for the CPU */
     Z80_CPUState State;                 /*!< State of the CPU: running, halted, etc. */
     bool Interrupts;                    /*!< Interrupts enabled */

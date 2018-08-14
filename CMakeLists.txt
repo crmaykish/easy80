@@ -11,6 +11,7 @@ add_executable(easy80
         src/z80_flags.c
         src/z80_logic.c
         src/z80_instructions.c
+        src/z80_registers.c
         src/z80_cpu.c
         src/main.c
 )
@@ -34,6 +35,7 @@ add_executable(test_z80_cpu
         src/z80_instructions.c
         src/z80_logic.c
         src/z80_flags.c
+        src/z80_registers.c
         src/bitmath.c
         libs/Unity/src/unity.c
 )
@@ -44,6 +46,7 @@ add_executable(test_z80_logic
         src/z80_instructions.c
         src/z80_logic.c
         src/z80_flags.c
+        src/z80_registers.c
         src/bitmath.c
         libs/Unity/src/unity.c
 )
