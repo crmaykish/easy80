@@ -103,3 +103,7 @@ uint16_t op_nn(Z80_CPU *z) {
 uint8_t mem_val(Z80_CPU *z, uint16_t address) {
     return z->Memory[address];
 }
+
+void mem_val_set(Z80_CPU *z, uint16_t address, uint8_t val) {
+    z->Memory[address] = val;
+}
