@@ -37,4 +37,8 @@ void xor(Z80_CPU *cpu, uint8_t val);
 void dec_byte(Z80_CPU *cpu, uint8_t *target);
 void dec_word(Z80_CPU *cpu, uint16_t *target);
 
+// INC operations
+void inc_byte(Z80_CPU *cpu, uint8_t *target);
+void inc_word(Z80_CPU *cpu, uint16_t *target);
+
 #endif

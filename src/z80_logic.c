@@ -175,3 +175,23 @@ void dec_byte(Z80_CPU *cpu, uint8_t *target) {
 void dec_word(Z80_CPU *cpu, uint16_t *target) {
     (*target)--;
 }
+
+void inc_byte(Z80_CPU *cpu, uint8_t *target) {
+    flag_set(cpu->F, FLAG_N, false);
+    flag_set(cpu->F, FLAG_PV, false);  // TODO: PV is set if m was 7Fh before operation; otherwise, reset
+    
+    // Set HALF-CARRY bit if lower nibble of result is less than lower nibble of starting value
+    flag_set(cpu->F, FLAG_H, ((*target & 0x0F) < ((*target + 1) & 0x0F)));     // TODO: check this logic
+
+    // Set ZERO flag if result is 0
+    flag_set(cpu->F, FLAG_Z, ((*target + 1) == 0));
+
+    // Set sign flag if bit 7 of the result is 1, indicating a negative number
+    flag_set(cpu->F, FLAG_S, bit_get(*target + 1, 7));
+
+    (*target)++;
+}
+
+void inc_word(Z80_CPU *cpu, uint16_t *target) {
+    (*target)++;
+}
