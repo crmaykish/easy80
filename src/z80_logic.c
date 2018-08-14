@@ -209,3 +209,35 @@ void inc_byte(Z80_CPU *cpu, uint8_t *target) {
 void inc_word(Z80_CPU *cpu, uint16_t *target) {
     (*target)++;
 }
+
+void rlca(Z80_CPU *cpu) {
+    uint8_t bit7 = (*cpu->A & 0b10000000) >> 7;
+    
+    flag_set(cpu->F, FLAG_N, false);
+    flag_set(cpu->F, FLAG_H, false);
+    
+    flag_set(cpu->F, FLAG_C, (bit7 == 1));
+
+    *cpu->A << 1;
+    *cpu->A += bit7;
+}
+
+void rrca(Z80_CPU *cpu) {
+    uint8_t bit0 = *cpu->A & 0b00000001;
+    
+    flag_set(cpu->F, FLAG_N, false);
+    flag_set(cpu->F, FLAG_H, false);
+    
+    flag_set(cpu->F, FLAG_C, (bit0 == 1));
+
+    *cpu->A >> 1;
+    *cpu->A += (bit0 << 7);
+}
+
+void rla(Z80_CPU *cpu) {
+
+}
+
+void rra(Z80_CPU *cpu) {
+
+}

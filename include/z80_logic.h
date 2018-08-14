@@ -43,4 +43,9 @@ void dec_word(Z80_CPU *cpu, uint16_t *target);
 void inc_byte(Z80_CPU *cpu, uint8_t *target);
 void inc_word(Z80_CPU *cpu, uint16_t *target);
 
+void rlca(Z80_CPU *cpu);
+void rrca(Z80_CPU *cpu);
+void rla(Z80_CPU *cpu);
+void rra(Z80_CPU *cpu);
+
 #endif

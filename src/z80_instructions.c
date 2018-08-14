@@ -19,18 +19,18 @@ void INC_BC(Z80_CPU *z) { inc_word(z, z->BC); }
 void INC_B(Z80_CPU *z) { inc_byte(z, z->B); }
 void DEC_B(Z80_CPU *z) { dec_byte(z, z->B); }
 void LD_B_n(Z80_CPU *z) { ld_byte(z, z->B, op(z, 1)); }
-void RLCA(Z80_CPU *z) {  }
-void EX_AF_AFp(Z80_CPU *z) {  }
+void RLCA(Z80_CPU *z) { rlca(z); }
+void EX_AF_AFp(Z80_CPU *z) { uint16_t t = *z->AFp; *z->AFp = *z->AF; *z->AF = t; }
 void ADD_HL_BC(Z80_CPU *z) { add_word(z, z->HL, *z->BC); }
 void LD_A_BCm(Z80_CPU *z) { ld_byte(z, z->A, mem_val(z, *z->BC)); }
 void DEC_BC(Z80_CPU *z) { dec_word(z, z->BC); }
 void INC_C(Z80_CPU *z) { inc_byte(z, z->C); }
 void DEC_C(Z80_CPU *z) { dec_byte(z, z->C); }
 void LD_C_n(Z80_CPU *z) { ld_byte(z, z->C, op(z, 1)); }
-void RRCA(Z80_CPU *z) {  }
+void RRCA(Z80_CPU *z) { rrca(z); }
 
 // 0x10
-void DJNZ_n(Z80_CPU *z) {  }
+void DJNZ_n(Z80_CPU *z) { *z->B--; z->PC += (*z->B != 0 ? op(z, 1) : 1); }  // TODO: n is a signed value
 void LD_DE_nn(Z80_CPU *z) { ld_word(z, z->DE, op_nn(z)); }
 void LD_DEm_A(Z80_CPU *z) { mem_val_set(z, *z->DE, *z->A); }
 void INC_DE(Z80_CPU *z) { inc_word(z, z->DE); }
