@@ -95,3 +95,11 @@ uint8_t mem_HL(Z80_CPU *z) {
 uint8_t op(Z80_CPU *z, uint8_t offset) {
     return z->Memory[z->PC + offset];
 }
+
+uint16_t op_nn(Z80_CPU *z) {
+    return combine(op(z, 2), op(z, 1));
+}
+
+uint8_t mem_val(Z80_CPU *z, uint16_t address) {
+    return z->Memory[address];
+}

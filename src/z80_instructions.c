@@ -13,7 +13,7 @@
 
 // 0x00
 void NOP(Z80_CPU *z) { /* do nothing */ }
-void LD_BC_nn(Z80_CPU *z) {  }
+void LD_BC_nn(Z80_CPU *z) { ld_word(z, z->BC, op_nn(z)); }
 void LD_BCm_A(Z80_CPU *z) {  }
 void INC_BC(Z80_CPU *z) {  }
 void INC_B(Z80_CPU *z) {  }
@@ -31,30 +31,30 @@ void RRCA(Z80_CPU *z) {  }
 
 // 0x10
 void DJNZ_n(Z80_CPU *z) {  }
-void LD_DE_nn(Z80_CPU *z) { ld_word(z, z->DE, combine(op(z, 2), op(z, 1))); }
+void LD_DE_nn(Z80_CPU *z) { ld_word(z, z->DE, op_nn(z)); }
 void LD_DEm_A(Z80_CPU *z) {  }
 void INC_DE(Z80_CPU *z) {  }
 void INC_D(Z80_CPU *z) {  }
 void DEC_D(Z80_CPU *z) {  }
-void LD_D_n(Z80_CPU *z) {  }
+void LD_D_n(Z80_CPU *z) { ld_byte(z, z->D, op(z, 1)); }
 void RLA(Z80_CPU *z) {  }
 void JR_n(Z80_CPU *z) {  }
 void ADD_HL_DE(Z80_CPU *z) {  }
-void LD_A_DEm(Z80_CPU *z) {  }
+void LD_A_DEm(Z80_CPU *z) { ld_byte(z, z->A, mem_val(z, *z->DE)); }
 void DEC_DE(Z80_CPU *z) {  }
 void INC_E(Z80_CPU *z) {  }
 void DEC_E(Z80_CPU *z) {  }
-void LD_E_n(Z80_CPU *z) {  }
+void LD_E_n(Z80_CPU *z) { ld_byte(z, z->E, op(z, 1)); }
 void RRA(Z80_CPU *z) {  }
 
 // 0x20
 void JR_NZ_n(Z80_CPU *z) {  }
-void LD_HL_nn(Z80_CPU *z) { ld_word(z, z->HL, combine(op(z, 2), op(z, 1))); }
+void LD_HL_nn(Z80_CPU *z) { ld_word(z, z->HL, op_nn(z)); }
 void LD_nnm_HL(Z80_CPU *z) {  }
 void INC_HL(Z80_CPU *z) {  }
 void INC_H(Z80_CPU *z) {  }
 void DEC_H(Z80_CPU *z) { dec(z, z->H); }
-void LD_H_nn(Z80_CPU *z) {  }
+void LD_H_n(Z80_CPU *z) { ld_byte(z, z->H, op(z, 1)); }
 void DAA(Z80_CPU *z) {  }
 void JR_Z_n(Z80_CPU *z) {  }
 void ADD_HL_HL(Z80_CPU *z) {  }
@@ -67,7 +67,7 @@ void CPL(Z80_CPU *z) {  }
 
 // 0x30
 void JR_NC_n(Z80_CPU *z) {  }
-void LD_SP_nn(Z80_CPU *z) {  }
+void LD_SP_nn(Z80_CPU *z) { ld_word(z, &z->SP, op_nn(z)); }
 void LD_nnm_A(Z80_CPU *z) {  }
 void INC_SP(Z80_CPU *z) {  }
 void INC_HLm(Z80_CPU *z) {  }
@@ -76,7 +76,7 @@ void LD_HLm_n(Z80_CPU *z) {  }
 void SCF(Z80_CPU *z) {  }
 void JR_C_n(Z80_CPU *z) {  }
 void ADD_HL_SP(Z80_CPU *z) {  }
-void LD_A_nnm(Z80_CPU *z) {  }
+void LD_A_nnm(Z80_CPU *z) { ld_byte(z, z->A, mem_nn(z, op(z, 2), op(z, 1))); }
 void DEC_SP(Z80_CPU *z) {  }
 void INC_A(Z80_CPU *z) {  }
 void DEC_A(Z80_CPU *z) {  }
@@ -231,7 +231,7 @@ void CP_A(Z80_CPU *z) {  }
 void RET_NZ(Z80_CPU *z) {  }
 void POP_BC(Z80_CPU *z) {  }
 void JP_NZ_nn(Z80_CPU *z) {  }
-void JP_nn(Z80_CPU *z) { z->PC = combine(op(z, 2), op(z, 1)); }     // TODO: the operands may be backwards, test this
+void JP_nn(Z80_CPU *z) { z->PC = op_nn(z); }     // TODO: the operands may be backwards, test this
 void CALL_NZ_nn(Z80_CPU *z) {  }
 void PUSH_BC(Z80_CPU *z) {  }
 void ADD_A_n(Z80_CPU *z) { add(z, op(z, 1)); }
@@ -341,17 +341,17 @@ const Z80_Instruction MainInstructions[256] = {
     { 0x1E, "LD E,*",       OP_BYTE,    7,      &LD_E_n },
     { 0x1F, "RRA",          OP_NONE,    4,      &RRA },
     // 0x20 NAME            SIZE        CYCLES  HANDLER
-    { 0x20, "JR NZ,*",      OP_BYTE,    12,      &JR_NZ_n },    // TODO: 12 or 7 clock cycles
-    { 0x21, "LD HL,**",     OP_WORD,    10,      &LD_HL_nn },
-    { 0x22, "LD (**),HL",   OP_WORD,    16,      &LD_nnm_HL },
+    { 0x20, "JR NZ,*",      OP_BYTE,    12,     &JR_NZ_n },    // TODO: 12 or 7 clock cycles
+    { 0x21, "LD HL,**",     OP_WORD,    10,     &LD_HL_nn },
+    { 0x22, "LD (**),HL",   OP_WORD,    16,     &LD_nnm_HL },
     { 0x23, "INC HL",       OP_NONE,    6,      &INC_HL },
     { 0x24, "INC H",        OP_NONE,    4,      &INC_H },
     { 0x25, "DEC H",        OP_NONE,    4,      &DEC_H },
-    { 0x26, "LD H,*",       OP_BYTE,    7,      &LD_H_nn },
+    { 0x26, "LD H,*",       OP_BYTE,    7,      &LD_H_n },
     { 0x27, "DAA",          OP_NONE,    4,      &DAA },
-    { 0x28, "JR Z,*",       OP_BYTE,    12,      &JR_Z_n },     // TODO: 12 or 7 clock cycles
-    { 0x29, "ADD HL,HL",    OP_NONE,    11,      &ADD_HL_HL },
-    { 0x2A, "LD HL,(**)",   OP_WORD,    16,      &LD_HL_nnm },
+    { 0x28, "JR Z,*",       OP_BYTE,    12,     &JR_Z_n },     // TODO: 12 or 7 clock cycles
+    { 0x29, "ADD HL,HL",    OP_NONE,    11,     &ADD_HL_HL },
+    { 0x2A, "LD HL,(**)",   OP_WORD,    16,     &LD_HL_nnm },
     { 0x2B, "DEC HL",       OP_NONE,    6,      &DEC_HL },
     { 0x2C, "INC L",        OP_NONE,    4,      &INC_L },
     { 0x2D, "DEC L",        OP_NONE,    4,      &DEC_L },

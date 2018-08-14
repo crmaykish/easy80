@@ -118,4 +118,16 @@ uint8_t mem_HL(Z80_CPU *z);
  */
 uint8_t op(Z80_CPU *z, uint8_t offset);
 
+/**
+ * @brief Return the two bytes after PC as a single word
+ * 
+ * @param z CPU object
+ * @return uint16_t two bytes after the opcode as a word
+ */
+uint16_t op_nn(Z80_CPU *z);
+
+uint8_t mem_val(Z80_CPU *z, uint16_t address);
+
+// TODO: move these helper functions to z80_logic?
+
 #endif
