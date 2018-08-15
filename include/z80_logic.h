@@ -12,6 +12,8 @@
 #include "z80_cpu.h"
 #include "z80_flags.h"
 
+bool even_parity(uint8_t n);
+
 // LD operations
 void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src);
 void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src);
