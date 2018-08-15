@@ -76,7 +76,7 @@ void adc_word(Z80_CPU *cpu, uint16_t *target, uint16_t val) {
 }
 
 // SUB operations
-static void sub_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
+static void sub_internal(Z80_CPU *cpu, uint8_t val, bool use_carry, bool cp) {
     // TODO: Double check the use of the carry flag in the flag logic...
     uint8_t carry_flag = (use_carry && (cpu->F, FLAG_C)) ? 1 : 0;
     uint8_t c_val = val + carry_flag;
@@ -105,22 +105,24 @@ static void sub_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
     // Set sign flag if bit 7 of the result is 1, indicating a negative number
     flag_set(cpu->F, FLAG_S, bit_get(*cpu->A - c_val, 7));
 
-    // Subtract source from A
-    *cpu->A -= c_val;
+    if (!cp) {
+        // Subtract source from A
+        *cpu->A -= c_val;
+    }
 }
 
 void sub(Z80_CPU *cpu, uint8_t val) {
-    sub_internal(cpu, val, false);
+    sub_internal(cpu, val, false, false);
 }
 
 void sbc(Z80_CPU *cpu, uint8_t val) {
-    sub_internal(cpu, val, true);
+    sub_internal(cpu, val, true, false);
 }
 
 // AND operations
 void and(Z80_CPU *cpu, uint8_t val) {
     flag_set(cpu->F, FLAG_C, false);
-    flag_set(cpu->F, FLAG_C, false);
+    flag_set(cpu->F, FLAG_C, false);    // TODO: wrong flag?
     flag_set(cpu->F, FLAG_H, true);
 
     // Overflow parity flag is set HIGH if even parity and LOW if odd
@@ -138,7 +140,7 @@ void and(Z80_CPU *cpu, uint8_t val) {
 // OR operations
 void or(Z80_CPU *cpu, uint8_t val) {
     flag_set(cpu->F, FLAG_C, false);
-    flag_set(cpu->F, FLAG_C, false);
+    flag_set(cpu->F, FLAG_C, false);    // TODO: wrong flag?
     flag_set(cpu->F, FLAG_H, false);
 
     // Overflow parity flag is set HIGH if even parity and LOW if odd
@@ -155,7 +157,7 @@ void or(Z80_CPU *cpu, uint8_t val) {
 
 void xor(Z80_CPU *cpu, uint8_t val) {
     flag_set(cpu->F, FLAG_C, false);
-    flag_set(cpu->F, FLAG_C, false);
+    flag_set(cpu->F, FLAG_C, false);    // TODO: wrong flag?
     flag_set(cpu->F, FLAG_H, false);
 
     // Overflow parity flag is set HIGH if even parity and LOW if odd
@@ -235,9 +237,37 @@ void rrca(Z80_CPU *cpu) {
 }
 
 void rla(Z80_CPU *cpu) {
+    // Reset H and N flags
+    flag_set(cpu->F, FLAG_N, false);
+    flag_set(cpu->F, FLAG_H, false);
 
+    // Current value of the carry flag
+    uint8_t old_carry = flag_get(cpu->F, FLAG_C);
+
+    // Set carry flag to the current 7th bit of A
+    flag_set(cpu->F, FLAG_C, ((*cpu->A & 0b10000000) >> 7) == 1);
+
+    *cpu->A << 1;
+
+    *cpu->A |= (old_carry & 0x1);
 }
 
 void rra(Z80_CPU *cpu) {
+    // Reset H and N flags
+    flag_set(cpu->F, FLAG_N, false);
+    flag_set(cpu->F, FLAG_H, false);
 
+    // Current value of the carry flag
+    uint8_t old_carry = flag_get(cpu->F, FLAG_C);
+
+    // Set carry flag to the current 0th bit of A
+    flag_set(cpu->F, FLAG_C, (*cpu->A & 0b1) == 1);
+
+    *cpu->A >> 1;
+
+    *cpu->A |= ((old_carry & 0b10000000) << 7);
+}
+
+void cp(Z80_CPU *cpu, uint8_t val) {
+    sub_internal(cpu, val, false, true);
 }
