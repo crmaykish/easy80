@@ -24,6 +24,7 @@ add_executable(easy80
         src/z80_cpu.c
         src/easy80_debugger_app_win.c
         src/easy80_debugger_app.c
+        src/resources.c
         src/main.c
 )
 
