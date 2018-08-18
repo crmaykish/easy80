@@ -54,4 +54,7 @@ void rra(Z80_CPU *cpu);
 // CP operations
 void cp(Z80_CPU *cpu, uint8_t val);
 
+// DAA operations
+void daa(Z80_CPU *z);
+
 #endif

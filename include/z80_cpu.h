@@ -130,6 +130,7 @@ uint8_t mem_val(Z80_CPU *z, uint16_t address);
 
 void mem_val_set(Z80_CPU *z, uint16_t address, uint8_t val);
 
+// This stuff should be in z80_logic
 uint16_t pop(Z80_CPU *z);
 
 void push(Z80_CPU *z, uint16_t val);

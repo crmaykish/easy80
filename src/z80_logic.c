@@ -271,3 +271,33 @@ void rra(Z80_CPU *cpu) {
 void cp(Z80_CPU *cpu, uint8_t val) {
     sub_internal(cpu, val, false, true);
 }
+
+void daa(Z80_CPU *z) {
+    // If the lower 4 bits contain non-BCD number or if H flag is set, add 0x06
+    if ((*z->A & 0xF) > 9 || flag_get(z->F, FLAG_H)) {
+        *z->A += 0x06;
+    }
+
+    // If the upper 4 bits contain non-BCD number, then 0x60 is added
+    if (((*z->A & 0xF0) >> 4) > 9 || flag_get(z->F, FLAG_C)) {
+        *z->A += 0x60;
+        // If this second addition is needed, set the carry flag
+        flag_set(z->F, FLAG_C, true);
+    }
+    else {
+        // If the second addition was not needed, reset the carry flag
+        flag_set(z->F, FLAG_C, false);
+    }
+
+    // Overflow parity flag is set HIGH if even parity and LOW if odd
+    flag_set(z->F, FLAG_PV, even_parity(*z->A));
+
+    // Set ZERO flag if result is 0
+    flag_set(z->F, FLAG_Z, ((*z->A) == 0));
+
+    // Set sign flag if bit 7 of the result is 1, indicating a negative number
+    flag_set(z->F, FLAG_S, bit_get(*z->A, 7));
+
+    // TODO: H flag?
+    // TODO: do SBC, DEC, and NEG instructions require different behavior here?
+}

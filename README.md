@@ -11,22 +11,25 @@ I would like to use this core as a base for future projects involving the Z80, i
 emulators and hardware projects.
 
 ## Status
-Heavy development, incomplete
+Under active development... not yet fully functional
 
 Development plan:
 - [x] Model the internal state of the CPU (registers, memory access, etc.)
 - [x] Implement some core opcodes to test the speed and accuracy of the model
-- [ ] Add some unit tests to verify CPU functionality
-- [ ] Implement remaining opcodes
-- [ ] Create a test program to load real machine code and debug the emulation
-- [ ] Implement CPU cycle and clock control
+- [x] Create a test program to load real machine code and debug the emulation
+- [x] Implement main instruction set (Intel 8080-compatible instructions)
+- [ ] Test main instruction set for accuracy against 8080 software
+- [ ] Implement extended instruction set - EXTD, BITS, IX, IY
+- [ ] Test extended instruction set for accuracy against real Z80 software (maybe a BASIC rom?)
+- [ ] Create hardware interface layer (IN and OUT instructions)
+- [ ] Make emulator timing CPU cycle accurate instead of just instruction accurate
 
 ## Dependencies
-This project has no compile-time or runtime dependencies. It is a standalone C module.
+This project has no runtime dependencies. It is a standalone C module intended to be included in other projects with minimal overhead
 
 Note: to run unit tests, the Unity source code is required. See `./tools/libs.sh`
 
-Note: to build Doxygen documentation, doxygen, dot, and graphviz packages must be installed.
+Note: to build Doxygen documentation, `doxygen`, `dot`, and `graphviz` packages must be installed.
 
 ## Building and Testing
 This project uses CMake (minimum version v3.10.2).
