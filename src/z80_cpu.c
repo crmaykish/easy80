@@ -65,8 +65,8 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
 
     inst.Handler(cpu);
 
-    if (inst.Operands != OP_JUMP) {
-        cpu->PC += inst.Operands;
+    if (inst.Type != OP_JUMP) {
+        cpu->PC += inst.Type;
     }
 }
 
