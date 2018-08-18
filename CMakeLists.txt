@@ -4,6 +4,9 @@ project(easy80)
 include_directories(include)
 include_directories(libs/Unity/src)
 
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(easy80
@@ -50,3 +53,5 @@ add_executable(test_z80_logic
         src/bitmath.c
         libs/Unity/src/unity.c
 )
+
+target_link_libraries(easy80 ${CURSES_LIBRARIES})
