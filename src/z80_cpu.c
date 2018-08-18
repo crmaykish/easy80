@@ -119,3 +119,33 @@ void push(Z80_CPU *z, uint16_t val) {
     mem_val_set(z, z->SP, split_1(val));
     mem_val_set(z + 1, z->SP, split_2(val));
 }
+
+void ret(Z80_CPU *z, bool condition) {
+    if (condition) {
+        z->PC = pop(z);
+    }
+    else {
+        z->PC += OP_NONE;
+    }
+}
+
+void call(Z80_CPU *z, uint16_t val, bool condition) {
+    if (condition) {
+        push(z, z->PC + OP_WORD);
+        z->PC = val;
+    }
+    else {
+        z->PC += OP_WORD;
+    }
+}
+
+void rst(Z80_CPU *z, uint8_t val) {
+    push(z, z->PC + OP_NONE);
+    z->PC = val;
+}
+
+void ex(uint16_t *a, uint16_t *b) {
+    uint16_t t = *a;
+    *a = *b;
+    *b = t;
+}

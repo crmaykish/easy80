@@ -20,7 +20,7 @@ void INC_B(Z80_CPU *z) { inc_byte(z, z->B); }
 void DEC_B(Z80_CPU *z) { dec_byte(z, z->B); }
 void LD_B_n(Z80_CPU *z) { ld_byte(z, z->B, op(z, 1)); }
 void RLCA(Z80_CPU *z) { rlca(z); }
-void EX_AF_AFp(Z80_CPU *z) { uint16_t t = *z->AFp; *z->AFp = *z->AF; *z->AF = t; }
+void EX_AF_AFp(Z80_CPU *z) { ex(z->AF, z->AFp); }
 void ADD_HL_BC(Z80_CPU *z) { add_word(z, z->HL, *z->BC); }
 void LD_A_BCm(Z80_CPU *z) { ld_byte(z, z->A, mem_val(z, *z->BC)); }
 void DEC_BC(Z80_CPU *z) { dec_word(z, z->BC); }
@@ -228,76 +228,76 @@ void CP_HLm(Z80_CPU *z) { cp(z, mem_HL(z)); }
 void CP_A(Z80_CPU *z) { cp(z, *z->A); }
 
 // 0xC0
-void RET_NZ(Z80_CPU *z) {  }
+void RET_NZ(Z80_CPU *z) { ret(z, !flag_get(z->F, FLAG_Z)); }
 void POP_BC(Z80_CPU *z) { *z->BC = pop(z); }
 void JP_NZ_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_Z) ? op_nn(z) : (z->PC + OP_WORD); }
 void JP_nn(Z80_CPU *z) { z->PC = op_nn(z); }     // TODO: the operands may be backwards, test this
-void CALL_NZ_nn(Z80_CPU *z) {  }
+void CALL_NZ_nn(Z80_CPU *z) { call(z, op_nn(z), !flag_get(z->F, FLAG_Z)); }
 void PUSH_BC(Z80_CPU *z) { push(z, *z->BC); }
 void ADD_A_n(Z80_CPU *z) { add_byte(z, op(z, 1)); }
-void RST_00h(Z80_CPU *z) {  }
-void RET_Z(Z80_CPU *z) {  }
-void RET(Z80_CPU *z) {  }
+void RST_00h(Z80_CPU *z) { rst(z, 0x00); }
+void RET_Z(Z80_CPU *z) { ret(z, flag_get(z->F, FLAG_Z)); }
+void RET(Z80_CPU *z) { ret(z, true); }
 void JP_Z_nn(Z80_CPU *z) { z->PC = flag_get(z->F, FLAG_Z) ? op_nn(z) : (z->PC + OP_WORD); }
-void BITS(Z80_CPU *z) {  }
-void CALL_Z_nn(Z80_CPU *z) {  }
-void CALL_nn(Z80_CPU *z) {  }
+void BITS(Z80_CPU *z) { /* BITS */ }
+void CALL_Z_nn(Z80_CPU *z) { call(z, op_nn(z), flag_get(z->F, FLAG_Z)); }
+void CALL_nn(Z80_CPU *z) { call(z, op_nn(z), true); }
 void ADC_A_n(Z80_CPU *z) { adc_byte(z, op(z, 1)); }
-void RST_08h(Z80_CPU *z) {  }
+void RST_08h(Z80_CPU *z) { rst(z, 0x08); }
 
 // 0xD0
-void RET_NC(Z80_CPU *z) {  }
+void RET_NC(Z80_CPU *z) { ret(z, !flag_get(z->F, FLAG_C)); }
 void POP_DE(Z80_CPU *z) { *z->DE = pop(z); }
 void JP_NC_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_C) ? op_nn(z) : (z->PC + OP_WORD); }
 void OUT_nm_a(Z80_CPU *z) {  }
-void CALL_NC_nn(Z80_CPU *z) {  }
+void CALL_NC_nn(Z80_CPU *z) { call(z, op_nn(z), !flag_get(z->F, FLAG_C)); }
 void PUSH_DE(Z80_CPU *z) { push(z, *z->DE); }
 void SUB_n(Z80_CPU *z) { sub(z, op(z, 1)); }
-void RST_10h(Z80_CPU *z) {  }
-void RET_C(Z80_CPU *z) {  }
-void EXX(Z80_CPU *z) {  }
+void RST_10h(Z80_CPU *z) { rst(z, 0x10); }
+void RET_C(Z80_CPU *z) { ret(z, flag_get(z->F, FLAG_C)); }
+void EXX(Z80_CPU *z) { ex(z->BC, z->BCp); ex(z->DE, z->DEp); ex(z->HL, z->HLp); }
 void JP_C_nn(Z80_CPU *z) { z->PC = flag_get(z->F, FLAG_C) ? op_nn(z) : (z->PC + OP_WORD); }
 void IN_A_nm(Z80_CPU *z) {  }
-void CALL_C_nn(Z80_CPU *z) {  }
-void IX(Z80_CPU *z) {  }
-void SBC_A_n(Z80_CPU *z) {  }
-void RST_18h(Z80_CPU *z) {  }
+void CALL_C_nn(Z80_CPU *z) { call(z, op_nn(z), flag_get(z->F, FLAG_C)); }
+void IX(Z80_CPU *z) { /* IX */ }
+void SBC_A_n(Z80_CPU *z) { sbc(z, op(z, 1)); }
+void RST_18h(Z80_CPU *z) { rst(z, 0x18); }
 
 // 0xE0
-void RET_PO(Z80_CPU *z) {  }
+void RET_PO(Z80_CPU *z) { ret(z, !flag_get(z->F, FLAG_PV)); }
 void POP_HL(Z80_CPU *z) { *z->HL = pop(z); }
 void JP_PO_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_PV) ? op_nn(z) : (z->PC + OP_WORD); }
 void EX_SPm_HL(Z80_CPU *z) {  }
-void CALL_PO_nn(Z80_CPU *z) {  }
+void CALL_PO_nn(Z80_CPU *z) { call(z, op_nn(z), !flag_get(z->F, FLAG_PV)); }
 void PUSH_HL(Z80_CPU *z) { push(z, *z->HL); }
 void AND_n(Z80_CPU *z) { and(z, op(z, 1)); }
-void RST_20h(Z80_CPU *z) {  }
-void RET_PE(Z80_CPU *z) {  }
+void RST_20h(Z80_CPU *z) { rst(z, 0x20); }
+void RET_PE(Z80_CPU *z) { ret(z, flag_get(z->F, FLAG_PV)); }
 void JP_HLm(Z80_CPU *z) { z->PC = mem_HL(z); }
 void JP_PE_nn(Z80_CPU *z) { z->PC = flag_get(z->F, FLAG_PV) ? op_nn(z) : (z->PC + OP_WORD); }
-void EX_DE_HL(Z80_CPU *z) {  }
-void CALL_PE_nn(Z80_CPU *z) {  }
-void EXTD(Z80_CPU *z) {  }
+void EX_DE_HL(Z80_CPU *z) { ex(z->DE, z->HL); }
+void CALL_PE_nn(Z80_CPU *z) { call(z, op_nn(z), flag_get(z->F, FLAG_PV)); }
+void EXTD(Z80_CPU *z) { /* EXTD */ }
 void XOR_n(Z80_CPU *z) { xor(z, op(z, 1)); }
-void RST_28h(Z80_CPU *z) {  }
+void RST_28h(Z80_CPU *z) { rst(z, 0x28); }
 
 // 0xF0
-void RET_P(Z80_CPU *z) {  }
+void RET_P(Z80_CPU *z) { ret(z, !flag_get(z->F, FLAG_S)); }
 void POP_AF(Z80_CPU *z) { *z->AF = pop(z); }
 void JP_P_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_S) ? op_nn(z) : (z->PC + OP_WORD); }
 void DI(Z80_CPU *z) { z->Interrupts = false; }
-void CALL_P_nn(Z80_CPU *z) {  }
+void CALL_P_nn(Z80_CPU *z) { call(z, op_nn(z), !flag_get(z->F, FLAG_S)); }
 void PUSH_AF(Z80_CPU *z) { push(z, *z->AF); }
 void OR_n(Z80_CPU *z) { or(z, op(z, 1)); }
-void RST_30h(Z80_CPU *z) {  }
-void RET_M(Z80_CPU *z) {  }
+void RST_30h(Z80_CPU *z) { rst(z, 0x30); }
+void RET_M(Z80_CPU *z) { ret(z, flag_get(z->F, FLAG_S)); }
 void LD_SP_HL(Z80_CPU *z) { ld_word(z, &z->SP, *z->HL); }
 void JP_M_nn(Z80_CPU *z) { z->PC = flag_get(z->F, FLAG_S) ? op_nn(z) : (z->PC + OP_WORD); }
 void EI(Z80_CPU *z) { z->Interrupts = true; }
-void CALL_M_nn(Z80_CPU *z) {  }
-void IY(Z80_CPU *z) {  }
+void CALL_M_nn(Z80_CPU *z) { call(z, op_nn(z), flag_get(z->F, FLAG_S)); }
+void IY(Z80_CPU *z) { /* IY */ }
 void CP_n(Z80_CPU *z) { cp(z, op(z, 1)); }
-void RST_38h(Z80_CPU *z) {  }
+void RST_38h(Z80_CPU *z) { rst(z, 0x38); }
 
 // Extended instruction set implementation
 

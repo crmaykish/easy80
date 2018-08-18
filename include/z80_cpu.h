@@ -134,6 +134,14 @@ uint16_t pop(Z80_CPU *z);
 
 void push(Z80_CPU *z, uint16_t val);
 
+void ret(Z80_CPU *z, bool condition);
+
+void call(Z80_CPU *z, uint16_t val, bool condition);
+
+void rst(Z80_CPU *z, uint8_t val);
+
+void ex(uint16_t *a, uint16_t *b);
+
 // TODO: move these helper functions to z80_logic?
 
 #endif
