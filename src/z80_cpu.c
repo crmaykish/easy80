@@ -107,3 +107,15 @@ uint8_t mem_val(Z80_CPU *z, uint16_t address) {
 void mem_val_set(Z80_CPU *z, uint16_t address, uint8_t val) {
     z->Memory[address] = val;
 }
+
+uint16_t pop(Z80_CPU *z) {
+    uint16_t p = combine(mem_val(z, z->SP), mem_val(z, z->SP + 1));
+    z->SP += 2;
+    return p;
+}
+
+void push(Z80_CPU *z, uint16_t val) {
+    z->SP -= 2;
+    mem_val_set(z, z->SP, split_1(val));
+    mem_val_set(z + 1, z->SP, split_2(val));
+}

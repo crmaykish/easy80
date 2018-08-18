@@ -229,11 +229,11 @@ void CP_A(Z80_CPU *z) { cp(z, *z->A); }
 
 // 0xC0
 void RET_NZ(Z80_CPU *z) {  }
-void POP_BC(Z80_CPU *z) {  }
+void POP_BC(Z80_CPU *z) { *z->BC = pop(z); }
 void JP_NZ_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_Z) ? op_nn(z) : (z->PC + OP_WORD); }
 void JP_nn(Z80_CPU *z) { z->PC = op_nn(z); }     // TODO: the operands may be backwards, test this
 void CALL_NZ_nn(Z80_CPU *z) {  }
-void PUSH_BC(Z80_CPU *z) {  }
+void PUSH_BC(Z80_CPU *z) { push(z, *z->BC); }
 void ADD_A_n(Z80_CPU *z) { add_byte(z, op(z, 1)); }
 void RST_00h(Z80_CPU *z) {  }
 void RET_Z(Z80_CPU *z) {  }
@@ -247,11 +247,11 @@ void RST_08h(Z80_CPU *z) {  }
 
 // 0xD0
 void RET_NC(Z80_CPU *z) {  }
-void POP_DE(Z80_CPU *z) {  }
+void POP_DE(Z80_CPU *z) { *z->DE = pop(z); }
 void JP_NC_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_C) ? op_nn(z) : (z->PC + OP_WORD); }
 void OUT_nm_a(Z80_CPU *z) {  }
 void CALL_NC_nn(Z80_CPU *z) {  }
-void PUSH_DE(Z80_CPU *z) {  }
+void PUSH_DE(Z80_CPU *z) { push(z, *z->DE); }
 void SUB_n(Z80_CPU *z) { sub(z, op(z, 1)); }
 void RST_10h(Z80_CPU *z) {  }
 void RET_C(Z80_CPU *z) {  }
@@ -265,11 +265,11 @@ void RST_18h(Z80_CPU *z) {  }
 
 // 0xE0
 void RET_PO(Z80_CPU *z) {  }
-void POP_HL(Z80_CPU *z) {  }
+void POP_HL(Z80_CPU *z) { *z->HL = pop(z); }
 void JP_PO_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_PV) ? op_nn(z) : (z->PC + OP_WORD); }
 void EX_SPm_HL(Z80_CPU *z) {  }
 void CALL_PO_nn(Z80_CPU *z) {  }
-void PUSH_HL(Z80_CPU *z) {  }
+void PUSH_HL(Z80_CPU *z) { push(z, *z->HL); }
 void AND_n(Z80_CPU *z) { and(z, op(z, 1)); }
 void RST_20h(Z80_CPU *z) {  }
 void RET_PE(Z80_CPU *z) {  }
@@ -283,11 +283,11 @@ void RST_28h(Z80_CPU *z) {  }
 
 // 0xF0
 void RET_P(Z80_CPU *z) {  }
-void POP_AF(Z80_CPU *z) {  }
+void POP_AF(Z80_CPU *z) { *z->AF = pop(z); }
 void JP_P_nn(Z80_CPU *z) { z->PC = !flag_get(z->F, FLAG_S) ? op_nn(z) : (z->PC + OP_WORD); }
 void DI(Z80_CPU *z) { z->Interrupts = false; }
 void CALL_P_nn(Z80_CPU *z) {  }
-void PUSH_AF(Z80_CPU *z) {  }
+void PUSH_AF(Z80_CPU *z) { push(z, *z->AF); }
 void OR_n(Z80_CPU *z) { or(z, op(z, 1)); }
 void RST_30h(Z80_CPU *z) {  }
 void RET_M(Z80_CPU *z) {  }
