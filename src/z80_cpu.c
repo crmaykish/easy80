@@ -74,13 +74,14 @@ void Z80_CPU_PrintRegisters(Z80_CPU *cpu) {
     char flags[9];
     binary_string(flags, *cpu->AF);
     printf(
-        "  -->   PC: %04X | AF: %04X | BC: %04X | DE: %04X | HL: %04X | F: %s\n",
+        "  -->   PC: %04X | AF: %04X | BC: %04X | DE: %04X | HL: %04X | F: %s | SP: %04X\n",
         cpu->PC,
         *cpu->AF,
         *cpu->BC,
         *cpu->DE,
         *cpu->HL,
-        flags
+        flags,
+        cpu->SP
     );
 }
 
@@ -117,7 +118,7 @@ uint16_t pop(Z80_CPU *z) {
 void push(Z80_CPU *z, uint16_t val) {
     z->SP -= 2;
     mem_val_set(z, z->SP, split_1(val));
-    mem_val_set(z + 1, z->SP, split_2(val));
+    mem_val_set(z, z->SP + 1, split_2(val));
 }
 
 void ret(Z80_CPU *z, bool condition) {

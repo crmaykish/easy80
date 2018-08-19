@@ -58,7 +58,10 @@ void LD_H_n(Z80_CPU *z) { ld_byte(z, z->H, op(z, 1)); }
 void DAA(Z80_CPU *z) { daa(z); }
 void JR_Z_n(Z80_CPU *z) { z->PC += OP_BYTE; if (flag_get(z->F, FLAG_Z)) { z->PC += (int8_t) op(z, 1); } }
 void ADD_HL_HL(Z80_CPU *z) { add_word(z, z->HL, *z->HL); }
-void LD_HL_nnm(Z80_CPU *z) { ld_byte(z, z->L, op(z, 1)); ld_byte(z, z->H, op(z, 2)); }
+// void LD_HL_nnm(Z80_CPU *z) { ld_byte(z, z->L, op(z, 1)); ld_byte(z, z->H, op(z, 2)); }
+void LD_HL_nnm(Z80_CPU *z) {
+    ld_word(z, z->HL, mem_val(z, op_nn(z)));
+}
 void DEC_HL(Z80_CPU *z) { dec_word(z, z->HL); }
 void INC_L(Z80_CPU *z) { inc_byte(z, z->L); }
 void DEC_L(Z80_CPU *z) { dec_byte(z, z->L); }
@@ -241,7 +244,9 @@ void RET(Z80_CPU *z) { ret(z, true); }
 void JP_Z_nn(Z80_CPU *z) { z->PC = flag_get(z->F, FLAG_Z) ? op_nn(z) : (z->PC + OP_WORD); }
 void BITS(Z80_CPU *z) { /* BITS INSTRUCTION SET */ }
 void CALL_Z_nn(Z80_CPU *z) { call(z, op_nn(z), flag_get(z->F, FLAG_Z)); }
-void CALL_nn(Z80_CPU *z) { call(z, op_nn(z), true); }
+void CALL_nn(Z80_CPU *z) { 
+    call(z, op_nn(z), true); 
+}
 void ADC_A_n(Z80_CPU *z) { adc_byte(z, op(z, 1)); }
 void RST_08h(Z80_CPU *z) { rst(z, 0x08); }
 
@@ -511,70 +516,70 @@ const Z80_Instruction MainInstructions[256] = {
     { 0xBE, "CP (HL)",      OP_NONE,    7,      &CP_HLm },
     { 0xBF, "CP A",         OP_NONE,    4,      &CP_A },
     // 0xC0 NAME            SIZE        CYCLES  HANDLER
-    { 0xC0, "RET NZ",       OP_NONE,    11,     &RET_NZ },    //: TODO 11 or 5 clock cycles
+    { 0xC0, "RET NZ",       OP_JUMP,    11,     &RET_NZ },    //: TODO 11 or 5 clock cycles
     { 0xC1, "POP BC",       OP_NONE,    10,     &POP_BC },
     { 0xC2, "JP NZ,**",     OP_JUMP,    10,     &JP_NZ_nn },
     { 0xC3, "JP **",        OP_JUMP,    10,     &JP_nn },
-    { 0xC4, "CALL NZ,**",   OP_WORD,    17,     &CALL_NZ_nn },    //: TODO 17 or 10 clock cycles
+    { 0xC4, "CALL NZ,**",   OP_JUMP,    17,     &CALL_NZ_nn },    //: TODO 17 or 10 clock cycles
     { 0xC5, "PUSH BC",      OP_NONE,    11,     &PUSH_BC },
     { 0xC6, "ADD A,*",      OP_BYTE,    7,      &ADD_A_n },
     { 0xC7, "RST 00h",      OP_NONE,    11,     &RST_00h },
-    { 0xC8, "RET Z",        OP_NONE,    11,     &RET_Z },    //: TODO 11 or 5 clock cycles
-    { 0xC9, "RET",          OP_NONE,    10,     &RET },
+    { 0xC8, "RET Z",        OP_JUMP,    11,     &RET_Z },    //: TODO 11 or 5 clock cycles
+    { 0xC9, "RET",          OP_JUMP,    10,     &RET },
     { 0xCA, "JP Z,**",      OP_JUMP,    10,     &JP_Z_nn },
     { 0xCB, "BITS",         OP_EXTD,    0,      &BITS },
-    { 0xCC, "CALL Z,**",    OP_WORD,    17,     &CALL_Z_nn },    //: TODO 17 or 10 clock cycles
-    { 0xCD, "CALL **",      OP_WORD,    17,     &CALL_nn },
+    { 0xCC, "CALL Z,**",    OP_JUMP,    17,     &CALL_Z_nn },    //: TODO 17 or 10 clock cycles
+    { 0xCD, "CALL **",      OP_JUMP,    17,     &CALL_nn },
     { 0xCE, "ADC A,*",      OP_BYTE,    7,      &ADC_A_n },
     { 0xCF, "RST 08h",      OP_NONE,    11,     &RST_08h },
     // 0xD0 NAME            SIZE        CYCLES  HANDLER
-    { 0xD0, "RET NC",       OP_NONE,    11,     &RET_NC },     // 11/5
+    { 0xD0, "RET NC",       OP_JUMP,    11,     &RET_NC },     // 11/5
     { 0xD1, "POP DE",       OP_NONE,    10,     &POP_DE },
     { 0xD2, "JP NC,**",     OP_WORD,    10,     &JP_NC_nn },
     { 0xD3, "OUT (*),A",    OP_BYTE,    11,     &OUT_nm_a },
-    { 0xD4, "CALL NC,**",   OP_WORD,    17,     &CALL_NC_nn },     // 17/10
+    { 0xD4, "CALL NC,**",   OP_JUMP,    17,     &CALL_NC_nn },     // 17/10
     { 0xD5, "PUSH DE",      OP_NONE,    11,     &PUSH_DE },
     { 0xD6, "SUB *",        OP_BYTE,    7,      &SUB_n },
     { 0xD7, "RST 10h",      OP_NONE,    11,     &RST_10h },    
-    { 0xD8, "RET C",        OP_NONE,    11,     &RET_C },    // 11/5
+    { 0xD8, "RET C",        OP_JUMP,    11,     &RET_C },    // 11/5
     { 0xD9, "EXX",          OP_NONE,    4,      &EXX },
     { 0xDA, "JP C,**",      OP_WORD,    10,     &JP_C_nn },
     { 0xDB, "IN A,(*)",     OP_BYTE,    11,     &IN_A_nm },
-    { 0xDC, "CALL C,**",    OP_WORD,    17,     &CALL_C_nn },    // 17/10
+    { 0xDC, "CALL C,**",    OP_JUMP,    17,     &CALL_C_nn },    // 17/10
     { 0xDD, "IX",           OP_EXTD,    0,      &IX },
     { 0xDE, "SBC A,*",      OP_WORD,    7,      &SBC_A_n },
     { 0xDF, "RST 18h",      OP_NONE,    11,     &RST_18h },
     // 0xE0 NAME            SIZE        CYCLES  HANDLER
-    { 0xE0, "RET PO",       OP_NONE,    11,     &RET_PO },     // 11/5
+    { 0xE0, "RET PO",       OP_JUMP,    11,     &RET_PO },     // 11/5
     { 0xE1, "POP HL",       OP_NONE,    10,     &POP_HL },
     { 0xE2, "JP PO,**",     OP_WORD,    10,     &JP_PO_nn },
     { 0xE3, "EX (SP),HL",   OP_NONE,    19,     &EX_SPm_HL },
-    { 0xE4, "CALL PO,**",   OP_WORD,    17,     &CALL_PO_nn },    // 17/10
+    { 0xE4, "CALL PO,**",   OP_JUMP,    17,     &CALL_PO_nn },    // 17/10
     { 0xE5, "PUSH HL",      OP_NONE,    11,     &PUSH_HL },
     { 0xE6, "AND *",        OP_BYTE,    7,      &AND_n },
     { 0xE7, "RST 20h",      OP_NONE,    11,     &RST_20h },
-    { 0xE8, "RET PE",       OP_NONE,    11,     &RET_PE },     // 11/5
+    { 0xE8, "RET PE",       OP_JUMP,    11,     &RET_PE },     // 11/5
     { 0xE9, "JP (HL)",      OP_NONE,    4,      &JP_HLm },
     { 0xEA, "JP PE,**",     OP_WORD,    10,     &JP_PE_nn },
     { 0xEB, "EX DE,HL",     OP_NONE,    4,      &EX_DE_HL },
-    { 0xEC, "CALL PE,**",   OP_WORD,    17,     &CALL_PE_nn },     // 17/10
+    { 0xEC, "CALL PE,**",   OP_JUMP,    17,     &CALL_PE_nn },     // 17/10
     { 0xED, "EXTD",         OP_EXTD,    0,      &EXTD },
     { 0xEE, "XOR *",        OP_WORD,    7,      &XOR_n },
     { 0xEF, "RST 28h",      OP_NONE,    11,     &RST_28h },
     // 0xF0 NAME            SIZE        CYCLES  HANDLER
-    { 0xF0, "RET P",        OP_NONE,    11,     &RET_P },     // 11/5
+    { 0xF0, "RET P",        OP_JUMP,    11,     &RET_P },     // 11/5
     { 0xF1, "POP AF",       OP_NONE,    10,     &POP_AF },
     { 0xF2, "JP P,**",      OP_WORD,    10,     &JP_P_nn },
     { 0xF3, "DI",           OP_NONE,    4,      &DI },
-    { 0xF4, "CALL P,**",    OP_WORD,    17,     &CALL_P_nn },    // 17/10
+    { 0xF4, "CALL P,**",    OP_JUMP,    17,     &CALL_P_nn },    // 17/10
     { 0xF5, "PUSH AF",      OP_NONE,    11,     &PUSH_AF },
     { 0xF6, "OR *",         OP_BYTE,    7,      &OR_n },
     { 0xF7, "RST 30h",      OP_NONE,    11,     &RST_30h },
-    { 0xF8, "RET M",        OP_NONE,    11,     &RET_M },    // 11/5
+    { 0xF8, "RET M",        OP_JUMP,    11,     &RET_M },    // 11/5
     { 0xF9, "LD SP,HL",     OP_NONE,    6,      &LD_SP_HL },
     { 0xFA, "JP M,**",      OP_WORD,    10,     &JP_M_nn },
     { 0xFB, "EI",           OP_NONE,    4,      &EI },
-    { 0xFC, "CALL M,**",    OP_WORD,    17,     &CALL_M_nn },     // 17/10
+    { 0xFC, "CALL M,**",    OP_JUMP,    17,     &CALL_M_nn },     // 17/10
     { 0xFD, "IY",           OP_NONE,    0,      &IY },
     { 0xFE, "CP *",         OP_BYTE,    7,      &CP_n },
     { 0xFF, "RST 38h",      OP_NONE,    11,     &RST_38h }
