@@ -39,7 +39,6 @@ int main(int argc, char const *argv[])
         Z80_CPU_Cycle(&cpu);
         Z80_CPU_PrintRegisters(&cpu);
 
-
         if (cpu.PC == 0x05){
             // CP/M function call
             if (*cpu.C == 0x02) {
@@ -65,7 +64,7 @@ int main(int argc, char const *argv[])
             }
 
             // return to zexdoc code
-            cpu.PC = pop(&cpu);
+            ret(&cpu, true);
         }
 
     }

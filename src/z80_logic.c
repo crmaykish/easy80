@@ -122,7 +122,7 @@ void sbc(Z80_CPU *cpu, uint8_t val) {
 // AND operations
 void and(Z80_CPU *cpu, uint8_t val) {
     flag_set(cpu->F, FLAG_C, false);
-    flag_set(cpu->F, FLAG_C, false);    // TODO: wrong flag?
+    flag_set(cpu->F, FLAG_N, false);
     flag_set(cpu->F, FLAG_H, true);
 
     // Overflow parity flag is set HIGH if even parity and LOW if odd
@@ -140,7 +140,7 @@ void and(Z80_CPU *cpu, uint8_t val) {
 // OR operations
 void or(Z80_CPU *cpu, uint8_t val) {
     flag_set(cpu->F, FLAG_C, false);
-    flag_set(cpu->F, FLAG_C, false);    // TODO: wrong flag?
+    flag_set(cpu->F, FLAG_N, false);
     flag_set(cpu->F, FLAG_H, false);
 
     // Overflow parity flag is set HIGH if even parity and LOW if odd
@@ -157,7 +157,7 @@ void or(Z80_CPU *cpu, uint8_t val) {
 
 void xor(Z80_CPU *cpu, uint8_t val) {
     flag_set(cpu->F, FLAG_C, false);
-    flag_set(cpu->F, FLAG_C, false);    // TODO: wrong flag?
+    flag_set(cpu->F, FLAG_N, false);
     flag_set(cpu->F, FLAG_H, false);
 
     // Overflow parity flag is set HIGH if even parity and LOW if odd
