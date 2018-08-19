@@ -309,5 +309,12 @@ void ldir(Z80_CPU *z) {
     flag_set(z->F, FLAG_PV, false);
     flag_set(z->F, FLAG_H, false);
 
+    while (*z->BC != 0) {
+        // (HL) -> (DE)
+        mem_val_set(z, *z->DE, mem_HL(z));
 
+        *z->HL++;
+        *z->DE++;
+        *z->BC--;
+    }
 }

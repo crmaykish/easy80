@@ -55,6 +55,7 @@ void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offse
 void Z80_CPU_Cycle(Z80_CPU *cpu) {
     Z80_Instruction inst = Z80_FetchInstruction(cpu);
     
+    #if DEBUG
     printf("%02X : %s ", inst.OpCode, inst.Name);
 
     for(int i = 0; i < (12 - strlen(inst.Name)); i++) {
@@ -62,6 +63,7 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
     }
 
     printf("%02X, %02X ", op(cpu, 1), op(cpu, 2));
+    #endif
 
     inst.Handler(cpu);
 

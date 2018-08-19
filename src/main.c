@@ -6,6 +6,8 @@
 // only for exit()
 #include <stdlib.h>
 
+#define DEBUG 0
+
 int main(int argc, char const *argv[])
 {
     FILE *f;
@@ -35,9 +37,12 @@ int main(int argc, char const *argv[])
     cpu.State = RUNNING;
 
     while(cpu.State == RUNNING) {
-        getchar();
+        // getchar();
         Z80_CPU_Cycle(&cpu);
+        
+        #if DEBUG
         Z80_CPU_PrintRegisters(&cpu);
+        #endif
 
         if (cpu.PC == 0x05){
             // CP/M function call
@@ -56,7 +61,6 @@ int main(int argc, char const *argv[])
                     c = mem_val(&cpu, *cpu.DE + i);
                     i++;
                 }
-
             }
             else {
                 printf("Unknown CP/M function. Abort!\n");

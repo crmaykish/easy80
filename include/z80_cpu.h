@@ -23,7 +23,7 @@ typedef struct Z80_CPU {
 
     // TODO: possible to make these pointers constant so they are never accidentally changed after creation
 
-    // Main registers
+    // Main registers pointers
     uint16_t *AF;
     uint16_t *BC;
     uint16_t *DE;
@@ -37,7 +37,7 @@ typedef struct Z80_CPU {
     uint8_t *H;
     uint8_t *L;
 
-    // Alternate registers
+    // Alternate registers pointers
     uint16_t *AFp;
     uint16_t *BCp;
     uint16_t *DEp;

@@ -24,8 +24,8 @@ typedef enum {
     OP_NONE = 1,    /*!< Opcode with no operands */
     OP_BYTE = 2,    /*!< Opcode with a single operand */
     OP_WORD = 3,    /*!< Opcode with two operands or a single 16-bit operand */
-    OP_EXTD,        /*!< Opcode belongs to the Extended instruction set */
-    OP_JUMP         /*!< Opcode is a JUMP instruction and will set the PC internally */
+    OP_LONG = 4,    /*!< Opcode that takes up 4 bytes */    // TODO: bad name
+    OP_JUMP         /*!< Instruction will manage the PC on its own */
 } Z80_OpCodeType;
 
 /**

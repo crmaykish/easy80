@@ -57,4 +57,6 @@ void cp(Z80_CPU *cpu, uint8_t val);
 // DAA operations
 void daa(Z80_CPU *z);
 
+void ldir(Z80_CPU *z);
+
 #endif
