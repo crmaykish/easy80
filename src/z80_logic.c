@@ -301,3 +301,13 @@ void daa(Z80_CPU *z) {
     // TODO: H flag?
     // TODO: do SBC, DEC, and NEG instructions require different behavior here?
 }
+
+void ldir(Z80_CPU *z) {
+    // TODO: interrupts can fire during this process
+    
+    flag_set(z->F, FLAG_N, false);
+    flag_set(z->F, FLAG_PV, false);
+    flag_set(z->F, FLAG_H, false);
+
+
+}

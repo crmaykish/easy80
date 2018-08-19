@@ -2,6 +2,10 @@
 #include "z80_logic.h"
 #include "bitmath.h"
 
+// just for debugging
+#include <stdio.h>
+#include <stdlib.h>
+
 // Main instruction set implementations
 
 // Naming conventions:
@@ -10,6 +14,8 @@
 // n : byte literal
 // m : preceding register/value is used as memory location
 // p : alternate register (e.g. AF' instead of AF)
+
+void BAD(Z80_CPU *z) { printf("BAD OPCODE!!!"); exit(1); }
 
 // 0x00
 void NOP(Z80_CPU *z) { /* do nothing */ }
@@ -307,7 +313,24 @@ void RST_38h(Z80_CPU *z) { rst(z, 0x38); }
 // Extended instruction set implementation
 
 // 0x40
-void IN_B_Cm(Z80_CPU *z) {  }
+
+// 0x50
+
+// 0x60
+
+// 0x70
+
+// 0xA0
+
+// 0xB0
+void LDIR(Z80_CPU *z) { ldir(z); }
+void CPIR(Z80_CPU *z) {  }
+void INIR(Z80_CPU *z) {  }
+void OTIR(Z80_CPU *z) {  }
+void LDDR(Z80_CPU *z) {  }
+void CPDR(Z80_CPU *z) {  }
+void INDR(Z80_CPU *z) {  }
+void OTDR(Z80_CPU *z) {  }
 
 // Main instruction opcode mapping
 const Z80_Instruction MainInstructions[256] = {
@@ -589,7 +612,7 @@ const Z80_Instruction MainInstructions[256] = {
 // Access the array with an offset of 0x40, but skips 0x80 and 0x90
 const Z80_Instruction ExtendedInstructions[96] = {
     // 0x40
-    { 0x40, "IN B,(C)",     OP_NONE,    0,      &IN_B_Cm },
+    { 0x40, "IN B,(C)",     OP_NONE,    0,      &NOP },
     { 0x41, "OUT (C),B",    OP_NONE,    0,      &NOP },
     { 0x42, "SBC HL,BC",    OP_NONE,    0,      &NOP },
     { 0x43, "LD (**),BC",   OP_NONE,    0,      &NOP },
@@ -603,7 +626,7 @@ const Z80_Instruction ExtendedInstructions[96] = {
     { 0x4B, "LD BC,(**)",   OP_NONE,    0,      &NOP },
     { 0x4C, "NEG",          OP_NONE,    0,      &NOP },
     { 0x4D, "RETI",         OP_NONE,    0,      &NOP },
-    { 0x4E, "",             OP_NONE,    0,      &NOP },
+    { 0x4E, "IM 0/1",       OP_NONE,    0,      &NOP },
     { 0x4F, "LD R,A",       OP_NONE,    0,      &NOP },
     // 0x50
     { 0x50, "",          OP_NONE,    0,      &NOP },
@@ -674,7 +697,7 @@ const Z80_Instruction ExtendedInstructions[96] = {
     { 0xAE, "",          OP_NONE,    0,      &NOP },
     { 0xAF, "",          OP_NONE,    0,      &NOP },
     //0xB0
-    { 0xB0, "",          OP_NONE,    0,      &NOP },
+    { 0xB0, "LDIR",      OP_BYTE,    21,     &NOP },    // 21/16
     { 0xB1, "",          OP_NONE,    0,      &NOP },
     { 0xB2, "",          OP_NONE,    0,      &NOP },
     { 0xB3, "",          OP_NONE,    0,      &NOP },
