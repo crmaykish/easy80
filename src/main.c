@@ -1,12 +1,19 @@
+/**
+ * @brief Simple debugger for the Z80 CPU core, suports single-stepping
+ * 
+ * @file main.c
+ * @author crmaykish
+ * @date 2018-08-19
+ */
+
+#define SINGLESTEP 1
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "z80_cpu.h"
+#include "z80_instructions_common.h"
 #include "bitmath.h"
-
-// only for exit()
-#include <stdlib.h>
-
-#define DEBUG 0
 
 int main(int argc, char const *argv[])
 {
@@ -30,19 +37,18 @@ int main(int argc, char const *argv[])
     // Set PC to start at the zexdoc code
     cpu.PC = 0x0100;
 
-    
-
     printf("Hit <ENTER> to single-step through the ROM. Ctrl-C to exit.\n");
 
     cpu.State = RUNNING;
 
     while(cpu.State == RUNNING) {
-        // getchar();
+        #if SINGLESTEP
+            getchar();
+        #endif
+
         Z80_CPU_Cycle(&cpu);
         
-        #if DEBUG
         Z80_CPU_PrintRegisters(&cpu);
-        #endif
 
         if (cpu.PC == 0x05){
             // CP/M function call
@@ -58,7 +64,7 @@ int main(int argc, char const *argv[])
                 int i = 0;
                 while (c != '$') {
                     printf("%c", c);
-                    c = mem_val(&cpu, *cpu.DE + i);
+                    c = GetMemVal(&cpu, *cpu.DE + i);
                     i++;
                 }
             }
