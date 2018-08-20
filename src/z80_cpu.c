@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "z80_cpu.h"
-#include "z80_instructions.h"
+#include "z80_instructions_common.h"
 #include "bitmath.h"
 
 void Z80_CPU_Init(Z80_CPU *cpu) {

@@ -1,17 +1,16 @@
 /**
  * @brief Z80 Instruction declarations
  * 
- * @file z80_instructions.h
+ * @file z80_instructions_common.h
  * @author crmaykish
  * @date 2018-08-09
  */
 
-#ifndef Z80_INSTRUCTIONS_H
-#define Z80_INSTRUCTIONS_H
+#ifndef Z80_INSTRUCTIONS_COMMON_H
+#define Z80_INSTRUCTIONS_COMMON_H
 
 #include "z80_cpu.h"
 
-// Instruction prefix codes
 #define PREF_EXTD   0xED    /*!< Extended instruction set */
 #define PREF_BIT    0xCB    /*!< BIT instruction set */
 #define PREF_IX     0xDD    /*!< IX instruction set */
@@ -46,5 +45,7 @@ typedef struct Z80_Instruction {
  * @return Z80_Instruction Current instruction in the memory location pointed to by the Program Counter
  */
 Z80_Instruction Z80_FetchInstruction(Z80_CPU *z);
+
+void BAD(Z80_CPU *z);
 
 #endif
