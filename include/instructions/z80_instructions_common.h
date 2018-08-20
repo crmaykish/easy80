@@ -5,7 +5,6 @@
  * @author crmaykish
  * @date 2018-08-09
  */
-
 #ifndef Z80_INSTRUCTIONS_COMMON_H
 #define Z80_INSTRUCTIONS_COMMON_H
 
