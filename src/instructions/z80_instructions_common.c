@@ -367,7 +367,7 @@ void ldir(Z80_CPU *z) {
 
     while (*z->BC != 0) {
         // (HL) -> (DE)
-        mem_val_set(z, *z->DE, mem_HL(z));
+        SetMemVal(z, *z->DE, GetMemVal(z, *z->HL));
 
         *z->HL++;
         *z->DE++;
@@ -375,40 +375,16 @@ void ldir(Z80_CPU *z) {
     }
 }
 
-uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y) {
-    return z->Memory[combine(X, Y)];
-}
-
-uint8_t mem_HL(Z80_CPU *z) {
-    return z->Memory[*z->HL];
-}
-
-uint8_t op(Z80_CPU *z, uint8_t offset) {
-    return z->Memory[z->PC + offset];
-}
-
-uint16_t op_nn(Z80_CPU *z) {
-    return combine(op(z, 2), op(z, 1));
-}
-
-uint8_t mem_val(Z80_CPU *z, uint16_t address) {
-    return z->Memory[address];
-}
-
-void mem_val_set(Z80_CPU *z, uint16_t address, uint8_t val) {
-    z->Memory[address] = val;
-}
-
 uint16_t pop(Z80_CPU *z) {
-    uint16_t p = combine(mem_val(z, z->SP), mem_val(z, z->SP + 1));
+    uint16_t p = combine(GetMemVal(z, z->SP), GetMemVal(z, z->SP + 1));
     z->SP += 2;
     return p;
 }
 
 void push(Z80_CPU *z, uint16_t val) {
     z->SP -= 2;
-    mem_val_set(z, z->SP, split_1(val));
-    mem_val_set(z, z->SP + 1, split_2(val));
+    SetMemVal(z, z->SP, split_1(val));
+    SetMemVal(z, z->SP + 1, split_2(val));
 }
 
 void ret(Z80_CPU *z, bool condition) {

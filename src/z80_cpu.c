@@ -6,58 +6,58 @@
 #include "z80_instructions_common.h"
 #include "bitmath.h"
 
-void Z80_CPU_Init(Z80_CPU *cpu) {
-    cpu->Registers = Z80_Registers_Create();
+void Z80_CPU_Init(Z80_CPU *z) {
+    z->Registers = Z80_Registers_Create();
 
-    cpu->A = A(cpu->Registers);
-    cpu->B = B(cpu->Registers);
-    cpu->C = C(cpu->Registers);
-    cpu->D = D(cpu->Registers);
-    cpu->E = E(cpu->Registers);
-    cpu->F = F(cpu->Registers);
-    cpu->H = H(cpu->Registers);
-    cpu->L = L(cpu->Registers);
+    z->A = A(z->Registers);
+    z->B = B(z->Registers);
+    z->C = C(z->Registers);
+    z->D = D(z->Registers);
+    z->E = E(z->Registers);
+    z->F = F(z->Registers);
+    z->H = H(z->Registers);
+    z->L = L(z->Registers);
 
-    cpu->AF = AF(cpu->Registers);
-    cpu->BC = BC(cpu->Registers);
-    cpu->DE = DE(cpu->Registers);
-    cpu->HL = HL(cpu->Registers);
+    z->AF = AF(z->Registers);
+    z->BC = BC(z->Registers);
+    z->DE = DE(z->Registers);
+    z->HL = HL(z->Registers);
 
-    cpu->Ap = Ap(cpu->Registers);
-    cpu->Bp = Bp(cpu->Registers);
-    cpu->Cp = Cp(cpu->Registers);
-    cpu->Dp = Dp(cpu->Registers);
-    cpu->Ep = Ep(cpu->Registers);
-    cpu->Fp = Fp(cpu->Registers);
-    cpu->Hp = Hp(cpu->Registers);
-    cpu->Lp = Lp(cpu->Registers);
+    z->Ap = Ap(z->Registers);
+    z->Bp = Bp(z->Registers);
+    z->Cp = Cp(z->Registers);
+    z->Dp = Dp(z->Registers);
+    z->Ep = Ep(z->Registers);
+    z->Fp = Fp(z->Registers);
+    z->Hp = Hp(z->Registers);
+    z->Lp = Lp(z->Registers);
 
-    cpu->AFp = AFp(cpu->Registers);
-    cpu->BCp = BCp(cpu->Registers);
-    cpu->DEp = DEp(cpu->Registers);
-    cpu->HLp = HLp(cpu->Registers);
+    z->AFp = AFp(z->Registers);
+    z->BCp = BCp(z->Registers);
+    z->DEp = DEp(z->Registers);
+    z->HLp = HLp(z->Registers);
 
     // Clear memory
-    memset(&cpu->Memory, 0, sizeof(uint8_t) * MAX_RAM_ADDRESS);
+    memset(&z->Memory, 0, sizeof(uint8_t) * MAX_RAM_ADDRESS);
 
     // CPU is not yet running
-    cpu->State = STOPPED;
+    z->State = STOPPED;
 
     // Interrupts are disabled
-    cpu->Interrupts = false;
+    z->Interrupts = false;
 }
 
-void Z80_CPU_Destroy(Z80_CPU *cpu) {
-    Z80_Registers_Destroy(cpu->Registers);
+void Z80_CPU_Destroy(Z80_CPU *z) {
+    Z80_Registers_Destroy(z->Registers);
 }
 
-void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offset) {
+void Z80_CPU_SetMemory(Z80_CPU *z, uint8_t data[], size_t size, uint16_t offset) {
     // TODO: bounds checking on Memory array
-    memcpy(&cpu->Memory[offset], data, size);
+    memcpy(&z->Memory[offset], data, size);
 }
 
-void Z80_CPU_Cycle(Z80_CPU *cpu) {
-    Z80_Instruction inst = Z80_FetchInstruction(cpu);
+void Z80_CPU_Cycle(Z80_CPU *z) {
+    Z80_Instruction inst = Z80_FetchInstruction(z);
     
     printf("%02X : %s ", inst.OpCode, inst.Name);
 
@@ -65,26 +65,44 @@ void Z80_CPU_Cycle(Z80_CPU *cpu) {
         printf(" ");
     }
 
-    printf("%02X, %02X ", op(cpu, 1), op(cpu, 2));
+    printf("%02X, %02X ", op(z, 1), op(z, 2));
 
-    inst.Handler(cpu);
+    inst.Handler(z);
 
     if (inst.Type != OP_JUMP) {
-        cpu->PC += inst.Type;
+        // JUMP instructions handle the program counter on their own
+        // Everything else increases the PC by the opcode size
+        z->PC += inst.Type;
     }
 }
 
-void Z80_CPU_PrintRegisters(Z80_CPU *cpu) {
+void Z80_CPU_PrintRegisters(Z80_CPU *z) {
     char flags[9];
-    binary_string(flags, *cpu->AF);
+    binary_string(flags, *z->AF);
     printf(
         "  -->   PC: %04X | AF: %04X | BC: %04X | DE: %04X | HL: %04X | F: %s | SP: %04X\n",
-        cpu->PC,
-        *cpu->AF,
-        *cpu->BC,
-        *cpu->DE,
-        *cpu->HL,
+        z->PC,
+        *z->AF,
+        *z->BC,
+        *z->DE,
+        *z->HL,
         flags,
-        cpu->SP
+        z->SP
     );
+}
+
+uint8_t op(Z80_CPU *z, uint8_t offset) {
+    return z->Memory[z->PC + offset];
+}
+
+uint16_t op_nn(Z80_CPU *z) {
+    return combine(op(z, 2), op(z, 1));
+}
+
+uint8_t GetMemVal(Z80_CPU *z, uint16_t address) {
+    return z->Memory[address];
+}
+
+void SetMemVal(Z80_CPU *z, uint16_t address, uint8_t val) {
+    z->Memory[address] = val;
 }

@@ -2,7 +2,7 @@
 #include "bitmath.h"
 
 // 0xE0
-void POP_IY(Z80_CPU *z) { z->IY = combine(mem_val(z, z->SP + 1), mem_val(z, z->SP)); z->SP += 2; }
+void POP_IY(Z80_CPU *z) { z->IY = combine(GetMemVal(z, z->SP + 1), GetMemVal(z, z->SP)); z->SP += 2; }
 
 Z80_Instruction IYInstructions[256] = {
     { 0x00, "",          OP_BYTE,    0,      &BAD },

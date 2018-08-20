@@ -63,58 +63,58 @@ typedef struct Z80_CPU {
 /**
  * @brief Zero out the state of the CPU
  * 
- * @param cpu Pointer to CPU object
+ * @param z Pointer to CPU object
  */
-void Z80_CPU_Init(Z80_CPU *cpu);
+void Z80_CPU_Init(Z80_CPU *z);
 
 /**
  * @brief Cleanup the Z80_CPU object
  * 
- * @param cpu pointer to CPU object
+ * @param z pointer to CPU object
  */
-void Z80_CPU_Destroy(Z80_CPU *cpu);
+void Z80_CPU_Destroy(Z80_CPU *z);
 
 /**
  * @brief Store binary data in a block of Z80 memory starting at offset
  * 
- * @param cpu Pointer to CPU object
+ * @param z Pointer to CPU object
  * @param data Byte array to store in memory
  * @param size Number of bytes to store
  * @param offset Starting point in memory to copy data, use 0 for the beginning of memory
  */
-void Z80_CPU_SetMemory(Z80_CPU *cpu, uint8_t data[], size_t size, uint16_t offset);
+void Z80_CPU_SetMemory(Z80_CPU *z, uint8_t data[], size_t size, uint16_t offset);
 
 /**
  * @brief Perform single step of the CPU
  * 
  * This is not a clock cycle, but a single opcode
  * 
- * @param cpu Pointer to CPU object
+ * @param z Pointer to CPU object
  */
-void Z80_CPU_Cycle(Z80_CPU *cpu);
+void Z80_CPU_Cycle(Z80_CPU *z);
 
 /**
  * @brief Debug output of the CPU registers
  */
-void Z80_CPU_PrintRegisters(Z80_CPU *cpu);
+void Z80_CPU_PrintRegisters(Z80_CPU *z);
 
 /**
- * @brief Return the value stored in memory address XY
+ * @brief Get the value in memory at the given address
  * 
- * @param z Z80 CPU object
- * @param X most signficant byte of memory address
- * @param Y least significant byte of memory address
- * @return uint8_t value stored in (XY)
+ * @param z CPU object
+ * @param address memory address (16-bit value)
+ * @return uint8_t value in memory address
  */
-uint8_t mem_nn(Z80_CPU *z, uint8_t X, uint8_t Y);
+uint8_t GetMemVal(Z80_CPU *z, uint16_t address);
 
 /**
- * @brief Return the value at the memory address stored in HL
+ * @brief Set the memory value at the given address to the given value
  * 
- * @param z Z80 CPU object
- * @return uint8_t value stored in (HL)
+ * @param z CPU object
+ * @param address memory address (16-bit)
+ * @param val value to store in memory
  */
-uint8_t mem_HL(Z80_CPU *z);
+void SetMemVal(Z80_CPU *z, uint16_t address, uint8_t val);
 
 /**
  * @brief Return the operands after the PC
@@ -132,9 +132,5 @@ uint8_t op(Z80_CPU *z, uint8_t offset);
  * @return uint16_t two bytes after the opcode as a word
  */
 uint16_t op_nn(Z80_CPU *z);
-
-uint8_t mem_val(Z80_CPU *z, uint16_t address);
-
-void mem_val_set(Z80_CPU *z, uint16_t address, uint8_t val);
 
 #endif

@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
                 int i = 0;
                 while (c != '$') {
                     printf("%c", c);
-                    c = mem_val(&cpu, *cpu.DE + i);
+                    c = GetMemVal(&cpu, *cpu.DE + i);
                     i++;
                 }
             }
