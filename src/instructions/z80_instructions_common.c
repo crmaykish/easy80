@@ -12,9 +12,9 @@
 Z80_Instruction Z80_FetchInstruction(Z80_CPU *z) {
     Z80_Instruction instruction;
 
-    uint8_t op0 = op(z, 0);
-    uint8_t op1 = op(z, 1);
-    uint8_t op2 = op(z, 2);
+    uint8_t op0 = Op(z, 0);
+    uint8_t op1 = Op(z, 1);
+    uint8_t op2 = Op(z, 2);
 
     switch (op0) {
         case PREF_EXTD:
@@ -54,7 +54,7 @@ Z80_Instruction Z80_FetchInstruction(Z80_CPU *z) {
 }
 
 void BAD(Z80_CPU *z) {
-    printf("INVALID OPCODE: %02X %02X\n", op(z, 0), op(z, 1));
+    printf("INVALID OPCODE: %02X %02X\n", Op(z, 0), Op(z, 1));
     exit(1);
 }
 
@@ -370,7 +370,6 @@ void ldir(Z80_CPU *z) {
         SetMemVal(z, *z->DE, GetMemVal(z, *z->HL));
 
         *z->HL++;
-        *z->DE++;
         *z->BC--;
     }
 }

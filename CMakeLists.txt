@@ -21,3 +21,18 @@ add_executable(easy80
         src/z80_cpu.c
         src/main.c
 )
+
+add_executable(test_z80_instructions_common
+        src/instructions/z80_instructions_common.c
+        src/instructions/z80_instructions_main.c
+        src/instructions/z80_instructions_extended.c
+        src/instructions/z80_instructions_bit.c
+        src/instructions/z80_instructions_ix.c
+        src/instructions/z80_instructions_iy.c
+        src/utils/bitmath.c
+        src/utils/flags.c
+        src/z80_registers.c
+        src/z80_cpu.c
+        libs/Unity/src/unity.c
+        src/tests/test_z80_instructions_common.c
+)

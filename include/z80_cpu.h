@@ -117,13 +117,13 @@ uint8_t GetMemVal(Z80_CPU *z, uint16_t address);
 void SetMemVal(Z80_CPU *z, uint16_t address, uint8_t val);
 
 /**
- * @brief Return the operands after the PC
+ * @brief Return the operand at offset from the PC
  * 
  * @param z Z80 CPU object
  * @param offset Byte offset from the PC to return, 0 is the PC, 1 is the first, 2 is the second, etc.
  * @return uint8_t offset from the PC
  */
-uint8_t op(Z80_CPU *z, uint8_t offset);
+uint8_t Op(Z80_CPU *z, uint8_t offset);
 
 /**
  * @brief Return the two bytes after PC as a single word

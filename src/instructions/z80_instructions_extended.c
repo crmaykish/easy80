@@ -13,10 +13,10 @@
 // 0x70
 void LD_nnm_SP(Z80_CPU *z) { 
     // TODO: backwards operands?
-    SetMemVal(z, split_1(z->SP), op(z, 3));
-    SetMemVal(z, split_2(z->SP), op(z, 2));
+    SetMemVal(z, split_1(z->SP), Op(z, 3));
+    SetMemVal(z, split_2(z->SP), Op(z, 2));
 }
-void LD_SP_nnm(Z80_CPU *z) { ld_word(z, &z->SP, GetMemVal(z, combine(op(z, 3), op(z, 2)))); }
+void LD_SP_nnm(Z80_CPU *z) { ld_word(z, &z->SP, GetMemVal(z, combine(Op(z, 3), Op(z, 2)))); }
 // 0xA0
 
 // 0xB0

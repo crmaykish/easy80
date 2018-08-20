@@ -65,7 +65,7 @@ void Z80_CPU_Cycle(Z80_CPU *z) {
         printf(" ");
     }
 
-    printf("%02X, %02X ", op(z, 1), op(z, 2));
+    printf("%02X, %02X ", Op(z, 1), Op(z, 2));
 
     inst.Handler(z);
 
@@ -91,12 +91,12 @@ void Z80_CPU_PrintRegisters(Z80_CPU *z) {
     );
 }
 
-uint8_t op(Z80_CPU *z, uint8_t offset) {
-    return z->Memory[z->PC + offset];
+uint8_t Op(Z80_CPU *z, uint8_t offset) {
+    return GetMemVal(z, z->PC + offset);
 }
 
 uint16_t op_nn(Z80_CPU *z) {
-    return combine(op(z, 2), op(z, 1));
+    return combine(Op(z, 2), Op(z, 1));
 }
 
 uint8_t GetMemVal(Z80_CPU *z, uint16_t address) {
