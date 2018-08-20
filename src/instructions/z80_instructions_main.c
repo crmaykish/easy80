@@ -50,10 +50,7 @@ void LD_H_n(Z80_CPU *z) { ld_byte(z, z->H, op(z, 1)); }
 void DAA(Z80_CPU *z) { daa(z); }
 void JR_Z_n(Z80_CPU *z) { z->PC += OP_BYTE; if (flag_get(z->F, FLAG_Z)) { z->PC += (int8_t) op(z, 1); } }
 void ADD_HL_HL(Z80_CPU *z) { add_word(z, z->HL, *z->HL); }
-// void LD_HL_nnm(Z80_CPU *z) { ld_byte(z, z->L, op(z, 1)); ld_byte(z, z->H, op(z, 2)); }
-void LD_HL_nnm(Z80_CPU *z) {
-    ld_word(z, z->HL, mem_val(z, op_nn(z)));
-}
+void LD_HL_nnm(Z80_CPU *z) { ld_word(z, z->HL, mem_val(z, op_nn(z))); }
 void DEC_HL(Z80_CPU *z) { dec_word(z, z->HL); }
 void INC_L(Z80_CPU *z) { inc_byte(z, z->L); }
 void DEC_L(Z80_CPU *z) { dec_byte(z, z->L); }

@@ -68,6 +68,13 @@ typedef struct Z80_CPU {
 void Z80_CPU_Init(Z80_CPU *cpu);
 
 /**
+ * @brief Cleanup the Z80_CPU object
+ * 
+ * @param cpu pointer to CPU object
+ */
+void Z80_CPU_Destroy(Z80_CPU *cpu);
+
+/**
  * @brief Store binary data in a block of Z80 memory starting at offset
  * 
  * @param cpu Pointer to CPU object
