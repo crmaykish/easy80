@@ -12,8 +12,12 @@
 // 0x60
 
 // 0x70
-void LD_nnm_SP(Z80_CPU *z) { mem_val_set(z, op_nn(z), split_1(z->SP)); mem_val_set(z, op_nn(z) + 1, split_2(z->SP)); }
-
+void LD_nnm_SP(Z80_CPU *z) { 
+    // TODO: backwards operands?
+    mem_val_set(z, split_1(z->SP), op(z, 3));
+    mem_val_set(z, split_2(z->SP), op(z, 2));
+}
+void LD_SP_nnm(Z80_CPU *z) { ld_word(z, &z->SP, mem_val(z, combine(op(z, 3), op(z, 2)))); }
 // 0xA0
 
 // 0xB0
@@ -84,7 +88,7 @@ const Z80_Instruction ExtendedInstructions[96] = {
     { 0x70, "",          OP_NONE,    0,      &BAD },
     { 0x71, "",          OP_NONE,    0,      &BAD },
     { 0x72, "",          OP_NONE,    0,      &BAD },
-    { 0x73, "LD (**),SP",   OP_LONG,    0,      &LD_nnm_SP },
+    { 0x73, "LD (**),SP",   OP_LONG,    20,     &LD_nnm_SP },
     { 0x74, "",          OP_NONE,    0,      &BAD },
     { 0x75, "",          OP_NONE,    0,      &BAD },
     { 0x76, "",          OP_NONE,    0,      &BAD },
@@ -92,7 +96,7 @@ const Z80_Instruction ExtendedInstructions[96] = {
     { 0x78, "",          OP_NONE,    0,      &BAD },
     { 0x79, "",          OP_NONE,    0,      &BAD },
     { 0x7A, "",          OP_NONE,    0,      &BAD },
-    { 0x7B, "",          OP_NONE,    0,      &BAD },
+    { 0x7B, "LD SP,(**)",   OP_LONG,    20,     &LD_SP_nnm },
     { 0x7C, "",          OP_NONE,    0,      &BAD },
     { 0x7D, "",          OP_NONE,    0,      &BAD },
     { 0x7E, "",          OP_NONE,    0,      &BAD },
