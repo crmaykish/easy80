@@ -1,6 +1,5 @@
 #include "z80_instructions_ix.h"
-#include "z80_logic.h"
-#include "z80_flags.h"
+#include "flags.h"
 #include "bitmath.h"
 
 // 0xE0

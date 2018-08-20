@@ -1,7 +1,6 @@
 #include "z80_instructions_main.h"
 #include "z80_instructions_common.h"
-#include "z80_flags.h"
-#include "z80_logic.h"
+#include "flags.h"
 
 // 0x00
 void NOP(Z80_CPU *z) { /* do nothing */ }

@@ -47,4 +47,63 @@ Z80_Instruction Z80_FetchInstruction(Z80_CPU *z);
 
 void BAD(Z80_CPU *z);
 
+bool even_parity(uint8_t n);
+
+// LD operations
+void ld_byte(Z80_CPU *cpu, uint8_t *dest, uint8_t src);
+void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src);
+
+// ADD operations
+void add_byte(Z80_CPU *cpu, uint8_t val);
+void add_word(Z80_CPU *cpu, uint16_t *target, uint16_t val);
+void adc_byte(Z80_CPU *cpu, uint8_t val);
+void adc_word(Z80_CPU *cpu, uint16_t *target, uint16_t val);
+
+// SUB operations
+void sub(Z80_CPU *cpu, uint8_t val);
+void sbc(Z80_CPU *cpu, uint8_t val);
+
+// AND operations
+void and(Z80_CPU *cpu, uint8_t val);
+
+// OR operations
+void or(Z80_CPU *cpu, uint8_t val);
+
+// XOR operations
+void xor(Z80_CPU *cpu, uint8_t val);
+
+// DEC operations
+void dec_byte(Z80_CPU *cpu, uint8_t *target);
+void dec_word(Z80_CPU *cpu, uint16_t *target);
+
+// INC operations
+void inc_byte(Z80_CPU *cpu, uint8_t *target);
+void inc_word(Z80_CPU *cpu, uint16_t *target);
+
+// ROTATE operations
+void rlca(Z80_CPU *cpu);
+void rrca(Z80_CPU *cpu);
+void rla(Z80_CPU *cpu);
+void rra(Z80_CPU *cpu);
+
+// CP operations
+void cp(Z80_CPU *cpu, uint8_t val);
+
+// DAA operations
+void daa(Z80_CPU *z);
+
+void ldir(Z80_CPU *z);
+
+uint16_t pop(Z80_CPU *z);
+
+void push(Z80_CPU *z, uint16_t val);
+
+void ret(Z80_CPU *z, bool condition);
+
+void call(Z80_CPU *z, uint16_t val, bool condition);
+
+void rst(Z80_CPU *z, uint8_t val);
+
+void ex(uint16_t *a, uint16_t *b);
+
 #endif

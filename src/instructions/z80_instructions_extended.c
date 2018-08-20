@@ -1,6 +1,5 @@
 #include "z80_instructions_extended.h"
 #include "z80_instructions_common.h"
-#include "z80_logic.h"
 #include "bitmath.h"
 
 // Extended instruction set implementation
