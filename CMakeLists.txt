@@ -3,6 +3,7 @@ project(easy80)
 
 include_directories(include)
 include_directories(include/instructions)
+include_directories(include/tests)
 include_directories(include/utils)
 include_directories(libs/Unity/src)
 

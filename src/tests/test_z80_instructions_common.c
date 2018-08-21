@@ -1,8 +1,7 @@
 #include "z80_instructions_common.h"
+#include "test_z80_common.h"
 #include "flags.h"
 #include "unity.h"
-
-#define EASY80_TEST(test_name) Before(); RUN_TEST(test_name); After();
 
 static Z80_CPU z;
 
@@ -49,6 +48,13 @@ void test_add_byte() {
     TEST_ASSERT_BIT_LOW(FLAG_S, *z.F);
 }
 
+void test_add_word() {
+    add_word(&z, z.DE, 0xABCD);
+    TEST_ASSERT_EQUAL(0xABCD, *z.DE);
+
+    
+}
+
 int main() {
     UNITY_BEGIN();
 
@@ -56,6 +62,7 @@ int main() {
     EASY80_TEST(test_ld_byte);
     EASY80_TEST(test_ld_word);
     EASY80_TEST(test_add_byte);
+    EASY80_TEST(test_add_word);
 
     return UNITY_END();
 }

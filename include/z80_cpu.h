@@ -5,7 +5,6 @@
  * @author crmaykish
  * @date 2018-08-04
  */
-
 #ifndef Z80_CPU_H
 #define Z80_CPU_H
 
