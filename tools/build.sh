@@ -5,5 +5,5 @@ echo "Building everything..."
 mkdir -p build
 cd build
 cmake -G 'Unix Makefiles' ..
-make
+make -j4
 cd ..

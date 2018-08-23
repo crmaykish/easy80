@@ -76,7 +76,7 @@ void ld_word(Z80_CPU *cpu, uint16_t *dest, uint16_t src) {
 }
 
 // ADD operations
-static void add_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
+static void add_byte_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
     // TODO: Double check the use of the carry flag in the flag logic...
     uint8_t carry_flag = (use_carry && (cpu->F, FLAG_C)) ? 1 : 0;
     uint8_t c_val = val + carry_flag;
@@ -110,25 +110,33 @@ static void add_internal(Z80_CPU *cpu, uint8_t val, bool use_carry) {
 }
 
 void add_byte(Z80_CPU *cpu, uint8_t val) {
-    add_internal(cpu, val, false);
+    add_byte_internal(cpu, val, false);
 }
 
 void adc_byte(Z80_CPU *cpu, uint8_t val) {
-    add_internal(cpu, val, true);
+    add_byte_internal(cpu, val, true);
+}
+
+static void add_word_internal(Z80_CPU *cpu, uint16_t *target, uint16_t val, bool use_carry) {
+    uint16_t c_val = val;
+    
+    // N is reset
+    flag_set(cpu->F, FLAG_N, false);
+
+    // Set CARRY flag high if 15th bit in sum is high
+    flag_set(cpu->F, FLAG_C, ((*target + c_val) > 0xFFFF));
+
+    // TODO: half carry flag
+
+    (*target) += val;
 }
 
 void add_word(Z80_CPU *cpu, uint16_t *target, uint16_t val) {
-
-    // TODO: flags
-
-    (*target) += val;
+    add_word_internal(cpu, target, val, false);
 }
 
 void adc_word(Z80_CPU *cpu, uint16_t *target, uint16_t val) {
-    
-    // TODO: flags
-
-    (*target) += val;
+    add_word_internal(cpu, target, val, true);
 }
 
 // SUB operations

@@ -51,8 +51,23 @@ void test_add_byte() {
 void test_add_word() {
     add_word(&z, z.DE, 0xABCD);
     TEST_ASSERT_EQUAL(0xABCD, *z.DE);
+    TEST_ASSERT_BIT_LOW(FLAG_C, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_N, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_PV, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_H, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_Z, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_S, *z.F);
 
-    
+    // Test carry
+    add_word(&z, z.DE, 0xF000);
+    TEST_ASSERT_BIT_HIGH(FLAG_C, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_N, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_PV, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_H, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_Z, *z.F);
+    TEST_ASSERT_BIT_LOW(FLAG_S, *z.F);
+
+    // Test half carry
 }
 
 int main() {
